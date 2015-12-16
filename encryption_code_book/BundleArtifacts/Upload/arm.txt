@@ -1,0 +1,6 @@
+MainPackage=E:\倾世倩雪\程序\加密encryption\encryption_code_book\bin\ARM\Release\Upload\encryption_code_book_1.1.2.0_ARM.appx
+SymbolPackage=E:\倾世倩雪\程序\加密encryption\encryption_code_book\加密\encryption_code_book_1.1.2.0\encryption_code_book_1.1.2.0_ARM.appxsym
+ResourcePack=E:\倾世倩雪\程序\加密encryption\encryption_code_book\_scale-100.appx
+ResourcePack=E:\倾世倩雪\程序\加密encryption\encryption_code_book\_scale-125.appx
+ResourcePack=E:\倾世倩雪\程序\加密encryption\encryption_code_book\_scale-150.appx
+ResourcePack=E:\倾世倩雪\程序\加密encryption\encryption_code_book\_scale-400.appx
