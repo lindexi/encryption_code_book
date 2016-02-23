@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace encryption_code_book
 {
@@ -11,49 +7,24 @@ namespace encryption_code_book
     {
         public async_result(bool complete)
         {
-            _completed = IsCompleted;
-            _asyncState = new object();            
-        }
-        public async_result(object AsyncState, WaitHandle AsyncWaitHandle , bool CompletedSynchronously , bool IsCompleted)
-        {
-            _asyncState = AsyncState;
-            _asyncWaitHandle = AsyncWaitHandle;
-            _CompletedSynchronously = CompletedSynchronously;
-            _completed = IsCompleted;
-        }
-        public object AsyncState
-        {
-            get
-            {
-                return _asyncState;
-            }
+            IsCompleted = IsCompleted;
+            AsyncState = new object();
         }
 
-        public WaitHandle AsyncWaitHandle
+        public async_result(object asyncState, WaitHandle asyncWaitHandle, bool completedSynchronously, bool isCompleted)
         {
-            get
-            {
-                return _asyncWaitHandle;
-            }
+            AsyncState = asyncState;
+            AsyncWaitHandle = asyncWaitHandle;
+            CompletedSynchronously = completedSynchronously;
+            IsCompleted = isCompleted;
         }
 
-        public bool CompletedSynchronously
-        {
-            get
-            {
-                return _CompletedSynchronously;
-            }
-        }
-        public bool IsCompleted
-        {
-            get
-            {
-                return _completed;
-            }
-        }
-        private object _asyncState;
-        private WaitHandle _asyncWaitHandle;
-        private bool _CompletedSynchronously;
-        private bool _completed;
+        public object AsyncState { get; }
+
+        public WaitHandle AsyncWaitHandle { get; }
+
+        public bool CompletedSynchronously { get; }
+
+        public bool IsCompleted { get; }
     }
 }
