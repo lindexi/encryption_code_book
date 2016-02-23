@@ -1,4 +1,14 @@
-﻿using System.ComponentModel;
+﻿// lindexi
+// 10:30
+
+#region
+
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
+
+#endregion
 
 namespace encryption_code_book.ViewModel
 {
@@ -9,21 +19,39 @@ namespace encryption_code_book.ViewModel
     {
         public notify_property()
         {
-
+            reminder += str =>
+            {
+                if (string.IsNullOrEmpty(str))
+                {
+                    _reminder.Clear();
+                }
+                else
+                {
+                    _reminder.Append(str + "\n");
+                }
+            };
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
-        public void UpdateProper<T>(ref T properValue , T newValue , [System.Runtime.CompilerServices.CallerMemberName] string properName = "")
+        public Action<string> reminder;
+
+        private readonly StringBuilder _reminder = new StringBuilder();
+
+        public void UpdateProper<T>(ref T properValue, T newValue, [CallerMemberName] string properName = "")
         {
-            if (object.Equals(properValue , newValue))
+            if (Equals(properValue, newValue))
+            {
                 return;
+            }
 
             properValue = newValue;
             OnPropertyChanged(properName);
         }
-        public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = "")
+
+        public void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            handler?.Invoke(this , new PropertyChangedEventArgs(name));
+            handler?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

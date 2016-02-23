@@ -8,6 +8,23 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"></Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto">
+                    
+                </RowDefinition>
+                <RowDefinition Height="*">
+                    
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="text" Grid.Row="1" Text="{x:Bind view.text,Mode=TwoWay}" AcceptsReturn="True"
+                     TextWrapping="Wrap" TextChanged="modify" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     LostFocus="hold" />
+        </Grid>
     </Grid>
 </Page>

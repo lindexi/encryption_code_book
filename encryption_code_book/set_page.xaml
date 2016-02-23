@@ -8,6 +8,18 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0">使用后台加密解密</TextBlock>
+            <ToggleSwitch Grid.Row="1" Grid.Column="0" Header="自动保存" IsOn="{x:Bind view.save,Mode=TwoWay}" Toggled="{x:Bind view.save_toggle}"></ToggleSwitch>
+        </Grid>
     </Grid>
 </Page>

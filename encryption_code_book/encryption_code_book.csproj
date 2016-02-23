@@ -124,6 +124,7 @@
       <DependentUpon>set_page.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\code.cs" />
+    <Compile Include="ViewModel\fit.cs" />
     <Compile Include="ViewModel\note.cs" />
     <Compile Include="ViewModel\notify_property.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -224,7 +225,7 @@
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>encryption_code_book_StoreKey.pfx</AssemblyOriginatorKeyFile>
