@@ -193,3 +193,13 @@ ModelManifest.xml
 /incorporates/incorporates/Package.appxmanifest
 /incorporates/incorporates/Package.appxmanifest
 /incorporates/incorporates/Package.appxmanifest
+/BundleArtifacts
+/BundleArtifacts
+*.appx
+*.appxupload
+/加密/encryption_code_book_1.1.1.0_Test
+/加密/encryption_code_book_1.1.2.0_Test
+/加密/encryption_code_book_1.1.3.0_Test
+/加密/encryption_code_book_1.3.1.0_Test
+/加密
+/_pkginfo.txt

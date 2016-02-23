@@ -32,6 +32,13 @@ namespace encryption_code_book
             this.Unloaded += MainPage_Unloaded;
             this.InitializeComponent();
             _ctrl = false;
+            xkey.KeyDown += (sender, e)=>
+            {
+                if (e.Key == Windows.System.VirtualKey.Enter)
+                {
+                    confim(sender, null);
+                }
+            };
         }
 
         private void MainPage_Unloaded(object sender , RoutedEventArgs e)
