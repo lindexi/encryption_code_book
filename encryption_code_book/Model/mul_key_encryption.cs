@@ -12,8 +12,8 @@ namespace encryption_code_book
     {
         public mul_key_encryption()
         {
-            Task d;
-            d = new_class();
+            //Task d;
+            //d = new_class();
         }
         public mul_key_encryption(string key)
         {

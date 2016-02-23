@@ -3,6 +3,7 @@
 
 #region
 
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -45,6 +46,7 @@ namespace encryption_code_book
             {
                 _ctrl = true;
             }
+           
             //else if (_ctrl && view.confim)
             //{
             //    if (e.Key == Windows.System.VirtualKey.S)
