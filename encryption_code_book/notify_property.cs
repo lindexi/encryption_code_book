@@ -23,10 +23,7 @@ namespace ViewModel
         public void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = "")
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this , new PropertyChangedEventArgs(name));
-            }
+            handler?.Invoke(this , new PropertyChangedEventArgs(name));
         }
     }
 }

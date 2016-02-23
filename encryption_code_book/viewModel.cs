@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// lindexi
+// 9:19
+
+#region
+
+using System;
 using System.Text;
 using System.Threading.Tasks;
-using ViewModel;
 using Windows.UI.Xaml;
+using ViewModel;
+
+#endregion
 
 namespace encryption_code_book
 {
@@ -16,7 +21,7 @@ namespace encryption_code_book
             progress = Visibility.Collapsed;
             debug = Visibility.Collapsed;
             confim = false;
-            cut_grid(1);           
+            cut_grid(1);
         }
 
         public string reminder
@@ -103,14 +108,7 @@ namespace encryption_code_book
         {
             get
             {
-                if (progress == Visibility.Collapsed)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return progress == Visibility.Collapsed;
             }
         }
 
@@ -126,8 +124,9 @@ namespace encryption_code_book
                 return _help;
             }
         }
+
         /// <summary>
-        /// 提示
+        ///     提示
         /// </summary>
         public string prompt
         {
@@ -150,7 +149,7 @@ namespace encryption_code_book
         {
             set
             {
-                _file_key = value;              
+                _file_key = value;
                 OnPropertyChanged("file_key");
             }
             get
@@ -160,7 +159,7 @@ namespace encryption_code_book
         }
 
         /// <summary>
-        /// 密码被修改
+        ///     密码被修改
         /// </summary>
         public bool modify
         {
@@ -187,6 +186,26 @@ namespace encryption_code_book
             }
         }
 
+        private readonly StringBuilder _reminder = new StringBuilder();
+        private readonly mul_key_encryption mul;
+
+        /// <summary>
+        ///     确认密码
+        /// </summary>
+        private bool _confim;
+
+        private Visibility _debug;
+        private string _file_key;
+        private string _help;
+        private Visibility _help_grid;
+        private Task _hold;
+        private Visibility _main_grid;
+        private bool _modify;
+        private Visibility _progress;
+
+        private string _prompt;
+        private Visibility _register;
+
         public void ce()
         {
             //reminder = await mul.ce();
@@ -207,7 +226,7 @@ namespace encryption_code_book
             if (fist_use())
             {
                 confim = true;
-                mul.new_use(key,new_use_call_back);
+                mul.new_use(key, new_use_call_back);
             }
             else
             {
@@ -215,7 +234,7 @@ namespace encryption_code_book
                 {
                     confim = true;
                     file_key = await mul.jmz_decryption();
-                    reminder = DateTime.Now.ToString() + "文件解密成功" + "    可以使用组合键ctrl+s保存";
+                    reminder = DateTime.Now + "文件解密成功" + "    可以使用组合键ctrl+s保存";
                 }
                 else
                 {
@@ -237,20 +256,22 @@ namespace encryption_code_book
             {
                 await _hold;
             }
-            if (modify)
-            {       
-                modify = false;
-                _hold = mul.override_entryption(file_key);                
-                reminder = DateTime.Now.ToString() + "自动保存" + "    可以使用组合键ctrl+s保存";
+            if (!modify)
+            {
+                return;
             }
+            modify = false;
+            _hold = mul.override_entryption(file_key);
+            reminder = DateTime.Now + "自动保存" + "    可以使用组合键ctrl+s保存";
         }
+
         public async Task hold()
         {
             if (confim)
             {
                 await mul.override_entryption(file_key);
                 modify = false;
-                reminder = DateTime.Now.ToString() + "保存";
+                reminder = DateTime.Now + "保存";
             }
         }
 
@@ -262,24 +283,8 @@ namespace encryption_code_book
             reminder += " 锁住";
         }
 
-        private string _prompt;
-        private mul_key_encryption mul;
-        private StringBuilder _reminder = new StringBuilder();
-        private Visibility _register;
-        private Visibility _main_grid;
-        private Visibility _help_grid;
-        private Visibility _progress;
-        private Visibility _debug;
-        private string _file_key;
-        private Task _hold;
-        private string _help;
         /// <summary>
-        /// 确认密码
-        /// </summary>
-        private bool _confim;
-        private bool _modify;
-        /// <summary>
-        /// 判断第一次使用
+        ///     判断第一次使用
         /// </summary>
         /// <returns></returns>
         private bool fist_use()
@@ -288,8 +293,9 @@ namespace encryption_code_book
             //漫游没有出现 file address
             return mul.first;
         }
+
         /// <summary>
-        /// 切换界面
+        ///     切换界面
         /// </summary>
         /// <param name="grid">1注册 主2等 3帮助</param>
         private void cut_grid(int grid)
@@ -317,22 +323,23 @@ namespace encryption_code_book
                     help_grid = Visibility.Visible;
                     break;
                 default:
+                {
+                    if (confim)
                     {
-                        if (confim)
-                        {
-                            main_grid = Visibility.Visible;
-                        }
-                        else
-                        {
-                            register = Visibility.Visible;
-                        }
+                        main_grid = Visibility.Visible;
                     }
+                    else
+                    {
+                        register = Visibility.Visible;
+                    }
+                }
                     break;
             }
-        }   
+        }
+
         private void new_use_call_back(IAsyncResult ar)
         {
-            reminder = DateTime.Now.ToString() + "第一次使用，文件创建成功" + mul.file.Name + " " + "   文件会自动保存";
+            reminder = DateTime.Now + "第一次使用，文件创建成功" + mul.file.Name + " " + "   文件会自动保存";
         }
     }
 }
