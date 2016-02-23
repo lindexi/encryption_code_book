@@ -113,6 +113,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\encryption_code.cs" />
+    <Compile Include="Model\encryption_note.cs" />
     <Compile Include="Model\mul_key_encryption.cs" />
     <Compile Include="Model\string_decryption.cs" />
     <Compile Include="Model\string_encryption.cs" />

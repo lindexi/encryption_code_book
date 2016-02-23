@@ -5,6 +5,7 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using encryption_code_book.ViewModel;
 
@@ -17,6 +18,7 @@ namespace encryption_code_book
         public note_page()
         {
             //view=new note();
+            _ctrl = false;
             InitializeComponent();
         }
 
@@ -36,5 +38,37 @@ namespace encryption_code_book
         {
             //throw new NotImplementedException();
         }
+
+        private void fastkey(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Control)
+            {
+                _ctrl = true;
+            }
+            //else if (_ctrl && view.confim)
+            //{
+            //    if (e.Key == Windows.System.VirtualKey.S)
+            //    {
+            //        view.file_key = xfile_key.Text;
+            //        await view.hold();
+            //    }
+            //    else if (e.Key == Windows.System.VirtualKey.L)
+            //    {
+            //        view.file_key = xfile_key.Text;
+            //        System.Threading.Tasks.Task t = view.hold();
+            //        view.lock_grid();
+            //    }
+            //}
+        }
+
+        private void keyup(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Control)
+            {
+                _ctrl = false;
+            }
+        }
+
+        private bool _ctrl;
     }
 }

@@ -99,7 +99,6 @@ namespace encryption_code_book
 
         private void keyup(object sender , KeyRoutedEventArgs e)
         {
-
             if (e.Key == Windows.System.VirtualKey.Control)
             {
                 _ctrl = false;
