@@ -1,9 +1,13 @@
-﻿using System;
+﻿// lindexi
+// 11:07
+
+#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using encryption_code_book.Model;
+
+#endregion
 
 namespace encryption_code_book.ViewModel
 {
@@ -11,10 +15,20 @@ namespace encryption_code_book.ViewModel
     {
         public note()
         {
-          
+            confim = false;
         }
 
-        private string _text;
+        public bool confim
+        {
+            set
+            {
+                base.confim = value;
+            }
+            get
+            {
+                return base.confim;
+            }
+        }
 
         public string text
         {
@@ -30,6 +44,34 @@ namespace encryption_code_book.ViewModel
             }
         }
 
+        private readonly Stack<string> _text_stack = new Stack<string>();
+        private encryption_note _model = new encryption_note();
+        private string_encryption encryption { set; get; } = new string_encryption();
+        private string _text;
+        private string _key;
+
+        public string key
+        {
+            set
+            {
+                _key = value;
+            }
+            get
+            {
+                return _key;
+            }
+        }
+
+        public bool confim_password(string key)
+        {
+            confim = encryption.confirm(_model.encryption_key, key);
+            if (confim)
+            {
+                this.key = key;
+            }
+            return confim;
+        }
+
         public void cancel()
         {
             try
@@ -41,8 +83,5 @@ namespace encryption_code_book.ViewModel
                 reminder("没有修改" + e.Message + "\n");
             }
         }
-
-        private readonly Stack<string> _text_stack=new Stack<string>();
-        private encryption_code_book.Model.encryption_note _model=new encryption_note();
     }
 }
