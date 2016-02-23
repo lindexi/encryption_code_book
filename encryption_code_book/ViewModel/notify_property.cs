@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ViewModel
+namespace encryption_code_book.ViewModel
 {
     /// <summary>
     /// 提供继承通知UI改变值

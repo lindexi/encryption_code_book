@@ -7,11 +7,10 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using ViewModel;
 
 #endregion
 
-namespace encryption_code_book
+namespace encryption_code_book.ViewModel
 {
     public class viewModel : notify_property
     {
