@@ -97,12 +97,32 @@ namespace encryption_code_book.Model
         private bool _read_key;
         private IAsyncAction _storage;
         private Task _read;
-        
+        private string _key;
 
-        public bool confirm(string key)
+        public string key
         {
-            
-            return encryption.confirm(encryption_key,key)
+            set
+            {
+                _key = value;
+            }
+            get
+            {
+                return _key;
+            }
+        }
+
+        public bool confirm(string keystr)
+        {
+            if (string.IsNullOrEmpty(encryption_key))
+            {
+                if (_read == null)
+                {
+                    _read = read();
+                }
+                _read.Wait();
+            }
+            key = keystr;
+            return encryption.confirm(encryption_key, keystr);
         }
 
 
