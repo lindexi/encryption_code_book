@@ -6,6 +6,30 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+    <Grid Background="{ThemeResource  ApplicationPageBackgroundThemeBrush}" KeyDown="fastkey" KeyUp="keyup">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="xregister_grid" Grid.Row="0" Background="Blue" Visibility="{x:Bind view.register,Mode=OneWay}" >
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock x:Name="xprompt" Text="{x:Bind view.prompt,Mode=OneWay}" Foreground="#FFF6FCFB" FontSize="26.667" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<PasswordBox x:Name="xkey" IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Grid.Column="0" Margin="10"/>-->
+                    <TextBox x:Name="xkey"  IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Grid.Column="0" Margin="10"/>
+                    <Button Content="确定" Grid.Column="1" Background="White" IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Margin="10,10,10,10" Click="confim"/>
+                </Grid>
+            </StackPanel>
+=======
+>>>>>>> refs/remotes/origin/master
     <Grid Background="#530fad">
         <Grid>
             <Grid>
@@ -28,6 +52,10 @@
                     </SplitView.Content>
                 </SplitView>
             </Grid>
+<<<<<<< HEAD
+=======
+>>>>>>> 64c5679... 私密文本
+>>>>>>> refs/remotes/origin/master
         </Grid>
     </Grid>
 </Page>
