@@ -129,7 +129,7 @@ namespace encryption_code_book.Model
         /// <summary>
         /// 保存
         /// </summary>
-        public void storage()
+        public void storage(string str)
         {
             //motify = true;
             //if (!motify)
@@ -141,7 +141,6 @@ namespace encryption_code_book.Model
 
             _storage?.Cancel();
 
-            string str = encryption_key + encryption_text;
             _storage = ThreadPool.RunAsync(async (workItemHandler) =>
             {
                 await file_null();
@@ -150,12 +149,29 @@ namespace encryption_code_book.Model
                 {
                     using (DataWriter data_writer = new DataWriter(transaction.Stream))
                     {
-                        data_writer.WriteString(str);
+                        data_writer.WriteString(serialization(str));
                         transaction.Stream.Size = await data_writer.StoreAsync();
                         await transaction.CommitAsync();
                     }
                 }
             });
+        }
+
+        private string serialization(string str)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                key = "qq123456";
+            }
+            encryption_key = encryption.encryption(encryption.n_md5(key), key);
+
+            encryption_text= encryption.encryption(str, key);
+            return encryption_key + encryption_text;
+        }
+
+        private string deserilization(string str)
+        {
+            return "";
         }
 
         private async Task file_null()

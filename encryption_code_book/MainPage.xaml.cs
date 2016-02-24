@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿// lindexi
+// 10:50
+
+#region
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using encryption_code_book.ViewModel;
+
+#endregion
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
@@ -23,17 +18,35 @@ namespace encryption_code_book
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private viewModel view;
         public MainPage()
         {
             view = new viewModel();
-            this.InitializeComponent();
+            InitializeComponent();
             frame.Navigate(typeof (note_page));
         }
+
+        private viewModel view;
 
         private void button_click(object sender, RoutedEventArgs e)
         {
             split_view.IsPaneOpen = !split_view.IsPaneOpen;
+        }
+
+        private void nagivate(object sender, SelectionChangedEventArgs e)
+        {
+            ListBoxItem item = sender as ListBoxItem;
+            switch (item.Name)
+            {
+                case "encryption_note":
+                    frame.Navigate(typeof(note_page));
+                    break;
+                case "encryption_code":
+                    frame.Navigate(typeof(code_page));
+                    break;
+                default:
+                    frame.Navigate(typeof(note_page));
+                    break;
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ namespace encryption_code_book
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+
             view = e.Parameter as note ?? new note();
         }
 
