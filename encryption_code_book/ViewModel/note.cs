@@ -17,6 +17,7 @@ namespace encryption_code_book.ViewModel
         {
             confim = false;
             text = "asidoch";
+            _frist = false;
         }
 
         public void deserilization()
@@ -68,7 +69,6 @@ namespace encryption_code_book.ViewModel
         {
             set
             {
-                _key = value;
                 _model.key = value;
             }
             get
@@ -77,8 +77,26 @@ namespace encryption_code_book.ViewModel
             }
         }
 
+        public override bool first
+        {
+            get
+            {
+                return _model.first;
+            }
+
+            set
+            {
+                _model.first = value;
+            }
+        }
+        private bool _first;
+
         public override bool confirm_password(string keystr)
         {
+            if (first)
+            {
+                return confim = new_use(keystr);
+            }
             confim = _model.confirm(keystr);
             if (!confim)
             {
@@ -87,6 +105,27 @@ namespace encryption_code_book.ViewModel
             return confim;
         }
 
+        private bool new_use(string keystr)
+        {
+            if (_first)
+            {
+                if (string.Equals(_key, keystr))
+                {
+                    _model.new_use(keystr);
+                    return true;
+                }
+                prompt = "密码错误，请重新输入";
+                _first = false;
+                return false;
+            }
+            else
+            {
+                _key = keystr;
+                _first = true;
+                prompt = "再次输入密码";
+                return false;
+            }
+        }
         public void cancel()
         {
             try

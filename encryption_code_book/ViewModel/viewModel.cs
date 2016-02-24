@@ -131,6 +131,8 @@ namespace encryption_code_book.ViewModel
             }
         }
 
+        public abstract bool first { set; get; }
+
         public string help
         {
             set

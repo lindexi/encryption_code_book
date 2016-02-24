@@ -98,6 +98,19 @@ namespace encryption_code_book.Model
         private IAsyncAction _storage;
         private Task _read;
         private string _key;
+        private bool _first;
+
+        public bool first
+        {
+            set
+            {
+                _first = value;
+            }
+            get
+            {
+                return _first;
+            }
+        }
 
         public string key
         {
@@ -110,7 +123,10 @@ namespace encryption_code_book.Model
                 return _key;
             }
         }
+        public void new_use(string keystr)
+        {
 
+        }
         public bool confirm(string keystr)
         {
             if (string.IsNullOrEmpty(encryption_key))
@@ -195,11 +211,19 @@ namespace encryption_code_book.Model
         {
             if (_file == null)
             {
-                _file =
-                    await
-                        ApplicationData.Current.
-                            LocalFolder.CreateFileAsync(file_address,
-                                CreationCollisionOption.OpenIfExists);
+                try
+                {
+                    _file = await ApplicationData.Current.
+                           LocalFolder.GetFileAsync(file_address);
+                }
+                catch
+                {
+                    _file =
+                   await
+                       ApplicationData.Current.
+                           LocalFolder.CreateFileAsync(file_address);
+                    first = true;
+                }
             }
         }
 
