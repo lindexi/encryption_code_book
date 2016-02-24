@@ -17,7 +17,7 @@ namespace encryption_code_book.Model
     {
         public encryption_note()
         {
-            motify = false;
+            //motify = false;
             file_address = "data.encryption";
             file_null().Wait();
         }
@@ -92,20 +92,20 @@ namespace encryption_code_book.Model
         private StorageFile _file;
         private bool _read_key;
         private IAsyncAction _storage;
-        private bool motify;
+        //private bool motify;
 
         /// <summary>
         /// 保存
         /// </summary>
         public void storage()
         {
-            motify = true;
-            if (!motify)
-            {
-                return;
-            }
+            //motify = true;
+            //if (!motify)
+            //{
+            //    return;
+            //}
 
-            motify = false;
+            //motify = false;
 
             _storage?.Cancel();
 
