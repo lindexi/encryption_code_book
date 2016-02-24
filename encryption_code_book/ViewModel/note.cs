@@ -19,6 +19,20 @@ namespace encryption_code_book.ViewModel
             text = "asidoch";
         }
 
+        public void deserilization()
+        {
+            frame?.Navigate(typeof(key_page), this);
+
+            //if (confim)
+            //{
+
+            //}
+            //else
+            //{
+            //    frame.Navigate(typeof(key_page), this);
+            //}
+        }
+
         public new bool confim
         {
             set
@@ -63,9 +77,14 @@ namespace encryption_code_book.ViewModel
             }
         }
 
-        public bool confim_password(string keystr)
+        public override bool confirm_password(string keystr)
         {
-            return confim = _model.confirm(keystr);
+            confim = _model.confirm(keystr);
+            if (!confim)
+            {
+                prompt = "密码错误，请重新输入";
+            }
+            return confim;
         }
 
         public void cancel()
@@ -79,5 +98,10 @@ namespace encryption_code_book.ViewModel
                 reminder("没有修改" + e.Message + "\n");
             }
         }
+
+        //public override bool confirm_password(string keystr)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

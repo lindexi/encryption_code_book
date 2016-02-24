@@ -7,6 +7,14 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid Background="Blue">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="{x:Bind view.prompt,Mode=OneWay}" VerticalAlignment="Bottom"/>
+            <TextBox Grid.Row="1" Text="{x:Bind view.key,Mode=TwoWay}" VerticalAlignment="Top"/>
+            <AppBarButton Grid.Row="1" Icon="Forward" HorizontalAlignment="Right" Click="confirm"/>
+        </Grid>
     </Grid>
 </Page>

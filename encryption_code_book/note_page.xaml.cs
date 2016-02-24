@@ -18,7 +18,7 @@ namespace encryption_code_book
     {
         public note_page()
         {
-            //view=new note();
+            //view = new note();
             _ctrl = false;
             InitializeComponent();
         }
@@ -27,8 +27,12 @@ namespace encryption_code_book
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
             view = e.Parameter as note ?? new note();
+            view.frame = frame;
+            //viewModel view_model = e.Parameter as viewModel;
+            //view.key = view_model.key;
+            //view.frame = view_model.frame;
+            view.deserilization();
         }
 
         //private void modify(object sender, TextChangedEventArgs e)

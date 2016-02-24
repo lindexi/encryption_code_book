@@ -25,9 +25,13 @@
                     <AppBarButton Icon="Save"/>
                 </CommandBar>
             </Grid>
+            
             <TextBox Grid.Row="1" Text="{x:Bind view.text,Mode=TwoWay}" AcceptsReturn="True"
                      TextWrapping="Wrap" SelectionChanged="motify" ScrollViewer.VerticalScrollBarVisibility="Auto"
                      LostFocus="hold" />
+            <Frame Grid.Row="1" x:Name="frame" Visibility="{x:Bind view.frame_visibility,Mode=OneWay}">
+
+            </Frame>
             <!--<TextBlock Grid.Row="2" Text="{x:Bind view.reminder,Mode=TwoWay}" Margin="10,10,10,10"></TextBlock>-->
         </Grid>
     </Grid>

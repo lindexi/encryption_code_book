@@ -20,10 +20,9 @@ namespace encryption_code_book
     {
         public MainPage()
         {
-            view = new viewModel();
+            view = new note();
             InitializeComponent();
             frame.Navigate(typeof(note_page));
-
         }
 
         private viewModel view;
@@ -42,13 +41,13 @@ namespace encryption_code_book
                 switch (item.Name)
                 {
                     case "encryption_note":
-                        frame.Navigate(typeof(note_page));
+                        frame.Navigate(typeof(note_page), view);
                         break;
                     case "encryption_code":
-                        frame.Navigate(typeof(code_page));
+                        frame.Navigate(typeof(code_page), view);
                         break;
                     default:
-                        frame.Navigate(typeof(note_page));
+                        frame.Navigate(typeof(note_page), view);
                         break;
                 }
             }

@@ -15,7 +15,7 @@
                 </Grid.RowDefinitions>
                 <ToggleButton TabIndex="1" Width="48" IsChecked="{Binding IsPaneOpen,ElementName=split_view,Mode=TwoWay}" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="{x:Null}" >
                 </ToggleButton>
-                <Button Grid.Row="0" Content="展开" HorizontalAlignment="Left" VerticalAlignment="Top" Click="button_click" />
+                <!--<Button Grid.Row="0" Content="展开" HorizontalAlignment="Left" VerticalAlignment="Top" Click="button_click" />-->
                 <SplitView Grid.Row="1" x:Name="split_view" DisplayMode="CompactOverlay" CompactPaneLength="0">
                     <SplitView.Pane>
                         <ListBox SelectionChanged="nagivate">

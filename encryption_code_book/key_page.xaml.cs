@@ -19,7 +19,12 @@ namespace encryption_code_book
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            view = e.Parameter as viewModel ?? new viewModel();
+            view = e.Parameter as viewModel;//?? new viewModel();
+        }
+
+        private void confirm(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            view.confirm_password(view.key);
         }
     }
 }

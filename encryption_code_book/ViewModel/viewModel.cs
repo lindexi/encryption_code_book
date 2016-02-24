@@ -12,7 +12,7 @@ using Windows.UI.Xaml;
 
 namespace encryption_code_book.ViewModel
 {
-    public class viewModel : notify_property
+    public abstract class viewModel : notify_property
     {
         public viewModel()
         {
@@ -103,7 +103,26 @@ namespace encryption_code_book.ViewModel
                 return _debug;
             }
         }
-
+        public Visibility frame_visibility
+        {
+            set
+            {
+                confim = value != Visibility.Visible;
+                OnPropertyChanged();
+            }
+            get
+            {
+                if (confim)
+                {
+                    return Visibility.Collapsed;
+                }
+                else
+                {
+                    return Visibility.Visible;
+                }
+            }
+        }
+        //private Visibility _frame_visibility;
         public bool register_enable
         {
             get
@@ -179,6 +198,7 @@ namespace encryption_code_book.ViewModel
             set
             {
                 _confim = value;
+                OnPropertyChanged("frame_visibility");
             }
             get
             {
@@ -188,6 +208,34 @@ namespace encryption_code_book.ViewModel
 
         private readonly StringBuilder _reminder = new StringBuilder();
         private readonly mul_key_encryption mul;
+
+        private Windows.UI.Xaml.Controls.Frame _frame;
+
+        public Windows.UI.Xaml.Controls.Frame frame
+        {
+            set
+            {
+                _frame = value;
+            }
+            get
+            {
+                return _frame;
+            }
+        }
+
+        private string _key;
+        public string key
+        {
+            set
+            {
+                _key = key;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return _key;
+            }
+        }
 
         /// <summary>
         ///     确认密码
@@ -214,37 +262,39 @@ namespace encryption_code_book.ViewModel
             progress = Visibility.Visible;
         }
 
-        public async void confirm_password(string key)
-        {
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                prompt = "请输入不为空的密码，可以是中文";
-                return;
-            }
+        public abstract bool confirm_password(string keystr);
 
-            progress = Visibility.Visible;
-            if (fist_use())
-            {
-                confim = true;
-                mul.new_use(key, new_use_call_back);
-            }
-            else
-            {
-                if (await mul.confirm_password(key))
-                {
-                    confim = true;
-                    file_key = await mul.jmz_decryption();
-                    reminder = DateTime.Now + "文件解密成功" + "    可以使用组合键ctrl+s保存";
-                }
-                else
-                {
-                    confim = false;
-                    prompt = "密码错误 重新输入";
-                }
-            }
-            progress = Visibility.Collapsed;
-            cut_grid(1);
-        }
+        //public async void confirm_password(string key)
+        //{
+        //    if (string.IsNullOrWhiteSpace(key))
+        //    {
+        //        prompt = "请输入不为空的密码，可以是中文";
+        //        return;
+        //    }
+
+        //    progress = Visibility.Visible;
+        //    if (fist_use())
+        //    {
+        //        confim = true;
+        //        mul.new_use(key, new_use_call_back);
+        //    }
+        //    else
+        //    {
+        //        if (await mul.confirm_password(key))
+        //        {
+        //            confim = true;
+        //            file_key = await mul.jmz_decryption();
+        //            reminder = DateTime.Now + "文件解密成功" + "    可以使用组合键ctrl+s保存";
+        //        }
+        //        else
+        //        {
+        //            confim = false;
+        //            prompt = "密码错误 重新输入";
+        //        }
+        //    }
+        //    progress = Visibility.Collapsed;
+        //    cut_grid(1);
+        //}
 
         public async void hold_asycn()
         {
@@ -323,16 +373,16 @@ namespace encryption_code_book.ViewModel
                     help_grid = Visibility.Visible;
                     break;
                 default:
-                {
-                    if (confim)
                     {
-                        main_grid = Visibility.Visible;
+                        if (confim)
+                        {
+                            main_grid = Visibility.Visible;
+                        }
+                        else
+                        {
+                            register = Visibility.Visible;
+                        }
                     }
-                    else
-                    {
-                        register = Visibility.Visible;
-                    }
-                }
                     break;
             }
         }
