@@ -8,6 +8,23 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+         
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Content="展开" HorizontalAlignment="Left" VerticalAlignment="Top" Click="button_click" />
+                <SplitView Grid.Row="1" x:Name="split_view" DisplayMode="CompactOverlay">
+                    <SplitView.Pane>
+                        <StackPanel Orientation="Vertical">
+                            <Button Content="文  私密文本"></Button>
+                            <Button Content="密  密码本"></Button>
+                        </StackPanel>
+                    </SplitView.Pane>
+                </SplitView>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
