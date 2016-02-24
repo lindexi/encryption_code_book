@@ -30,10 +30,10 @@ namespace encryption_code_book
             view = e.Parameter as note ?? new note();
         }
 
-        private void modify(object sender, TextChangedEventArgs e)
-        {
+        //private void modify(object sender, TextChangedEventArgs e)
+        //{
 
-        }
+        //}
 
         private void hold(object sender, RoutedEventArgs e)
         {
@@ -72,5 +72,10 @@ namespace encryption_code_book
         }
 
         private bool _ctrl;
+
+        private void motify(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

@@ -7,8 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Resources>
+        <!--Background="{TemplateBinding Background}-->
         <Style x:Key="ButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+            <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
             <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundTransparentBrush}"/>
             <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
@@ -19,6 +20,7 @@
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
             <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="Margin" Value="10,10,10,10"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -91,11 +93,16 @@
                 <!--<Button Grid.Row="0" Content="展开" HorizontalAlignment="Left" VerticalAlignment="Top" Click="button_click" />-->
                 <SplitView Grid.Row="1" x:Name="split_view" DisplayMode="CompactOverlay" CompactPaneLength="0">
                     <SplitView.Pane>
-                        <StackPanel Orientation="Vertical" Background="Blue">
+                        <!--<StackPanel Orientation="Vertical" Background="SkyBlue">
                             <Button Content="私密文本" Style="{StaticResource ButtonStyle}"></Button>
                             <Button Content="密码本" Style="{StaticResource ButtonStyle}"></Button>
-                        </StackPanel>
+                        </StackPanel>-->
+                        <ListBox>
+                            <ListBoxItem Content="私密文本" IsSelected="True"></ListBoxItem>
+                            <ListBoxItem Content="密码本"></ListBoxItem>
+                        </ListBox>
                     </SplitView.Pane>
+                    <Frame x:Name="frame"></Frame>
                 </SplitView>
             </Grid>
         </Grid>

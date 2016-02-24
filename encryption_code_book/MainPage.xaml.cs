@@ -28,6 +28,7 @@ namespace encryption_code_book
         {
             view = new viewModel();
             this.InitializeComponent();
+            frame.Navigate(typeof (note_page));
         }
 
         private void button_click(object sender, RoutedEventArgs e)
