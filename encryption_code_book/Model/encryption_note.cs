@@ -86,7 +86,7 @@ namespace encryption_code_book.Model
         }
 
         //private bool motify;
-        private string_encryption encryption { set; get; } = new
+        private string_encryption encryption { set; get; } = new string_encryption();
 
         private string _encryption_key;
 
@@ -95,6 +95,13 @@ namespace encryption_code_book.Model
         private string _file_address;
         private bool _read_key;
         private IAsyncAction _storage;
+
+        public bool confirm(string key)
+        {
+            
+            return encryption.confirm(encryption_key,key)
+        }
+
 
         /// <summary>
         /// 保存
