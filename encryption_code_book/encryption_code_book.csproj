@@ -160,8 +160,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="note_page.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="set_page.xaml">
       <Generator>MSBuild:Compile</Generator>

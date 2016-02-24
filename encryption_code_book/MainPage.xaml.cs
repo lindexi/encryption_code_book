@@ -22,7 +22,8 @@ namespace encryption_code_book
         {
             view = new viewModel();
             InitializeComponent();
-            frame.Navigate(typeof (note_page));
+            frame.Navigate(typeof(note_page));
+
         }
 
         private viewModel view;
@@ -34,18 +35,22 @@ namespace encryption_code_book
 
         private void nagivate(object sender, SelectionChangedEventArgs e)
         {
-            ListBoxItem item = sender as ListBoxItem;
-            switch (item.Name)
+            var item = (sender as ListBox).SelectedItem as ListBoxItem;
+            
+            if(item!=null&&frame!=null)
             {
-                case "encryption_note":
-                    frame.Navigate(typeof(note_page));
-                    break;
-                case "encryption_code":
-                    frame.Navigate(typeof(code_page));
-                    break;
-                default:
-                    frame.Navigate(typeof(note_page));
-                    break;
+                switch (item.Name)
+                {
+                    case "encryption_note":
+                        frame.Navigate(typeof(note_page));
+                        break;
+                    case "encryption_code":
+                        frame.Navigate(typeof(code_page));
+                        break;
+                    default:
+                        frame.Navigate(typeof(note_page));
+                        break;
+                }
             }
         }
     }
