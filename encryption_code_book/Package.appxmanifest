@@ -1,35 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="43179.5635982EE69E1" Publisher="CN=227D1644-D24B-430C-AFA3-3FD86CE65409" Version="1.1.3.0" />
-  <mp:PhoneIdentity PhoneProductId="d0370c95-64eb-4c8c-bd7e-dd77925e5700" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  IgnorableNamespaces="uap mp">
+
+  <Identity
+    Name="a339290e-e3ec-4032-8ee0-5e73932f2963"
+    Publisher="CN=linde"
+    Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="a339290e-e3ec-4032-8ee0-5e73932f2963" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
   <Properties>
-    <DisplayName>私密密码本</DisplayName>
-    <PublisherDisplayName>林德熙</PublisherDisplayName>
+    <DisplayName>encryption_code_book</DisplayName>
+    <PublisherDisplayName>linde</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
+
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
   </Dependencies>
+
   <Resources>
-    <Resource Language="x-generate" />
+    <Resource Language="x-generate"/>
   </Resources>
+
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="encryption_code_book.App">
-      <uap:VisualElements DisplayName="私密密码本" Square150x150Logo="Assets\Square150x150Logo.jpg" Square44x44Logo="Assets\Square44x44Logo.png" Description="安全记录自己的隐私" BackgroundColor="transparent">
-        <uap:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png" />
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.jpg" Square71x71Logo="Assets\Square71x71Logo.png" Square310x310Logo="Assets\Square310x310Logo.jpg">
-          <uap:ShowNameOnTiles>
-            <uap:ShowOn Tile="square150x150Logo" />
-            <uap:ShowOn Tile="wide310x150Logo" />
-            <uap:ShowOn Tile="square310x310Logo" />
-          </uap:ShowNameOnTiles>
-        </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="transparent" />
-        <uap:InitialRotationPreference>
-          <uap:Rotation Preference="portrait" />
-          <uap:Rotation Preference="landscape" />
-        </uap:InitialRotationPreference>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="encryption_code_book.App">
+      <uap:VisualElements
+        DisplayName="encryption_code_book"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="encryption_code_book"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
 </Package>

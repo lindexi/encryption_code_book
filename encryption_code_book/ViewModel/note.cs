@@ -18,7 +18,7 @@ namespace encryption_code_book.ViewModel
             confim = false;
         }
 
-        public bool confim
+        public new bool confim
         {
             set
             {

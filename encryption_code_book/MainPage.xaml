@@ -7,53 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource  ApplicationPageBackgroundThemeBrush}" KeyDown="fastkey" KeyUp="keyup">
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
-        <Grid x:Name="xregister_grid" Grid.Row="0" Background="Blue" Visibility="{x:Bind view.register,Mode=OneWay}">
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                <TextBlock x:Name="xprompt" Text="{x:Bind view.prompt,Mode=OneWay}" Foreground="#FFF6FCFB"
-                           FontSize="26.667" />
-                <!--Head-->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-                    <!--<PasswordBox x:Name="xkey" IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Grid.Column="0" Margin="10"/>-->
-
-                    <TextBox x:Name="xkey" IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Grid.Column="0"
-                             Margin="10,10,10,20" FontSize="26.667" />
-
-                    <!--<Button Content="确定" Grid.Column="1" Background="White" IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Margin="10,10,10,10" Click="confim"/>-->
-
-                    <AppBarButton Content="确定" Grid.Column="1" Foreground="White"
-                                  IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Margin="10,10,10,10"
-                                  Click="confim" Icon="Forward" />
-                </Grid>
-                <!--<RelativePanel Margin="10,10,10,10">
-                    <TextBox x:Name="xkey" IsEnabled="{x:Bind view.register_enable,Mode=OneWay}"  Margin="10,10,10,10" RelativePanel.AlignLeftWithPanel="True" HorizontalAlignment="Left" Width="64"/>
-                    <AppBarButton Content="确定" Foreground="White"  IsEnabled="{x:Bind view.register_enable,Mode=OneWay}"  Icon="Forward"  RelativePanel.AlignRightWithPanel="True" Click="confim" />
-                </RelativePanel>-->
-            </StackPanel>
-        </Grid>
-        <Grid x:Name="xmain_grid" Grid.Row="0" Background="White" Visibility="{x:Bind view.main_grid,Mode=OneWay}"
-              d:IsHidden="True">
-            <TextBox x:Name="xfile_key" Text="{x:Bind view.file_key,Mode=TwoWay}" AcceptsReturn="True"
-                     TextWrapping="Wrap" TextChanged="modify" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     LostFocus="hold" />
-        </Grid>
-        <Grid x:Name="xhelp_grid" Grid.Row="0" Background="Beige" Visibility="{x:Bind view.help_grid,Mode=OneWay}"
-              d:IsHidden="True">
-            <TextBox Text="{x:Bind view.help,Mode=OneWay}" IsReadOnly="True" />
-        </Grid>
-        <TextBlock x:Name="xreminder" Text="{x:Bind view.reminder,Mode=OneWay}" Grid.Row="1" VerticalAlignment="Bottom" />
-        <Button Content="确定" HorizontalAlignment="Center" Visibility="{x:Bind view.debug,Mode=OneWay}"
-                Click="{x:Bind view.ce}" Grid.Row="0" Margin="300,578,10,10" />
-        <ProgressRing Visibility="{x:Bind view.progress,Mode=OneWay}" Foreground="White" Width="100" Height="100"
-                      IsActive="True" />
     </Grid>
 </Page>

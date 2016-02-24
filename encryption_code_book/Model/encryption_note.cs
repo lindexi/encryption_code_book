@@ -18,9 +18,21 @@ namespace encryption_code_book.Model
         public encryption_note()
         {
             motify = false;
+            file_address = "data.encryption";
+            file_null().Wait();
+        }
+
+        public encryption_note(StorageFile file)
+        {
+            _file = file;
+            if (file != null)
+            {
+                file_address = file.Name;
+            }
         }
 
         public bool read_encryption { set; get; }
+        private string _file_address;
 
         public string encryption_key
         {
@@ -61,6 +73,19 @@ namespace encryption_code_book.Model
             }
         }
 
+        public string file_address
+        {
+            set
+            {
+                _file_address = value;
+            }
+            get
+            {
+                return _file_address;
+            }
+
+        }
+
         private string _encryption_key;
 
         private string _encryption_text;
@@ -87,14 +112,7 @@ namespace encryption_code_book.Model
             string str = encryption_key + encryption_text;
             _storage = ThreadPool.RunAsync(async (workItemHandler) =>
             {
-                if (_file == null)
-                {
-                    string file_address = "data.encryption";
-                    _file =
-                        await
-                            ApplicationData.Current.LocalFolder.CreateFileAsync(file_address,
-                                CreationCollisionOption.OpenIfExists);
-                }
+                await file_null();
 
                 using (StorageStreamTransaction transaction = await _file.OpenTransactedWriteAsync())
                 {
@@ -108,16 +126,21 @@ namespace encryption_code_book.Model
             });
         }
 
-        private async void read()
+        private async System.Threading.Tasks.Task file_null()
         {
             if (_file == null)
             {
-                string file_address = "data.encryption";
                 _file =
                     await
-                        ApplicationData.Current.LocalFolder.CreateFileAsync(file_address,
+                        ApplicationData.Current.
+                        LocalFolder.CreateFileAsync(file_address,
                             CreationCollisionOption.OpenIfExists);
             }
+        }
+
+        private async void read()
+        {
+            await file_null();
 
             using (IRandomAccessStream read_stream = await _file.OpenAsync(FileAccessMode.Read))
             {
@@ -126,8 +149,8 @@ namespace encryption_code_book.Model
                     ulong size = read_stream.Size;
                     if (size <= uint.MaxValue)
                     {
-                        uint numBytesLoaded = await data_reader.LoadAsync((uint) size);
-                        encryption_text = data_reader.ReadString(numBytesLoaded);
+                        uint num_bytes_loaded = await data_reader.LoadAsync((uint) size);
+                        encryption_text = data_reader.ReadString(num_bytes_loaded);
                     }
                 }
             }

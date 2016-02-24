@@ -23,7 +23,9 @@ namespace encryption_code_book.ViewModel
             cut_grid(1);
         }
 
+#pragma warning disable CS0108 // 成员隐藏继承的成员；缺少关键字 new
         public string reminder
+#pragma warning restore CS0108 // 成员隐藏继承的成员；缺少关键字 new
         {
             set
             {
