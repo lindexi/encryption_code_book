@@ -25,6 +25,7 @@ namespace encryption_code_book
         private void confirm(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             view.confirm_password(view.key);
+            view.key = "";
         }
     }
 }

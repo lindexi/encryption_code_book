@@ -1,5 +1,5 @@
 ﻿// lindexi
-// 11:07
+// 21:05
 
 #region
 
@@ -16,22 +16,8 @@ namespace encryption_code_book.ViewModel
         public note()
         {
             confim = false;
-            text = "asidoch";
             _first = false;
-        }
-
-        public void deserilization()
-        {
-            frame?.Navigate(typeof(key_page), this);
-
-            //if (confim)
-            //{
-
-            //}
-            //else
-            //{
-            //    frame.Navigate(typeof(key_page), this);
-            //}
+            motify = false;
         }
 
         public new bool confim
@@ -51,6 +37,7 @@ namespace encryption_code_book.ViewModel
             set
             {
                 _text_stack.Push(_text);
+                motify = true;
                 _text = value;
                 OnPropertyChanged();
             }
@@ -60,22 +47,17 @@ namespace encryption_code_book.ViewModel
             }
         }
 
-        private readonly Stack<string> _text_stack = new Stack<string>();
-        private encryption_note _model = new encryption_note();
-        private string _text;
-        private string _key;
-
-        public string key
-        {
-            set
-            {
-                _model.key = value;
-            }
-            get
-            {
-                return _model.key;
-            }
-        }
+        //public string key
+        //{
+        //    set
+        //    {
+        //        _model.key = value;
+        //    }
+        //    get
+        //    {
+        //        return _model.key;
+        //    }
+        //}
 
         public override bool first
         {
@@ -89,7 +71,22 @@ namespace encryption_code_book.ViewModel
                 _model.first = value;
             }
         }
+
+        private readonly Stack<string> _text_stack = new Stack<string>();
         private bool _first;
+        private string _key;
+        private encryption_note _model = new encryption_note();
+        private string _text;
+        private bool motify;
+
+        public void deserilization()
+        {
+            frame?.Navigate(typeof (key_page), this);
+            if (first)
+            {
+                prompt = "第一次使用，请输入密码";
+            }
+        }
 
         public override bool confirm_password(string keystr)
         {
@@ -101,6 +98,10 @@ namespace encryption_code_book.ViewModel
             if (!confim)
             {
                 prompt = "密码错误，请重新输入";
+            }
+            else
+            {
+                text = _model.decryption();
             }
             return confim;
         }
@@ -126,6 +127,16 @@ namespace encryption_code_book.ViewModel
                 return false;
             }
         }
+
+        public void storage()
+        {
+            if (motify)
+            {
+                _model.storage(text);
+                motify = false;
+            }
+        }
+
         public void cancel()
         {
             try
@@ -141,6 +152,7 @@ namespace encryption_code_book.ViewModel
         //public override bool confirm_password(string keystr)
         //{
         //    throw new NotImplementedException();
+
         //}
     }
 }

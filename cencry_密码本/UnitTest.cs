@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace cencry密码本
+namespace cencry_密码本
 {
     [TestClass]
     public class UnitTest1

@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace encryption_code_book
+namespace encryption_code_book.Model
 {
     public class string_encryption
     {
         public string_encryption()
         {
-            //file_address = @".\data.data";
             key = "林德熙";
             _temp_string_lenth = 1024;
         }

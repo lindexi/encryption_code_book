@@ -33,11 +33,11 @@ namespace encryption_code_book.Model
             }
         }
 
-        public bool read_encryption
-        {
-            set;
-            get;
-        }
+        //public bool read_encryption
+        //{
+        //    set;
+        //    get;
+        //}
 
         public string encryption_key
         {
@@ -63,20 +63,20 @@ namespace encryption_code_book.Model
             }
         }
 
-        /// <summary>
-        /// 密码保存的文件读取
-        /// </summary>
-        public bool read_key
-        {
-            get
-            {
-                return _read_key;
-            }
-            set
-            {
-                _read_key = value;
-            }
-        }
+        ///// <summary>
+        ///// 密码保存的文件读取
+        ///// </summary>
+        //public bool read_key
+        //{
+        //    get
+        //    {
+        //        return _read_key;
+        //    }
+        //    set
+        //    {
+        //        _read_key = value;
+        //    }
+        //}
 
         public string file_address
         {
@@ -129,12 +129,13 @@ namespace encryption_code_book.Model
         private bool _first;
         private string _key;
         private Task _read;
-        private bool _read_key;
+        //private bool _read_key;
         private IAsyncAction _storage;
 
         public void new_use(string keystr)
         {
-            storage(keystr);
+            key = keystr;
+            storage("");
         }
 
         public bool confirm(string keystr)
@@ -151,6 +152,18 @@ namespace encryption_code_book.Model
             return encryption.confirm(encryption_key, keystr);
         }
 
+        public string decryption()
+        {
+            if (string.IsNullOrEmpty(encryption_text))
+            {
+                return "";
+            }
+            if (string.IsNullOrEmpty(key))
+            {
+
+            }
+            return encryption.decryption(encryption_text, key);
+        }
 
         /// <summary>
         /// 保存
@@ -187,7 +200,7 @@ namespace encryption_code_book.Model
         {
             if (string.IsNullOrEmpty(key))
             {
-                key = "qq123456";
+                return "";
             }
 
             encryption_key = encryption.encryption(encryption.n_md5(key), key);
@@ -213,9 +226,8 @@ namespace encryption_code_book.Model
                 return string.Empty;
             }
             string temp = str.Substring(0, temp_length);
-
-            encryption_key = str.Substring(temp_length, temp_length*2);
-            encryption_text = str.Substring(temp_length*2);
+            encryption_key = str.Substring(temp_length, temp_length);
+            encryption_text = str.Substring(temp_length * 2);
             return "";
         }
 
@@ -241,19 +253,26 @@ namespace encryption_code_book.Model
 
         private async Task read()
         {
-            await file_null();
-
-            using (IRandomAccessStream read_stream = await _file.OpenAsync(FileAccessMode.Read))
+            try
             {
-                using (DataReader data_reader = new DataReader(read_stream))
+                await file_null();
+
+                using (IRandomAccessStream read_stream = await _file.OpenAsync(FileAccessMode.Read))
                 {
-                    ulong size = read_stream.Size;
-                    if (size <= uint.MaxValue)
+                    using (DataReader data_reader = new DataReader(read_stream))
                     {
-                        uint num_bytes_loaded = await data_reader.LoadAsync((uint) size);
-                        deserilization(data_reader.ReadString(num_bytes_loaded));
+                        ulong size = read_stream.Size;
+                        if (size <= uint.MaxValue)
+                        {
+                            uint num_bytes_loaded = await data_reader.LoadAsync((uint)size);
+                            deserilization(data_reader.ReadString(num_bytes_loaded));
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                e.ToString();
             }
         }
     }

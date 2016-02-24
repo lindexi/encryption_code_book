@@ -18,9 +18,14 @@ namespace encryption_code_book
     {
         public note_page()
         {
-            //view = new note();
             _ctrl = false;
             InitializeComponent();
+            Application.Current.Suspending += suspend;
+        }
+
+        private void suspend(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            view.storage();
         }
 
         private note view;
@@ -42,7 +47,7 @@ namespace encryption_code_book
 
         private void hold(object sender, RoutedEventArgs e)
         {
-            //throw new NotImplementedException();
+            view.storage();
         }
 
         private void fastkey(object sender, KeyRoutedEventArgs e)
@@ -51,7 +56,7 @@ namespace encryption_code_book
             {
                 _ctrl = true;
             }
-           
+
             //else if (_ctrl && view.confim)
             //{
             //    if (e.Key == Windows.System.VirtualKey.S)
@@ -74,13 +79,17 @@ namespace encryption_code_book
             {
                 _ctrl = false;
             }
+            if (_ctrl)
+            {
+
+            }
         }
 
         private bool _ctrl;
 
         private void motify(object sender, RoutedEventArgs e)
         {
-            
+
         }
     }
 }

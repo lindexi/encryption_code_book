@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace cencry密码本
+namespace cencry_密码本
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

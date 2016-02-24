@@ -1,5 +1,5 @@
 ﻿// lindexi
-// 9:19
+// 20:24
 
 #region
 
@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 #endregion
 
@@ -22,7 +23,6 @@ namespace encryption_code_book.ViewModel
             confim = false;
             cut_grid(1);
         }
-
 #pragma warning disable CS0108 // 成员隐藏继承的成员；缺少关键字 new
         public string reminder
         {
@@ -103,6 +103,7 @@ namespace encryption_code_book.ViewModel
                 return _debug;
             }
         }
+
         public Visibility frame_visibility
         {
             set
@@ -122,6 +123,7 @@ namespace encryption_code_book.ViewModel
                 }
             }
         }
+
         //private Visibility _frame_visibility;
         public bool register_enable
         {
@@ -131,7 +133,11 @@ namespace encryption_code_book.ViewModel
             }
         }
 
-        public abstract bool first { set; get; }
+        public abstract bool first
+        {
+            set;
+            get;
+        }
 
         public string help
         {
@@ -211,9 +217,9 @@ namespace encryption_code_book.ViewModel
         private readonly StringBuilder _reminder = new StringBuilder();
         private readonly mul_key_encryption mul;
 
-        private Windows.UI.Xaml.Controls.Frame _frame;
+        private Frame _frame;
 
-        public Windows.UI.Xaml.Controls.Frame frame
+        public Frame frame
         {
             set
             {
@@ -226,11 +232,12 @@ namespace encryption_code_book.ViewModel
         }
 
         private string _key;
+
         public string key
         {
             set
             {
-                _key = key;
+                _key = value;
                 OnPropertyChanged();
             }
             get
@@ -375,16 +382,16 @@ namespace encryption_code_book.ViewModel
                     help_grid = Visibility.Visible;
                     break;
                 default:
+                {
+                    if (confim)
                     {
-                        if (confim)
-                        {
-                            main_grid = Visibility.Visible;
-                        }
-                        else
-                        {
-                            register = Visibility.Visible;
-                        }
+                        main_grid = Visibility.Visible;
                     }
+                    else
+                    {
+                        register = Visibility.Visible;
+                    }
+                }
                     break;
             }
         }

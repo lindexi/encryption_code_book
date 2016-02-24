@@ -13,13 +13,13 @@ namespace cencry密码本
         [TestMethod]
         public void encryption()
         {
-            var encry = new encryption_code_book.string_encryption();
+            var encry = new encryption_code_book.Model.string_encryption();
             string str ;
             string key;
             Random ran = new Random();
             key = ranstr(10, ran);
             string temp;
-            for (int i = 0; i < 1024; i++)
+            for (int i = 0; i < 10; i++)
             {
                 str = ranstr(100, ran);
                 temp = encry.encryption(str, key);
