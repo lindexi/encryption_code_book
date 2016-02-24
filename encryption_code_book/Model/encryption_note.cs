@@ -1,9 +1,10 @@
 ﻿// lindexi
-// 15:19
+// 9:24
 
 #region
 
 using System;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -32,7 +33,6 @@ namespace encryption_code_book.Model
         }
 
         public bool read_encryption { set; get; }
-        private string _file_address;
 
         public string encryption_key
         {
@@ -83,16 +83,18 @@ namespace encryption_code_book.Model
             {
                 return _file_address;
             }
-
         }
+
+        //private bool motify;
+        private string_encryption encryption { set; get; } = new
 
         private string _encryption_key;
 
         private string _encryption_text;
         private StorageFile _file;
+        private string _file_address;
         private bool _read_key;
         private IAsyncAction _storage;
-        //private bool motify;
 
         /// <summary>
         /// 保存
@@ -126,15 +128,15 @@ namespace encryption_code_book.Model
             });
         }
 
-        private async System.Threading.Tasks.Task file_null()
+        private async Task file_null()
         {
             if (_file == null)
             {
                 _file =
                     await
                         ApplicationData.Current.
-                        LocalFolder.CreateFileAsync(file_address,
-                            CreationCollisionOption.OpenIfExists);
+                            LocalFolder.CreateFileAsync(file_address,
+                                CreationCollisionOption.OpenIfExists);
             }
         }
 
