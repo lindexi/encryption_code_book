@@ -36,8 +36,8 @@ namespace encryption_code_book
         private void nagivate(object sender, SelectionChangedEventArgs e)
         {
             var item = (sender as ListBox).SelectedItem as ListBoxItem;
-            
-            if(item!=null&&frame!=null)
+
+            if (item != null && frame != null)
             {
                 switch (item.Name)
                 {

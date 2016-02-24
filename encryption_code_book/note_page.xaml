@@ -18,6 +18,13 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <CommandBar HorizontalAlignment="Right">
+                    <AppBarButton Icon="Add"/>
+                    <AppBarButton Icon="OpenFile"/>
+                    <AppBarButton Icon="Save"/>
+                </CommandBar>
+            </Grid>
             <TextBox Grid.Row="1" Text="{x:Bind view.text,Mode=TwoWay}" AcceptsReturn="True"
                      TextWrapping="Wrap" SelectionChanged="motify" ScrollViewer.VerticalScrollBarVisibility="Auto"
                      LostFocus="hold" />
