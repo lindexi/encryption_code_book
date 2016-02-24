@@ -17,7 +17,7 @@ namespace encryption_code_book.ViewModel
         {
             confim = false;
             text = "asidoch";
-            _frist = false;
+            _first = false;
         }
 
         public void deserilization()

@@ -89,6 +89,10 @@ namespace encryption_code_book
             {
                 temp_length = 1024;//缓冲区
             }
+            if (string.IsNullOrEmpty(str))
+            {
+                return "";
+            }
             string hstr = n_md5(key) + "结束";//后缀
             double per = 0.5;//明文密文比
             //分明文            

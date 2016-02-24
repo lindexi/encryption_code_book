@@ -1,5 +1,5 @@
 ﻿// lindexi
-// 9:24
+// 19:45
 
 #region
 
@@ -33,7 +33,11 @@ namespace encryption_code_book.Model
             }
         }
 
-        public bool read_encryption { set; get; }
+        public bool read_encryption
+        {
+            set;
+            get;
+        }
 
         public string encryption_key
         {
@@ -87,18 +91,11 @@ namespace encryption_code_book.Model
         }
 
         //private bool motify;
-        private string_encryption encryption { set; get; } = new string_encryption();
-
-        private string _encryption_key;
-
-        private string _encryption_text;
-        private StorageFile _file;
-        private string _file_address;
-        private bool _read_key;
-        private IAsyncAction _storage;
-        private Task _read;
-        private string _key;
-        private bool _first;
+        private string_encryption encryption
+        {
+            set;
+            get;
+        } = new string_encryption();
 
         public bool first
         {
@@ -123,10 +120,23 @@ namespace encryption_code_book.Model
                 return _key;
             }
         }
+
+        private string _encryption_key;
+
+        private string _encryption_text;
+        private StorageFile _file;
+        private string _file_address;
+        private bool _first;
+        private string _key;
+        private Task _read;
+        private bool _read_key;
+        private IAsyncAction _storage;
+
         public void new_use(string keystr)
         {
-
+            storage(keystr);
         }
+
         public bool confirm(string keystr)
         {
             if (string.IsNullOrEmpty(encryption_key))
@@ -198,12 +208,14 @@ namespace encryption_code_book.Model
             int temp_length = 1024;
             if (str.Length < temp_length)
             {
-                throw new Exception();
+                //throw new Exception();
+                first = true;
+                return string.Empty;
             }
             string temp = str.Substring(0, temp_length);
 
-            encryption_key = str.Substring(temp_length, temp_length * 2);
-            encryption_text = str.Substring(temp_length * 2);
+            encryption_key = str.Substring(temp_length, temp_length*2);
+            encryption_text = str.Substring(temp_length*2);
             return "";
         }
 
@@ -214,14 +226,14 @@ namespace encryption_code_book.Model
                 try
                 {
                     _file = await ApplicationData.Current.
-                           LocalFolder.GetFileAsync(file_address);
+                        LocalFolder.GetFileAsync(file_address);
                 }
                 catch
                 {
                     _file =
-                   await
-                       ApplicationData.Current.
-                           LocalFolder.CreateFileAsync(file_address);
+                        await
+                            ApplicationData.Current.
+                                LocalFolder.CreateFileAsync(file_address);
                     first = true;
                 }
             }
@@ -238,7 +250,7 @@ namespace encryption_code_book.Model
                     ulong size = read_stream.Size;
                     if (size <= uint.MaxValue)
                     {
-                        uint num_bytes_loaded = await data_reader.LoadAsync((uint)size);
+                        uint num_bytes_loaded = await data_reader.LoadAsync((uint) size);
                         deserilization(data_reader.ReadString(num_bytes_loaded));
                     }
                 }
