@@ -55,21 +55,17 @@ namespace encryption_code_book.ViewModel
             set
             {
                 _key = value;
+                _model.key = value;
             }
             get
             {
-                return _key;
+                return _model.key;
             }
         }
 
-        public bool confim_password(string key)
+        public bool confim_password(string keystr)
         {
-            confim = encryption.confirm(_model.encryption_key, key);
-            if (confim)
-            {
-                this.key = key;
-            }
-            return confim;
+            return confim = _model.confirm(keystr);
         }
 
         public void cancel()
