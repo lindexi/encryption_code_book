@@ -1,10 +1,20 @@
+<<<<<<< HEAD:encryption_code_book/viewModel.cs
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+=======
+﻿// lindexi
+// 20:24
+
+#region
+
+using System;
+>>>>>>> 64c5679... 私密文本:encryption_code_book/ViewModel/viewModel.cs
 using System.Text;
 using System.Threading.Tasks;
 using ViewModel;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace encryption_code_book
 {
@@ -18,7 +28,11 @@ namespace encryption_code_book
             confim = false;
             cut_grid(1);           
         }
+<<<<<<< HEAD:encryption_code_book/viewModel.cs
 
+=======
+#pragma warning disable CS0108 // 成员隐藏继承的成员；缺少关键字 new
+>>>>>>> 64c5679... 私密文本:encryption_code_book/ViewModel/viewModel.cs
         public string reminder
         {
             set
@@ -99,7 +113,11 @@ namespace encryption_code_book
             }
         }
 
+<<<<<<< HEAD:encryption_code_book/viewModel.cs
         public bool register_enable
+=======
+        public Visibility frame_visibility
+>>>>>>> 64c5679... 私密文本:encryption_code_book/ViewModel/viewModel.cs
         {
             get
             {
@@ -113,6 +131,24 @@ namespace encryption_code_book
                 }
             }
         }
+<<<<<<< HEAD:encryption_code_book/viewModel.cs
+=======
+
+        //private Visibility _frame_visibility;
+        public bool register_enable
+        {
+            get
+            {
+                return progress == Visibility.Collapsed;
+            }
+        }
+
+        public abstract bool first
+        {
+            set;
+            get;
+        }
+>>>>>>> 64c5679... 私密文本:encryption_code_book/ViewModel/viewModel.cs
 
         public string help
         {
@@ -187,6 +223,7 @@ namespace encryption_code_book
             }
         }
 
+<<<<<<< HEAD:encryption_code_book/viewModel.cs
         public void ce()
         {
             //reminder = await mul.ce();
@@ -196,6 +233,14 @@ namespace encryption_code_book
         }
 
         public async void confirm_password(string key)
+=======
+        private readonly StringBuilder _reminder = new StringBuilder();
+        private readonly mul_key_encryption mul;
+
+        private Frame _frame;
+
+        public Frame frame
+>>>>>>> 64c5679... 私密文本:encryption_code_book/ViewModel/viewModel.cs
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -203,11 +248,22 @@ namespace encryption_code_book
                 return;
             }
 
+<<<<<<< HEAD:encryption_code_book/viewModel.cs
             progress = Visibility.Visible;
             if (fist_use())
             {
                 confim = true;
                 mul.new_use(key,new_use_call_back);
+=======
+        private string _key;
+
+        public string key
+        {
+            set
+            {
+                _key = value;
+                OnPropertyChanged();
+>>>>>>> 64c5679... 私密文本:encryption_code_book/ViewModel/viewModel.cs
             }
             else
             {
@@ -317,16 +373,16 @@ namespace encryption_code_book
                     help_grid = Visibility.Visible;
                     break;
                 default:
+                {
+                    if (confim)
                     {
-                        if (confim)
-                        {
-                            main_grid = Visibility.Visible;
-                        }
-                        else
-                        {
-                            register = Visibility.Visible;
-                        }
+                        main_grid = Visibility.Visible;
                     }
+                    else
+                    {
+                        register = Visibility.Visible;
+                    }
+                }
                     break;
             }
         }   

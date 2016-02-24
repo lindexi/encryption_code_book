@@ -297,7 +297,5 @@ namespace encryption_code_book
             //return str.GetHashCode().ToString();
             //return sTemp.ToLower();
         }
-
     }
-
 }

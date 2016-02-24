@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+<<<<<<< HEAD
 
     <Grid Background="{ThemeResource  ApplicationPageBackgroundThemeBrush}" KeyDown="fastkey" KeyUp="keyup">
         <Grid.RowDefinitions>
@@ -25,6 +26,30 @@
                     <Button Content="确定" Grid.Column="1" Background="White" IsEnabled="{x:Bind view.register_enable,Mode=OneWay}" Margin="10,10,10,10" Click="confim"/>
                 </Grid>
             </StackPanel>
+=======
+    <Grid Background="#530fad">
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ToggleButton TabIndex="1" Width="48" IsChecked="{Binding IsPaneOpen,ElementName=split_view,Mode=TwoWay}" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="{x:Null}" >
+                </ToggleButton>
+                <!--<Button Grid.Row="0" Content="展开" HorizontalAlignment="Left" VerticalAlignment="Top" Click="button_click" />-->
+                <SplitView Grid.Row="1" x:Name="split_view" DisplayMode="CompactOverlay" CompactPaneLength="0">
+                    <SplitView.Pane>
+                        <ListBox SelectionChanged="nagivate">
+                            <ListBoxItem x:Name="encryption_note" Content="私密文本" IsSelected="True"></ListBoxItem>
+                            <ListBoxItem x:Name="encryption_code" Content="密码本"></ListBoxItem>
+                        </ListBox>
+                    </SplitView.Pane>
+                    <SplitView.Content>
+                        <Frame x:Name="frame"></Frame>
+                    </SplitView.Content>
+                </SplitView>
+            </Grid>
+>>>>>>> 64c5679... 私密文本
         </Grid>
         <Grid x:Name="xmain_grid" Grid.Row="0" Background="White" Visibility="{x:Bind view.main_grid,Mode=OneWay}" d:IsHidden="True">
             <TextBox x:Name="xfile_key" Text="{x:Bind view.file_key,Mode=TwoWay}" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="modify"  ScrollViewer.VerticalScrollBarVisibility="Auto" LostFocus="hold" />
