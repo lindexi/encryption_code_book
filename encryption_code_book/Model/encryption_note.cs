@@ -163,14 +163,31 @@ namespace encryption_code_book.Model
             {
                 key = "qq123456";
             }
+
             encryption_key = encryption.encryption(encryption.n_md5(key), key);
 
-            encryption_text= encryption.encryption(str, key);
-            return encryption_key + encryption_text;
+            encryption_text = encryption.encryption(str, key);
+            str = @"私密密码本
+作者:lindexi_gd
+邮箱:lindexi_gd@163.com
+哈希路径:一元n次函数
+步长:加密钥unicode，冲突过多使用步长1
+字符加密:密钥模10
+缓冲区长度:1024".PadRight(1024);
+            return str + encryption_key + encryption_text;
         }
 
         private string deserilization(string str)
         {
+            int temp_length = 1024;
+            if (str.Length < temp_length)
+            {
+                throw new Exception();
+            }
+            string temp = str.Substring(0, temp_length);
+
+            encryption_key = str.Substring(temp_length, temp_length * 2);
+            encryption_text = str.Substring(temp_length * 2);
             return "";
         }
 
@@ -197,8 +214,8 @@ namespace encryption_code_book.Model
                     ulong size = read_stream.Size;
                     if (size <= uint.MaxValue)
                     {
-                        uint num_bytes_loaded = await data_reader.LoadAsync((uint) size);
-                        encryption_text = data_reader.ReadString(num_bytes_loaded);
+                        uint num_bytes_loaded = await data_reader.LoadAsync((uint)size);
+                        deserilization(data_reader.ReadString(num_bytes_loaded));
                     }
                 }
             }
