@@ -21,6 +21,7 @@ namespace encryption_code_book.Model
             //motify = false;
             file_address = "data.encryption";
             file_null().Wait();
+            _read = read();
         }
 
         public encryption_note(StorageFile file)
@@ -95,6 +96,8 @@ namespace encryption_code_book.Model
         private string _file_address;
         private bool _read_key;
         private IAsyncAction _storage;
+        private Task _read;
+        
 
         public bool confirm(string key)
         {
@@ -147,7 +150,7 @@ namespace encryption_code_book.Model
             }
         }
 
-        private async void read()
+        private async Task read()
         {
             await file_null();
 
