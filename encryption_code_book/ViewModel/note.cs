@@ -46,7 +46,7 @@ namespace encryption_code_book.ViewModel
 
         private readonly Stack<string> _text_stack = new Stack<string>();
         private encryption_note _model = new encryption_note();
-        private string_encryption encryption { set; get; } = new string_encryption();
+        //private string_encryption encryption { set; get; } = new string_encryption();
         private string _text;
         private string _key;
 
