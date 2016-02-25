@@ -10,21 +10,20 @@
         <Grid>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <ToggleButton TabIndex="1" Width="48" IsChecked="{Binding IsPaneOpen,ElementName=split_view,Mode=TwoWay}" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="{x:Null}" >
-                </ToggleButton>
+                <ToggleButton TabIndex="1" Width="48" IsChecked="{Binding IsPaneOpen,ElementName=split_view,Mode=TwoWay}" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="{x:Null}" />
                 <!--<Button Grid.Row="0" Content="展开" HorizontalAlignment="Left" VerticalAlignment="Top" Click="button_click" />-->
                 <SplitView Grid.Row="1" x:Name="split_view" DisplayMode="CompactOverlay" CompactPaneLength="0">
                     <SplitView.Pane>
                         <ListBox SelectionChanged="nagivate">
-                            <ListBoxItem x:Name="encryption_note" Content="私密文本" IsSelected="True"></ListBoxItem>
-                            <ListBoxItem x:Name="encryption_code" Content="密码本"></ListBoxItem>
+                            <ListBoxItem x:Name="encryption_note" Content="私密文本" IsSelected="True" />
+                            <ListBoxItem x:Name="encryption_code" Content="密码本" />
                         </ListBox>
                     </SplitView.Pane>
                     <SplitView.Content>
-                        <Frame x:Name="frame"></Frame>
+                        <Frame x:Name="frame" />
                     </SplitView.Content>
                 </SplitView>
             </Grid>
