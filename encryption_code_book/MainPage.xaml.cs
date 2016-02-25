@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿// lindexi
+// 10:50
+
+#region
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using System.Windows.Input;
+using encryption_code_book.ViewModel;
+
+#endregion
 
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
@@ -23,78 +18,38 @@ namespace encryption_code_book
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        viewModel view;
-        
         public MainPage()
         {
-            view = new viewModel();
-            Application.Current.Suspending += Current_Suspending;
-            this.Unloaded += MainPage_Unloaded;
-            this.InitializeComponent();
-            _ctrl = false;
+            view = new note();
+            InitializeComponent();
+            frame.Navigate(typeof(note_page));
         }
 
-        private void MainPage_Unloaded(object sender , RoutedEventArgs e)
+        private viewModel view;
+
+        private void button_click(object sender, RoutedEventArgs e)
         {
-            view.hold_asycn();
+            split_view.IsPaneOpen = !split_view.IsPaneOpen;
         }
 
-        private async void Current_Suspending(object sender , Windows.ApplicationModel.SuspendingEventArgs e)
+        private void nagivate(object sender, SelectionChangedEventArgs e)
         {
-            view.file_key = xfile_key.Text;
-            await view.hold();
-            
-            e.SuspendingOperation.Deadline.AddSeconds(5);
-        }
+            var item = (sender as ListBox).SelectedItem as ListBoxItem;
 
-        private void confim(object sender , RoutedEventArgs e)
-        {
-            //view.confirm_password(xkey.Password);
-            //xkey.Password = string.Empty;
-            view.confirm_password(xkey.Text);
-            xkey.Text = string.Empty;
-        }
-
-        private void modify(object sender , TextChangedEventArgs e)
-        {
-            view.modify = true;
-        }
-
-        private void hold(object sender , RoutedEventArgs e)
-        {            
-            view.file_key = xfile_key.Text;
-            view.hold_asycn();
-        }
-
-        private async void fastkey(object sender , KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Control)
+            if (item != null && frame != null)
             {
-                _ctrl = true;
-            }
-            else if (_ctrl && view.confim)
-            {
-                if (e.Key == Windows.System.VirtualKey.S)
+                switch (item.Name)
                 {
-                    view.file_key = xfile_key.Text;
-                    await view.hold();
+                    case "encryption_note":
+                        frame.Navigate(typeof(note_page), view);
+                        break;
+                    case "encryption_code":
+                        frame.Navigate(typeof(code_page), view);
+                        break;
+                    default:
+                        frame.Navigate(typeof(note_page), view);
+                        break;
                 }
-                else if (e.Key == Windows.System.VirtualKey.L)
-                {
-                    view.file_key = xfile_key.Text;
-                    System.Threading.Tasks.Task t = view.hold();
-                    view.lock_grid();
-                }
-            }
-        }
-        private bool _ctrl;        
-
-        private void keyup(object sender , KeyRoutedEventArgs e)
-        {
-
-            if (e.Key == Windows.System.VirtualKey.Control)
-            {
-                _ctrl = false;
             }
         }
     }

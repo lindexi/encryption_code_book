@@ -86,6 +86,10 @@ namespace encryption_code_book.Model
             {
                 temp_length = 1024;//缓冲区
             }
+            if (string.IsNullOrEmpty(str))
+            {
+                return "";
+            }
             string hstr = n_md5(key) + "结束";//后缀
             double per = 0.5;//明文密文比
             //分明文            
@@ -270,6 +274,7 @@ namespace encryption_code_book.Model
             int temp;
             int count;//冲突数
             int sum;//总冲突数
+            bool fin;
             for (i = 0; i < temp_length; i++)
             {
                 exist[i] = false;
@@ -280,6 +285,7 @@ namespace encryption_code_book.Model
                 position = new int[temp_length];
             }
             sum = 0;
+            fin = true;
             //一元n次函数
             for (i = 0; i < temp_length; i++)
             {
@@ -287,13 +293,21 @@ namespace encryption_code_book.Model
                 count = i / key.Length;
                 while (exist[temp])
                 {
-                    temp = conflict(temp , i , count , key , temp_length);
+                    if (fin)
+                    {
+                        temp = conflict(temp, i, count, key, temp_length);
+                    }
+                    else
+                    {
+                        temp = (temp + 1) % temp_length;
+                    }
                     count++;
                     sum++;
-                    if (count > 2 * temp_length)
+                    if (count > 2 * temp_length && fin)
                     {
                         Debug.Write("冲突数过多" + i.ToString() + "\r\n");
-                        return;
+                        //return;
+                        fin = false;
                     }
                 }
                 position[i] = temp;

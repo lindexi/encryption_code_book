@@ -12,8 +12,8 @@ namespace encryption_code_book
     {
         public mul_key_encryption()
         {
-            Task d;
-            d = new_class();
+            //Task d;
+            //d = new_class();
         }
         public mul_key_encryption(string key)
         {
@@ -207,7 +207,7 @@ namespace encryption_code_book
         /// <param name="key">密码</param>
         public async void new_entryption(string key)
         {
-            int sub = key.IndexOf("\r\n\r\n");
+            int sub = key.IndexOf("\r\n\r\n", StringComparison.Ordinal);
             int max_count;//一个密码长度
             string temp;
             max_count = 100;
@@ -225,7 +225,7 @@ namespace encryption_code_book
                     file_key.Add(temp);
                 }
                 key = key.Substring(sub + 4);
-                sub = key.IndexOf("\r\n\r\n");
+                sub = key.IndexOf("\r\n\r\n", StringComparison.Ordinal);
             }
             file_key.Add(key);
             //加密();

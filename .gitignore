@@ -149,6 +149,8 @@ csx/
 
 # Windows Store app package directory
 AppPackages/
+*.appx
+º”√‹/
 
 # Others
 *.[Cc]ache
@@ -194,3 +196,8 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# 
+
+
+/encryption_code_book/Assets
