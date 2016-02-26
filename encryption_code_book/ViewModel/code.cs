@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// lindexi
+// 15:10
 
 namespace encryption_code_book.ViewModel
 {
@@ -10,7 +7,20 @@ namespace encryption_code_book.ViewModel
     {
         public code()
         {
+        }
 
+        /// <summary>
+        /// 密码本改变
+        /// </summary>
+        private void motify()
+        {
+        }
+
+        /// <summary>
+        /// 密码本删除
+        /// </summary>
+        public void delete()
+        {
         }
     }
 }

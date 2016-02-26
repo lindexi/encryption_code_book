@@ -22,6 +22,7 @@ namespace encryption_code_book.Model
             file_address = "data.encryption";
             file_null().Wait();
             _read = read();
+            
         }
 
         public encryption_note(StorageFile file)
