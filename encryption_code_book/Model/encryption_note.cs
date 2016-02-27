@@ -92,7 +92,7 @@ namespace encryption_code_book.Model
         }
 
         //private bool motify;
-        private string_encryption encryption
+        private Iencryption encryption
         {
             set;
             get;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace encryption_code_book.Model
 {
-    public class string_encryption
+    public class string_encryption : Iencryption
     {
         public string_encryption()
         {

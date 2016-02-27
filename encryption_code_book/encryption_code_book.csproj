@@ -112,6 +112,7 @@
     <Compile Include="Model\async_result.cs" />
     <Compile Include="Model\encryption_code.cs" />
     <Compile Include="Model\encryption_note.cs" />
+    <Compile Include="Model\Iencryption.cs" />
     <Compile Include="Model\mul_key_encryption.cs" />
     <Compile Include="Model\string_decryption.cs" />
     <Compile Include="Model\string_encryption.cs" />
