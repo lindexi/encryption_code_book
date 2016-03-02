@@ -1,8 +1,9 @@
 ﻿// lindexi
-// 10:23
+// 19:40
 
 #region
 
+using Windows.ApplicationModel;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,12 +24,14 @@ namespace encryption_code_book
             Application.Current.Suspending += suspend;
         }
 
-        private void suspend(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        private bool _ctrl;
+
+        private note view;
+
+        private void suspend(object sender, SuspendingEventArgs e)
         {
             view.storage();
         }
-
-        private note view;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -52,9 +55,21 @@ namespace encryption_code_book
 
         private void fastkey(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == Windows.System.VirtualKey.Control)
+            if (e.Key == VirtualKey.Control)
             {
                 _ctrl = true;
+            }
+            else if (_ctrl && view.confim)
+            {
+                switch (e.Key)
+                {
+                    case VirtualKey.S:
+                        view.storage();
+                        break;
+                    case VirtualKey.Z:
+                        view.cancel();
+                        break;
+                }
             }
 
             //else if (_ctrl && view.confim)
@@ -75,21 +90,17 @@ namespace encryption_code_book
 
         private void keyup(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == Windows.System.VirtualKey.Control)
+            if (e.Key == VirtualKey.Control)
             {
                 _ctrl = false;
             }
             if (_ctrl)
             {
-
             }
         }
 
-        private bool _ctrl;
-
         private void motify(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

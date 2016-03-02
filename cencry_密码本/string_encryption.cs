@@ -1,9 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// lindexi
+// 18:08
+
+#region
+
+using System;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
+#endregion
 
 namespace cencry密码本
 {
@@ -13,18 +17,22 @@ namespace cencry密码本
         [TestMethod]
         public void encryption()
         {
-            var encry = new encryption_code_book.Model.string_encryption();
-            string str ;
+            encryption_code_book.Model.string_encryption encry = new encryption_code_book.Model.string_encryption();
+            string str;
             string key;
             Random ran = new Random();
+            //随机密钥
             key = ranstr(10, ran);
             string temp;
             for (int i = 0; i < 10; i++)
             {
+                //随机字符串
                 str = ranstr(100, ran);
                 temp = encry.encryption(str, key);
                 Assert.AreEqual(str, encry.decryption(temp, key));
             }
+
+            //随机错误密码
         }
 
         private string ranstr(int count, Random ran)
@@ -33,7 +41,7 @@ namespace cencry密码本
             str.Clear();
             for (int i = 0; i < count; i++)
             {
-                str.Append(Convert.ToChar(ran.Next() % 2 == 0 ? ran.Next(19968, 40864) : ran.Next(33, 126)));
+                str.Append(Convert.ToChar(ran.Next()%2 == 0 ? ran.Next(19968, 40864) : ran.Next(33, 126)));
             }
             return str.ToString();
         }

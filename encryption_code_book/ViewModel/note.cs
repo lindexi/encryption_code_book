@@ -1,5 +1,5 @@
 ﻿// lindexi
-// 21:05
+// 19:40
 
 #region
 
@@ -148,11 +148,5 @@ namespace encryption_code_book.ViewModel
                 reminder("没有修改" + e.Message + "\n");
             }
         }
-
-        //public override bool confirm_password(string keystr)
-        //{
-        //    throw new NotImplementedException();
-
-        //}
     }
 }

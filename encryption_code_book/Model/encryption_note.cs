@@ -1,5 +1,5 @@
 ﻿// lindexi
-// 19:45
+// 18:10
 
 #region
 
@@ -22,7 +22,6 @@ namespace encryption_code_book.Model
             file_address = "data.encryption";
             file_null().Wait();
             _read = read();
-            
         }
 
         public encryption_note(StorageFile file)
@@ -130,7 +129,6 @@ namespace encryption_code_book.Model
         private bool _first;
         private string _key;
         private Task _read;
-        //private bool _read_key;
         private IAsyncAction _storage;
 
         public void new_use(string keystr)
@@ -161,7 +159,6 @@ namespace encryption_code_book.Model
             }
             if (string.IsNullOrEmpty(key))
             {
-
             }
             return encryption.decryption(encryption_text, key);
         }
@@ -228,7 +225,7 @@ namespace encryption_code_book.Model
             }
             string temp = str.Substring(0, temp_length);
             encryption_key = str.Substring(temp_length, temp_length);
-            encryption_text = str.Substring(temp_length * 2);
+            encryption_text = str.Substring(temp_length*2);
             return "";
         }
 
@@ -265,7 +262,7 @@ namespace encryption_code_book.Model
                         ulong size = read_stream.Size;
                         if (size <= uint.MaxValue)
                         {
-                            uint num_bytes_loaded = await data_reader.LoadAsync((uint)size);
+                            uint num_bytes_loaded = await data_reader.LoadAsync((uint) size);
                             deserilization(data_reader.ReadString(num_bytes_loaded));
                         }
                     }
