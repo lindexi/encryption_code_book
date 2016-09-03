@@ -5,7 +5,7 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using encryption_code_book.ViewModel;
+//using encryption_code_book.ViewModel;
 
 #endregion
 
@@ -20,12 +20,12 @@ namespace encryption_code_book
     {
         public MainPage()
         {
-            view = new note();
+            //view = new note();
             InitializeComponent();
-            frame.Navigate(typeof(note_page));
+            //frame.Navigate(typeof(note_page));
         }
 
-        private viewModel view;
+        //private viewModel view;
 
         private void button_click(object sender, RoutedEventArgs e)
         {
@@ -34,24 +34,24 @@ namespace encryption_code_book
 
         private void nagivate(object sender, SelectionChangedEventArgs e)
         {
-            ListBox list_box = sender as ListBox;
-            ListBoxItem item = list_box?.SelectedItem as ListBoxItem;
+            //ListBox list_box = sender as ListBox;
+            //ListBoxItem item = list_box?.SelectedItem as ListBoxItem;
 
-            if (item != null && frame != null)
-            {
-                switch (item.Name)
-                {
-                    case "encryption_note":
-                        frame.Navigate(typeof(note_page), view);
-                        break;
-                    case "encryption_code":
-                        frame.Navigate(typeof(code_page), view);
-                        break;
-                    default:
-                        frame.Navigate(typeof(note_page), view);
-                        break;
-                }
-            }
+            //if (item != null && frame != null)
+            //{
+            //    switch (item.Name)
+            //    {
+            //        case "encryption_note":
+            //            frame.Navigate(typeof(note_page), view);
+            //            break;
+            //        case "encryption_code":
+            //            frame.Navigate(typeof(code_page), view);
+            //            break;
+            //        default:
+            //            frame.Navigate(typeof(note_page), view);
+            //            break;
+            //    }
+            //}
         }
     }
 }

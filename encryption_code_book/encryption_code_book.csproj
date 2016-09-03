@@ -102,34 +102,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="code_page.xaml.cs">
-      <DependentUpon>code_page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="key_page.xaml.cs">
-      <DependentUpon>key_page.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\async_result.cs" />
-    <Compile Include="Model\encryption_code.cs" />
-    <Compile Include="Model\encryption_note.cs" />
     <Compile Include="Model\Iencryption.cs" />
-    <Compile Include="Model\mul_key_encryption.cs" />
-    <Compile Include="Model\string_decryption.cs" />
     <Compile Include="Model\string_encryption.cs" />
-    <Compile Include="note_page.xaml.cs">
-      <DependentUpon>note_page.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="set_page.xaml.cs">
-      <DependentUpon>set_page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModel\code.cs" />
-    <Compile Include="ViewModel\fit.cs" />
-    <Compile Include="ViewModel\note.cs" />
-    <Compile Include="ViewModel\notify_property.cs" />
-    <Compile Include="ViewModel\viewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -200,28 +178,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="code_page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="key_page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="note_page.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="set_page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
