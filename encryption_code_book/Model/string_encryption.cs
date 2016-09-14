@@ -5,72 +5,71 @@ using System.Text;
 
 namespace encryption_code_book.Model
 {
-    public class string_encryption : Iencryption
+    public class StringEncryption : IEncryption
     {
-        public string_encryption()
-        {
-            key = "林德熙";
-            _temp_string_lenth = 1024;
-        }
-        public string_encryption(string key)
-        {
-            int 密钥_大于512;
-            密钥_大于512 = 1024;
-            _temp_string_lenth = 密钥_大于512;
-            this.key = key;
-        }
+        //public string_encryption()
+        //{
+        //    key = "林德熙";
+        //    _temp_string_lenth = 1024;
+        //}
+        //public string_encryption(string key)
+        //{
+        //    int 密钥_大于512;
+        //    密钥_大于512 = 1024;
+        //    _temp_string_lenth = 密钥_大于512;
+        //    this.key = key;
+        //}
 
-        public static string_encryption g_获得类()
-        {
-            if (_string_decryption == null)
-            {
-                _string_decryption = new string_encryption();
-            }
-            return _string_decryption;
-        }
+        //public static string_encryption g_获得类()
+        //{
+        //    if (_string_decryption == null)
+        //    {
+        //        _string_decryption = new string_encryption();
+        //    }
+        //    return _string_decryption;
+        //}
      
 
-        ~string_encryption()
+        ~StringEncryption()
         {
-
 
         }
 
-        public string key
-        {
-            set
-            {
-                _key = value;
-                h_后缀 = n_md5(_key) + "结束";//密码改，后缀n_md5
-            }
-            get
-            {
-                if (_key.Length <= 0)
-                {
-                    return "林德熙";
-                }
-                return _key;
-            }
-        }
+        //public string key
+        //{
+        //    set
+        //    {
+        //        _key = value;
+        //        h_后缀 = Nmd5(_key) + "结束";//密码改，后缀n_md5
+        //    }
+        //    get
+        //    {
+        //        if (_key.Length <= 0)
+        //        {
+        //            return "林德熙";
+        //        }
+        //        return _key;
+        //    }
+        //}
 
-        public string h_后缀
-        {
-            set
-            {
-                _后缀 = value;
-            }
-            get
-            {
-                if (_后缀 == null || _后缀.Length == 0)
-                {
-                    return "结束";
-                }
-                else
-                {
-                    return _后缀;
-                }
-            }
-        }
+        //public string h_后缀
+        //{
+        //    set
+        //    {
+        //        _后缀 = value;
+        //    }
+        //    get
+        //    {
+        //        if (_后缀 == null || _后缀.Length == 0)
+        //        {
+        //            return "结束";
+        //        }
+        //        else
+        //        {
+        //            return _后缀;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 加密字符串
@@ -78,25 +77,25 @@ namespace encryption_code_book.Model
         /// <param name="str"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string encryption(string str , string key)
+        public string Encryption(string str , string key)
         {
             //验证密钥
-            int temp_length = 0;
+            int tempLength = 0;
             if (!string.IsNullOrEmpty(key))
             {
-                temp_length = 1024;//缓冲区
+                tempLength = 1024;//缓冲区
             }
             if (string.IsNullOrEmpty(str))
             {
                 return "";
             }
-            string hstr = n_md5(key) + "结束";//后缀
+            string hstr = Nmd5(key) + "结束";//后缀
             double per = 0.5;//明文密文比
             //分明文            
             List<string> clearstr = new List<string>();//明文
             //均匀分？最小
-            int count = (int)( temp_length * per ) - hstr.Length;
-            while (str.Length >= temp_length * per - hstr.Length)
+            int count = (int)( tempLength * per ) - hstr.Length;
+            while (str.Length >= tempLength * per - hstr.Length)
             {
                 clearstr.Add(str.Substring(0 , count));//+hstr);
                 str = str.Substring(count);
@@ -104,11 +103,11 @@ namespace encryption_code_book.Model
             clearstr.Add(str);
             //加密
             StringBuilder ciphertext = new StringBuilder();//密文
-            int[] position = new int[temp_length];
-            hash(ref position , temp_length , key);
+            int[] position = new int[tempLength];
+            Hash(ref position , tempLength , key);
             foreach (string temp in clearstr)
             {
-                ciphertext.Append(encryption_string(temp , temp_length , hstr , key , position));
+                ciphertext.Append(encryption_string(temp , tempLength , hstr , key , position));
             }
             return ciphertext.ToString();
         }
@@ -118,30 +117,30 @@ namespace encryption_code_book.Model
         /// <param name="str"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string decryption(string str , string key)
+        public string Decryption(string str , string key)
         {
             //验证密钥
-            int temp_length = 0;
+            int tempLength = 0;
             if (!string.IsNullOrEmpty(key))
             {
-                temp_length = 1024;//缓冲区
+                tempLength = 1024;//缓冲区
             }
-            string hstr = n_md5(key) + "结束";//后缀
+            string hstr = Nmd5(key) + "结束";//后缀
             //分密文
             List<string> ciphertext = new List<string>();//密文
-            while (str.Length > temp_length)
+            while (str.Length > tempLength)
             {
-                ciphertext.Add(str.Substring(0 , temp_length));
-                str = str.Substring(temp_length);
+                ciphertext.Add(str.Substring(0 , tempLength));
+                str = str.Substring(tempLength);
             }
             //解密
             StringBuilder temp = new StringBuilder();
             ciphertext.Add(str);
-            int[] position = new int[temp_length];
-            hash(ref position , temp_length , key);
+            int[] position = new int[tempLength];
+            Hash(ref position , tempLength , key);
             foreach (string t in ciphertext)
             {
-                temp.Append(decryption_string(t , temp_length , hstr , key , position));
+                temp.Append(decryption_string(t , tempLength , hstr , key , position));
             }
             return temp.ToString();
         }
@@ -151,15 +150,15 @@ namespace encryption_code_book.Model
         /// <param name="keystr">密码加密</param>
         /// <param name="key">要确认密码</param>
         /// <returns></returns>
-        public bool confirm(string keystr , string key)
+        public bool Confirm(string keystr , string key)
         {
-            return string.Equals(decryption(keystr , key) , n_md5(key));
+            return string.Equals(Decryption(keystr , key) , Nmd5(key));
         }
 
-        private string encryption_string(string str , int temp_length , string hstr , string key , int[] position)
+        private string encryption_string(string str , int tempLength , string hstr , string key , int[] position)
         {
             //缓冲区
-            char[] temp = new char[temp_length];
+            char[] temp = new char[tempLength];
             //添加后缀
             str = str + hstr;
             //哈希
@@ -170,7 +169,7 @@ namespace encryption_code_book.Model
             //填补空白
             fill_gaps(ref temp , key);
             //加密字符
-            for (int i = 0; i < temp_length; i++)
+            for (int i = 0; i < tempLength; i++)
             {
                 temp[i] = encryption_character(temp[i] , key , i);
             }
@@ -202,18 +201,18 @@ namespace encryption_code_book.Model
             return new string(temp);
             */
         }
-        private string decryption_string(string str , int temp_length , string hstr , string key , int[] position)
+        private static string decryption_string(string str , int tempLength , string hstr , string key , int[] position)
         {
             //申请缓冲区
-            char[] tempclearstr = new char[temp_length];
-            char[] tempciphertext = new char[temp_length];
+            char[] tempclearstr = new char[tempLength];
+            char[] tempciphertext = new char[tempLength];
             //解密字符
             for (int i = 0; i < str.Length; i++)
             {
                 tempciphertext[i] = decryption_character(str[i] , key , i);
             }
             //哈希函数
-            for (int i = 0; i < temp_length; i++)
+            for (int i = 0; i < tempLength; i++)
             {
                 tempclearstr[i] = tempciphertext[position[i]];
             }
@@ -267,56 +266,48 @@ namespace encryption_code_book.Model
                 return t;
             }*/
         }
-        private void hash(ref int[] position , int temp_length , string key)
+        private static void Hash(ref int[] position , int tempLength , string key)
         {
-            bool[] exist = new bool[temp_length];
+            bool[] exist = new bool[tempLength];
             int i;
-            int temp;
-            int count;//冲突数
-            int sum;//总冲突数
-            bool fin;
-            for (i = 0; i < temp_length; i++)
+            //int sum;//总冲突数
+            for (i = 0; i < tempLength; i++)
             {
                 exist[i] = false;
             }
 
-            if (position.Length != temp_length)
+            if (position.Length != tempLength)
             {
-                position = new int[temp_length];
+                position = new int[tempLength];
             }
-            sum = 0;
-            fin = true;
+            //sum = 0;
+            bool conflictRedundancy = false;
             //一元n次函数
-            for (i = 0; i < temp_length; i++)
+            for (i = 0; i < tempLength; i++)
             {
-                temp = (int)( key[i % key.Length] ) % temp_length;
-                count = i / key.Length;
+                var temp = key[i % key.Length] % tempLength;
+                var count = i / key.Length;//冲突数
                 while (exist[temp])
                 {
-                    if (fin)
+                    if (conflictRedundancy)
                     {
-                        temp = conflict(temp, i, count, key, temp_length);
+                        temp = (temp + 1) % tempLength;
                     }
                     else
                     {
-                        temp = (temp + 1) % temp_length;
-                    }
-                    count++;
-                    sum++;
-                    if (count > 2 * temp_length && fin)
-                    {
-                        Debug.Write("冲突数过多" + i.ToString() + "\r\n");
-                        //return;
-                        fin = false;
+                        temp = Conflict(temp, i, count, key, tempLength);
+                        count++;
+                        if (count > 2 * tempLength)
+                        {
+                            conflictRedundancy = true;
+                        }
                     }
                 }
                 position[i] = temp;
                 exist[temp] = true;
             }
-            Debug.Write("冲突数" + sum.ToString());
-
         }
-        private int conflict(int position , int i , int count , string key , int temp_length)
+        private static int Conflict(int position , int i , int count , string key , int tempLength)
         {
             int countconflict;
             int sum;
@@ -327,15 +318,15 @@ namespace encryption_code_book.Model
                 sum += key[i];
             }
             sum += key[i];
-            return sum % temp_length;
+            return sum % tempLength;
         }
-        private char encryption_character(char str , string key , int i)
+        private static char encryption_character(char str , string key , int i)
         {
             //return str;
             i = i % key.Length;
             return (char)( str + key[i] % 10 );
         }
-        private char decryption_character(char str , string key , int i)
+        private static char decryption_character(char str , string key , int i)
         {
             //return str;
             i = i % key.Length;
@@ -347,142 +338,142 @@ namespace encryption_code_book.Model
             {
                 if (temp[i] == 0)
                 {
-                    temp[i] = (char)ran_char;
+                    temp[i] = (char)RanChar;
                 }
             }
         }
 
 
-        public string encryption_string(string str)
-        {
-            char[] temp_str = new char[_temp_string_lenth];
-            int i, has, key_place;//has字符位置，key_place密码位置
-            //str = encryptDes(str);
-            str += h_后缀;
-            str.PadRight(_temp_string_lenth);
-            for (i = 0; i < _temp_string_lenth; i++)
-            {
-                temp_str[i] = Convert.ToChar(0);
-            }
-            key_place = 0;
-            for (i = 0; i < str.Length; i++)
-            {
-                has = Convert.ToInt32(key[key_place]);
-                has = has % _temp_string_lenth;
-                while (temp_str[has] != Convert.ToChar(0))//如果位置有别的字符就下一个，到没有字符位置
-                {
-                    has++;
-                    if (has >= _temp_string_lenth)
-                    {
-                        has = 0;//出错，_temp_string_lenth太小
-                    }
-                    //has=has>=_temp_string_lenth?0:has++;
-                }
-                //temp_str[l] = (char)(str[i]);//+key[key_l]);
-                temp_str[has] = (char)( ( str[i] ) + key[key_place] % 1024 );
-                key_place++;
-                if (key_place == key.Length)
-                {
-                    key_place = 0;
-                }
-                //key_place=key_place>=key.length?0:key_place++;
-            }
-            //把空填充
-            for (i = 0; i < _temp_string_lenth; i++)
-            {
-                if (temp_str[i] == Convert.ToChar(0))
-                {
-                    temp_str[i] = Convert.ToChar(ran_char); //% 1000+1);
-                }
-            }
-            return new string(temp_str);
-            //string s = new string(temp_str);
-            //return s;
-            //return null;
-        }
-        public string decryption_string(string str)
-        {
-            StringBuilder temp = new StringBuilder();
-            char[] jie = str.ToCharArray();
-            int has, key_place;//has字符位置，key_place密码位置
-            //int accomplish_position;//accomplish_position==h_后缀.length accomplish=true
-            bool accomplish;
-            accomplish = false;//初始
-            has = 0;
-            key_place = 0;
-            //accomplish_position = 0;
-            if (jie.Length < _temp_string_lenth - 1)
-            {
-                Debug.Write("错" + jie.Length.ToString());
-                return null;
-            }
-            while (accomplish == false)//我while(true)
-            {
-                if (accomplish)
-                {
-                    break;
-                }
-                has = Convert.ToInt32(key[key_place]);
-                has = has % _temp_string_lenth;//密码给字符所在位置
-                while (jie[has] == Convert.ToChar(0))
-                {
-                    has++;
-                    if (has >= _temp_string_lenth)
-                    {
-                        //accomplish = true;
-                        has = 0;
-                        //break;
-                    }
-                }
+        //public string encryption_string(string str)
+        //{
+        //    char[] temp_str = new char[_temp_string_lenth];
+        //    int i, has, key_place;//has字符位置，key_place密码位置
+        //    //str = encryptDes(str);
+        //    str += h_后缀;
+        //    str.PadRight(_temp_string_lenth);
+        //    for (i = 0; i < _temp_string_lenth; i++)
+        //    {
+        //        temp_str[i] = Convert.ToChar(0);
+        //    }
+        //    key_place = 0;
+        //    for (i = 0; i < str.Length; i++)
+        //    {
+        //        has = Convert.ToInt32(key[key_place]);
+        //        has = has % _temp_string_lenth;
+        //        while (temp_str[has] != Convert.ToChar(0))//如果位置有别的字符就下一个，到没有字符位置
+        //        {
+        //            has++;
+        //            if (has >= _temp_string_lenth)
+        //            {
+        //                has = 0;//出错，_temp_string_lenth太小
+        //            }
+        //            //has=has>=_temp_string_lenth?0:has++;
+        //        }
+        //        //temp_str[l] = (char)(str[i]);//+key[key_l]);
+        //        temp_str[has] = (char)( ( str[i] ) + key[key_place] % 1024 );
+        //        key_place++;
+        //        if (key_place == key.Length)
+        //        {
+        //            key_place = 0;
+        //        }
+        //        //key_place=key_place>=key.length?0:key_place++;
+        //    }
+        //    //把空填充
+        //    for (i = 0; i < _temp_string_lenth; i++)
+        //    {
+        //        if (temp_str[i] == Convert.ToChar(0))
+        //        {
+        //            temp_str[i] = Convert.ToChar(ran_char); //% 1000+1);
+        //        }
+        //    }
+        //    return new string(temp_str);
+        //    //string s = new string(temp_str);
+        //    //return s;
+        //    //return null;
+        //}
+        //public string decryption_string(string str)
+        //{
+        //    StringBuilder temp = new StringBuilder();
+        //    char[] jie = str.ToCharArray();
+        //    int has, key_place;//has字符位置，key_place密码位置
+        //    //int accomplish_position;//accomplish_position==h_后缀.length accomplish=true
+        //    bool accomplish;
+        //    accomplish = false;//初始
+        //    has = 0;
+        //    key_place = 0;
+        //    //accomplish_position = 0;
+        //    if (jie.Length < _temp_string_lenth - 1)
+        //    {
+        //        Debug.Write("错" + jie.Length.ToString());
+        //        return null;
+        //    }
+        //    while (accomplish == false)//我while(true)
+        //    {
+        //        if (accomplish)
+        //        {
+        //            break;
+        //        }
+        //        has = Convert.ToInt32(key[key_place]);
+        //        has = has % _temp_string_lenth;//密码给字符所在位置
+        //        while (jie[has] == Convert.ToChar(0))
+        //        {
+        //            has++;
+        //            if (has >= _temp_string_lenth)
+        //            {
+        //                //accomplish = true;
+        //                has = 0;
+        //                //break;
+        //            }
+        //        }
 
-                //s.Append((char)(jie[l]));//-key[key_l]));
-                temp.Append((char)( ( jie[has] ) - key[key_place] % 1024 ));
-                jie[has] = Convert.ToChar(0);//把原来位置0
-                key_place++;
-                if (key_place == key.Length)
-                {
-                    key_place = 0;
-                }
-                if (temp.Length == _temp_string_lenth)
-                {
-                    accomplish = true;
-                }
-                //if (temp[temp.Length - 1] == h_后缀[accomplish_position])
-                //{
-                //    accomplish_position++;
-                //    if (accomplish_position == h_后缀.Length)
-                //    {
-                //        accomplish = true;
-                //    }
-                //}
-                //else
-                //{
-                //    accomplish_position = 0;
-                //}
-            }
-            string temp_str = temp.ToString();
-            //int temp_l = temp_str.LastIndexOf("结束");
-            int temp_l = temp_str.LastIndexOf(h_后缀);
-            if (temp_l > 0)
-            {
-                //return decryptDes(temp_str.Substring(0 , temp_l));
-                return temp_str.Substring(0 , temp_l);
-            }
-            if (temp_l == 0)
-            {
-                return temp_str;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //        //s.Append((char)(jie[l]));//-key[key_l]));
+        //        temp.Append((char)( ( jie[has] ) - key[key_place] % 1024 ));
+        //        jie[has] = Convert.ToChar(0);//把原来位置0
+        //        key_place++;
+        //        if (key_place == key.Length)
+        //        {
+        //            key_place = 0;
+        //        }
+        //        if (temp.Length == _temp_string_lenth)
+        //        {
+        //            accomplish = true;
+        //        }
+        //        //if (temp[temp.Length - 1] == h_后缀[accomplish_position])
+        //        //{
+        //        //    accomplish_position++;
+        //        //    if (accomplish_position == h_后缀.Length)
+        //        //    {
+        //        //        accomplish = true;
+        //        //    }
+        //        //}
+        //        //else
+        //        //{
+        //        //    accomplish_position = 0;
+        //        //}
+        //    }
+        //    string temp_str = temp.ToString();
+        //    //int temp_l = temp_str.LastIndexOf("结束");
+        //    int temp_l = temp_str.LastIndexOf(h_后缀);
+        //    if (temp_l > 0)
+        //    {
+        //        //return decryptDes(temp_str.Substring(0 , temp_l));
+        //        return temp_str.Substring(0 , temp_l);
+        //    }
+        //    if (temp_l == 0)
+        //    {
+        //        return temp_str;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
         /// <summary>
         /// 加密key[0].toint次md5
         /// </summary>
         /// <param name="key">密码</param>
         /// <returns>加密后密码</returns>
-        public string n_md5(string key)
+        public string Nmd5(string key)
         {
             string temp;
             //int i;
@@ -505,18 +496,18 @@ namespace encryption_code_book.Model
 
             //return temp;
         }
-        /// <summary>
-        /// 缓冲区长度
-        /// </summary>
-        private int _temp_string_lenth;
-        private static string_encryption _string_decryption = new string_encryption();
+        ///// <summary>
+        ///// 缓冲区长度
+        ///// </summary>
+        ////private int _temp_string_lenth;
+        //private static string_encryption _string_decryption = new string_encryption();
         private Random _random = new Random();
         //加密文件的路径
         //private string _file_address;
-        private string _key;
-        private string _后缀;
+        //private string _key;
+        //private string _后缀;
 
-        private int ran_char
+        private int RanChar
         {
             set
             {
@@ -552,7 +543,7 @@ namespace encryption_code_book.Model
             //}
             //return strb.ToString().ToLower();
         }
-        private int range(int a , int b , int up , int down)
+        private int Range(int a , int b , int up , int down)
         {
             int r = up;
             int l = down;

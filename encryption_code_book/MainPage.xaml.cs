@@ -5,6 +5,9 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+using encryption_code_book.ViewModel;
+
 //using encryption_code_book.ViewModel;
 
 #endregion
@@ -23,6 +26,23 @@ namespace encryption_code_book
             //view = new note();
             InitializeComponent();
             //frame.Navigate(typeof(note_page));
+            
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            AccountGoverment.View.Frame = frame;
+
+            if (string.IsNullOrEmpty(AccountGoverment.View.Account?.Key?.Key))
+            {
+                AccountGoverment.View.NavigateKey();
+            }
+            else
+            {
+                AccountGoverment.View.NacigateCode();
+            }
+            base.OnNavigatedTo(e);
+
         }
 
         //private viewModel view;

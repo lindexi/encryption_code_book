@@ -1,10 +1,10 @@
 ﻿namespace encryption_code_book.Model
 {
-    public interface Iencryption
+    public interface IEncryption
     {
-        bool confirm(string keystr, string key);
-        string decryption(string str, string key);
-        string encryption(string str, string key);
-        string n_md5(string key);
+        bool Confirm(string keyCiphertext, string key);
+        string Decryption(string str, string key);
+        string Encryption(string str, string key);
+        string Nmd5(string key);
     }
 }
