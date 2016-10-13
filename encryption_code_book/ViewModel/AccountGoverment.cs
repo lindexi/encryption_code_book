@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
@@ -43,6 +44,18 @@ namespace encryption_code_book.ViewModel
 
 
         public KeySecret Key
+        {
+            set;
+            get;
+        }
+
+        //public SecretCode EncryCodeStorage
+        //{
+        //    set;
+        //    get;
+        //}
+
+        public List<SecretScribe> EncryCodeStorage
         {
             set;
             get;
