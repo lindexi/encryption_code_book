@@ -6,6 +6,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using encryption_code_book.View;
 using encryption_code_book.ViewModel;
 
 //using encryption_code_book.ViewModel;
@@ -26,7 +27,6 @@ namespace encryption_code_book
             //view = new note();
             InitializeComponent();
             //frame.Navigate(typeof(note_page));
-            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -41,6 +41,9 @@ namespace encryption_code_book
             {
                 AccountGoverment.View.NacigateCode();
             }
+
+            frame.Navigate(typeof(EncryCodeStoragePage));
+
             base.OnNavigatedTo(e);
 
         }

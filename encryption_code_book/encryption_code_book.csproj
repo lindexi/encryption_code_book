@@ -115,10 +115,14 @@
     <Compile Include="Model\Account.cs" />
     <Compile Include="ViewModel\AccountGoverment.cs" />
     <Compile Include="ViewModel\CodeModel.cs" />
+    <Compile Include="ViewModel\EncryCodeStorageModel.cs" />
     <Compile Include="ViewModel\KeyModel.cs" />
     <Compile Include="ViewModel\NotifyProperty.cs" />
     <Compile Include="View\CodePage.xaml.cs">
       <DependentUpon>CodePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EncryCodeStoragePage.xaml.cs">
+      <DependentUpon>EncryCodeStoragePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\KeyPage.xaml.cs">
       <DependentUpon>KeyPage.xaml</DependentUpon>
@@ -200,6 +204,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CodePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EncryCodeStoragePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
