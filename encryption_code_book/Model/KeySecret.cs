@@ -2,6 +2,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using encryption_code_book.ViewModel;
+using Newtonsoft.Json;
 
 namespace encryption_code_book.Model
 {
@@ -11,13 +12,13 @@ namespace encryption_code_book.Model
         {
             AreNewEncrypt = true;
         }
-
+        [JsonIgnore]
         public string Key
         {
             set;
             get;
         }
-
+        [JsonIgnore]
         public bool AreNewEncrypt
         {
             set;
@@ -30,13 +31,21 @@ namespace encryption_code_book.Model
             get;
         }
 
+        [JsonIgnore]
         public string ComfirmKey
         {
             set;
             get;
         }
 
+        [JsonIgnore]
         public StorageFile File
+        {
+            set;
+            get;
+        }
+        
+        public string Token
         {
             set;
             get;
@@ -44,6 +53,7 @@ namespace encryption_code_book.Model
 
         public async Task Read(StorageFile file)
         {
+            //∂¡¡À»∑»œ
             try
             {
                 byte[] buffer = new byte[AccountGoverment.View.Account.ComfirmkeyLength];
