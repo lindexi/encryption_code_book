@@ -12,22 +12,29 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid>
-            <ListView ItemsSource="{x:Bind View.EncryCodeStorage}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                    </Style>
+           <Grid>
+               <Grid.RowDefinitions>
+                   <RowDefinition></RowDefinition>
+                   <RowDefinition Height="Auto"></RowDefinition>
+               </Grid.RowDefinitions>
+                <ListView ItemsSource="{x:Bind View.EncryCodeStorage}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                        </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="view:SecretScribe">
-                        <Grid>
-                            <Grid Margin="10,10,10,10">
-                                <TextBlock Text="{x:Bind Name}"></TextBlock>
+                        <DataTemplate x:DataType="view:SecretScribe">
+                            <Grid>
+                                <Grid Margin="10,10,10,10" 
+                                  Background="#FFBDBDBD">
+                                    <TextBlock Margin="10,10,10,10" Text="{x:Bind Name}"></TextBlock>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
             <ProgressRing IsActive="True"
                           Visibility="{x:Bind View.ReadVisibility,Mode=OneWay}"
                           HorizontalAlignment="Stretch"
