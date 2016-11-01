@@ -34,6 +34,19 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+               
+               <Button Grid.Row="1"
+                       Margin="10,10,10,10"
+                       HorizontalAlignment="Stretch">
+                   <Button.Content>
+                       <Grid>
+                           <StackPanel Orientation="Horizontal">
+                               <TextBlock Text="+"></TextBlock>
+                               <TextBlock Text="添加密码本"></TextBlock>
+                           </StackPanel>
+                       </Grid>
+                   </Button.Content>
+               </Button>
             </Grid>
             <ProgressRing IsActive="True"
                           Visibility="{x:Bind View.ReadVisibility,Mode=OneWay}"
