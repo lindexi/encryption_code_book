@@ -7,16 +7,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
+
     <!--密码本-->
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid>
-           <Grid >
-               <Grid.RowDefinitions>
-                   <RowDefinition></RowDefinition>
-                   <RowDefinition Height="Auto"></RowDefinition>
-               </Grid.RowDefinitions>
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
                 <ListView ItemsSource="{x:Bind View.EncryCodeStorage}"
                           >
                     <ListView.ItemContainerStyle>
@@ -29,26 +29,32 @@
                             <Grid>
                                 <Grid Margin="10,10,10,10" 
                                   Background="#FFBDBDBD">
-                                    <TextBlock Margin="10,10,10,10" Text="{x:Bind Name}"></TextBlock>
+                                    <CheckBox Margin="10,10,10,10">
+                                        <CheckBox.Content>
+                                            <Grid>
+                                                <TextBlock Margin="10,0,10,10" Text="{x:Bind Name}"></TextBlock>
+                                            </Grid>
+                                        </CheckBox.Content>
+                                    </CheckBox>
                                 </Grid>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-               
-               <Button Grid.Row="1"
+
+                <Button Grid.Row="1"
                        Margin="10,10,10,10"
                        IsEnabled="{x:Bind View.EncryCodeStorageEnable,Mode=OneWay}"
                        HorizontalAlignment="Stretch">
-                   <Button.Content>
-                       <Grid>
-                           <StackPanel Orientation="Horizontal">
-                               <TextBlock Text="+"></TextBlock>
-                               <TextBlock Text="添加密码本"></TextBlock>
-                           </StackPanel>
-                       </Grid>
-                   </Button.Content>
-               </Button>
+                    <Button.Content>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="+"></TextBlock>
+                                <TextBlock Text="添加密码本"></TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Button.Content>
+                </Button>
             </Grid>
             <ProgressRing IsActive="True"
                           Visibility="{x:Bind View.ReadVisibility,Mode=OneWay}"

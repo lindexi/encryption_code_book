@@ -73,6 +73,21 @@ namespace encryption_code_book.Model
             get;
         }
 
+        private bool _check;
+        [JsonIgnore]
+        public bool Check
+        {
+            set
+            {
+                _check = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return _check;
+            }
+        }
+
         public async Task Read()
         {
             string str = "data.encry";
