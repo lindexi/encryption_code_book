@@ -61,6 +61,8 @@ namespace encryption_code_book.ViewModel
             get;
         }
 
+        public EventHandler OnRead;
+
         private async void Read()
         {
             //文件夹
@@ -93,6 +95,8 @@ namespace encryption_code_book.ViewModel
             {
 
             }
+
+            OnRead?.Invoke(this,null);
         }
 
         public void NavigateKey()

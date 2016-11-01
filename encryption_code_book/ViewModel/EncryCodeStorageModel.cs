@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using encryption_code_book.Model;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -25,11 +28,31 @@ namespace encryption_code_book.ViewModel
 
         private Visibility _readVisibility;
 
+        public bool EncryCodeStorageEnable
+        {
+            set
+            {
+                if (value == _encryCodeStorageEnable)
+                {
+                    return;
+                }
+                _encryCodeStorageEnable = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return _encryCodeStorageEnable;
+            }
+        }
+
+        private bool _encryCodeStorageEnable;
+
         public Visibility ReadVisibility
         {
             set
             {
                 _readVisibility = value;
+                EncryCodeStorageEnable = value == Visibility.Collapsed;
                 OnPropertyChanged();
             }
             get
@@ -75,7 +98,7 @@ namespace encryption_code_book.ViewModel
                                     FutureAccessList.GetFolderAsync(temp.Token),
                             Name = temp.Name
                         };
-                        
+
                         account.EncryCodeStorage.Add(secret);
                     }
                     catch
@@ -90,8 +113,15 @@ namespace encryption_code_book.ViewModel
 
             foreach (var temp in account.EncryCodeStorage)
             {
-                EncryCodeStorage.Add(temp);
+                await temp.Read();
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () =>
+                {
+                    EncryCodeStorage.Add(temp);
+                });
             }
+
+
 
             ReadVisibility = Visibility.Collapsed;
         }
@@ -111,7 +141,7 @@ namespace encryption_code_book.ViewModel
             }
             catch (Exception)
             {
-                
+
             }
             return new List<SecretScribe>();
         }
