@@ -39,6 +39,12 @@ namespace encryption_code_book.Model
             get;
         } = "EncryptionCode";
 
+        public string Encry
+        {
+            set;
+            get;
+        } = "私密密码本 2";
+
         public int ComfirmkeyLength
         {
             set;

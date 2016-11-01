@@ -1,20 +1,42 @@
+// lindexi
+// 18:49
+
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using encryption_code_book.ViewModel;
 using Newtonsoft.Json;
 
 namespace encryption_code_book.Model
 {
     public class EncryCodeSecretScribe
     {
+        public EncryCodeSecretScribe()
+        {
+            Encry = AccountGoverment.View.Account.Encry;
+        }
+
+        public EncryCodeSecretScribe(string name, string comfirmKey)
+        {
+            Name = name;
+            ComfirmKey = comfirmKey;
+        }
+
         public string Name
         {
             set;
             get;
         }
+
         public string ComfirmKey
+        {
+            set;
+            get;
+        }
+
+        public string Encry
         {
             set;
             get;
@@ -28,6 +50,7 @@ namespace encryption_code_book.Model
             set;
             get;
         }
+
         public string Str
         {
             set;
@@ -39,24 +62,13 @@ namespace encryption_code_book.Model
     {
         public SecretScribe()
         {
-
-        }
-
-        private new void Storage()
-        {
-            EncryCodeSecretScribe encryCodeSecretScribe = new EncryCodeSecretScribe()
-            {
-                Name = "ÀΩ√‹√‹¬Î±æ 2",
-                ComfirmKey = ComfirmKey
-            };
-
         }
 
         public ObservableCollection<SecretScribeCode> SecretCode
         {
             set;
             get;
-        }=new ObservableCollection<SecretScribeCode>();
+        } = new ObservableCollection<SecretScribeCode>();
 
         //public SecretScribe(StorageFolder folder)
         //{
@@ -73,7 +85,6 @@ namespace encryption_code_book.Model
             get;
         }
 
-        private bool _check;
         [JsonIgnore]
         public bool Check
         {
@@ -88,6 +99,27 @@ namespace encryption_code_book.Model
             }
         }
 
+        [JsonIgnore]
+        public EncryCodeSecretScribe EncryCodeSecretScribe
+        {
+            set;
+            get;
+        }
+
+        [JsonIgnore]
+        public string Str
+        {
+            set
+            {
+                _str = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return _str;
+            }
+        }
+
         public async Task Read()
         {
             string str = "data.encry";
@@ -96,18 +128,13 @@ namespace encryption_code_book.Model
             var json = JsonSerializer.Create();
             EncryCodeSecretScribe encryCodeSecretScribe =
                 json.Deserialize<EncryCodeSecretScribe>(new JsonTextReader(new StringReader(str)));
-            EncryCodeSecretScribe = encryCodeSecretScribe;
-            OnRead?.Invoke(this,encryCodeSecretScribe);
+            //EncryCodeSecretScribe = encryCodeSecretScribe;
+            Name = encryCodeSecretScribe.Name;
+            ComfirmKey = encryCodeSecretScribe.ComfirmKey;
+            OnRead?.Invoke(this, encryCodeSecretScribe);
         }
 
-        [JsonIgnore]
-        public EventHandler<EncryCodeSecretScribe> OnRead;
-        [JsonIgnore]
-        public EncryCodeSecretScribe EncryCodeSecretScribe
-        {
-            set;
-            get;
-        }
+        private bool _check;
 
         //private string _name;
 
@@ -127,17 +154,15 @@ namespace encryption_code_book.Model
         private string _str;
 
         [JsonIgnore]
-        public string Str
+        public EventHandler<EncryCodeSecretScribe> OnRead;
+
+        private new void Storage()
         {
-            set
+            EncryCodeSecretScribe encryCodeSecretScribe = new EncryCodeSecretScribe()
             {
-                _str = value;
-                OnPropertyChanged();
-            }
-            get
-            {
-                return _str;
-            }
+                Name = Name,
+                ComfirmKey = ComfirmKey
+            };
         }
     }
 }
