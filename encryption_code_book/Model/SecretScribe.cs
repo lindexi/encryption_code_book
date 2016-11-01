@@ -122,16 +122,24 @@ namespace encryption_code_book.Model
 
         public async Task Read()
         {
-            string str = "data.encry";
-            var file = await EncryCodeFolder.GetFileAsync(str);
-            str = await FileIO.ReadTextAsync(file);
-            var json = JsonSerializer.Create();
-            EncryCodeSecretScribe encryCodeSecretScribe =
-                json.Deserialize<EncryCodeSecretScribe>(new JsonTextReader(new StringReader(str)));
-            //EncryCodeSecretScribe = encryCodeSecretScribe;
-            Name = encryCodeSecretScribe.Name;
-            ComfirmKey = encryCodeSecretScribe.ComfirmKey;
-            OnRead?.Invoke(this, encryCodeSecretScribe);
+            try
+            {
+                string str = "data.encry";
+                var file = await EncryCodeFolder.GetFileAsync(str);
+                str = await FileIO.ReadTextAsync(file);
+                var json = JsonSerializer.Create();
+                EncryCodeSecretScribe encryCodeSecretScribe =
+                    json.Deserialize<EncryCodeSecretScribe>(new JsonTextReader(new StringReader(str)));
+                //EncryCodeSecretScribe = encryCodeSecretScribe;
+                Name = encryCodeSecretScribe.Name;
+                ComfirmKey = encryCodeSecretScribe.ComfirmKey;
+
+                OnRead?.Invoke(this, true);
+            }
+            catch (Exception)
+            {
+                OnRead?.Invoke(this, false);
+            }
         }
 
         private bool _check;
@@ -154,15 +162,40 @@ namespace encryption_code_book.Model
         private string _str;
 
         [JsonIgnore]
-        public EventHandler<EncryCodeSecretScribe> OnRead;
+        public EventHandler<bool> OnRead;
 
-        private new void Storage()
+        [JsonIgnore]
+        public EventHandler<bool> OnStorage;
+
+        public new async Task Storage()
         {
-            EncryCodeSecretScribe encryCodeSecretScribe = new EncryCodeSecretScribe()
+            try
             {
-                Name = Name,
-                ComfirmKey = ComfirmKey
-            };
+                EncryCodeSecretScribe encryCodeSecretScribe = new EncryCodeSecretScribe()
+                {
+                    Name = Name,
+                    ComfirmKey = ComfirmKey
+                };
+
+                string str = "data.encry";
+                StorageFile file;
+                try
+                {
+                    file = await EncryCodeFolder.GetFileAsync(str);
+                }
+                catch (FileNotFoundException)
+                {
+                    file = await EncryCodeFolder.CreateFileAsync(str);
+                }
+
+                str = JsonConvert.SerializeObject(encryCodeSecretScribe);
+                await FileIO.WriteTextAsync(file, str);
+                OnStorage?.Invoke(this, true);
+            }
+            catch (Exception)
+            {
+                OnStorage?.Invoke(this, false);
+            }
         }
     }
 }
