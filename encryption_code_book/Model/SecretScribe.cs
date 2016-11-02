@@ -148,12 +148,9 @@ namespace encryption_code_book.Model
             }
         }
 
-        public void Comfirm()
+        public bool Comfirm()
         {
-            if (_stringEncryption.Confirm(ComfirmKey, Key))
-            {
-                //—È÷§
-            }
+            return _stringEncryption.Confirm(ComfirmKey, Key);
         }
 
         [JsonIgnore]

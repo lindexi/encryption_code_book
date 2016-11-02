@@ -25,9 +25,9 @@ namespace encryption_code_book.View
     {
         public EncryCodeStoragePage()
         {
-            View=new EncryCodeStorageModel();
+            View = new EncryCodeStorageModel();
             this.InitializeComponent();
-
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
         private EncryCodeStorageModel View
