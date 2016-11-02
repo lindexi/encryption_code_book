@@ -41,6 +41,12 @@ namespace encryption_code_book.Model
             set;
             get;
         }
+
+        public string Str
+        {
+            set;
+            get;
+        }
     }
 
     public class SecretScribeCode
@@ -133,7 +139,7 @@ namespace encryption_code_book.Model
                 //EncryCodeSecretScribe = encryCodeSecretScribe;
                 Name = encryCodeSecretScribe.Name;
                 ComfirmKey = encryCodeSecretScribe.ComfirmKey;
-
+                Str = encryCodeSecretScribe.Str;
                 OnRead?.Invoke(this, true);
             }
             catch (Exception)
@@ -142,6 +148,17 @@ namespace encryption_code_book.Model
             }
         }
 
+        public void Comfirm()
+        {
+            if (_stringEncryption.Confirm(ComfirmKey, Key))
+            {
+                //—È÷§
+            }
+        }
+
+        [JsonIgnore]
+        private IEncryption _stringEncryption=new StringEncryption();
+        private 
         private bool _check;
 
         //private string _name;
@@ -174,7 +191,8 @@ namespace encryption_code_book.Model
                 EncryCodeSecretScribe encryCodeSecretScribe = new EncryCodeSecretScribe()
                 {
                     Name = Name,
-                    ComfirmKey = ComfirmKey
+                    ComfirmKey = ComfirmKey,
+                    Str=Str
                 };
 
                 string str = "data.encry";

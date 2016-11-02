@@ -15,9 +15,18 @@ namespace encryption_code_book.Model
         [JsonIgnore]
         public string Key
         {
-            set;
-            get;
+            set
+            {
+                _key = value;
+                OnPropertyChanged();
+            }
+            get
+            {
+                return _key;
+            }
         }
+
+        private string _key;
         [JsonIgnore]
         public bool AreNewEncrypt
         {
