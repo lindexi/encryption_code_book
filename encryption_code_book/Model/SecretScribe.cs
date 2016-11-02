@@ -155,7 +155,7 @@ namespace encryption_code_book.Model
 
         [JsonIgnore]
         private IEncryption _stringEncryption=new StringEncryption();
-        private 
+         
         private bool _check;
 
         //private string _name;

@@ -117,6 +117,7 @@
     <Compile Include="ViewModel\CodeModel.cs" />
     <Compile Include="ViewModel\EncryCodeStorageModel.cs" />
     <Compile Include="ViewModel\KeyModel.cs" />
+    <Compile Include="ViewModel\NewCodeStorageModel.cs" />
     <Compile Include="ViewModel\NotifyProperty.cs" />
     <Compile Include="View\CodePage.xaml.cs">
       <DependentUpon>CodePage.xaml</DependentUpon>
@@ -126,6 +127,9 @@
     </Compile>
     <Compile Include="View\KeyPage.xaml.cs">
       <DependentUpon>KeyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewCodeStoragePage.xaml.cs">
+      <DependentUpon>NewCodeStoragePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\KeyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewCodeStoragePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
