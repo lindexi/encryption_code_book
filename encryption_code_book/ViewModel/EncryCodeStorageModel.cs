@@ -1,4 +1,7 @@
-﻿using System;
+﻿// lindexi
+// 19:13
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -26,8 +29,6 @@ namespace encryption_code_book.ViewModel
             Read();
         }
 
-        private Visibility _readVisibility;
-
         public bool EncryCodeStorageEnable
         {
             set
@@ -45,8 +46,6 @@ namespace encryption_code_book.ViewModel
             }
         }
 
-        private bool _encryCodeStorageEnable;
-
         public Visibility ReadVisibility
         {
             set
@@ -59,7 +58,6 @@ namespace encryption_code_book.ViewModel
             {
                 return _readVisibility;
             }
-
         }
 
         public ObservableCollection<SecretScribe> EncryCodeStorage
@@ -73,10 +71,19 @@ namespace encryption_code_book.ViewModel
             {
                 return _encryCodeStorage;
             }
+        }
 
+        public void NewEncryCodeStorage()
+        {
+            //AccountGoverment.View.Frame
+            //添加后退
         }
 
         private ObservableCollection<SecretScribe> _encryCodeStorage;
+
+        private bool _encryCodeStorageEnable;
+
+        private Visibility _readVisibility;
 
         private async void Read()
         {
@@ -103,24 +110,22 @@ namespace encryption_code_book.ViewModel
                     }
                     catch
                     {
-
                     }
                 }
-
-
-
             }
 
             foreach (var temp in account.EncryCodeStorage)
             {
-                await temp.Read();
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                () =>
+                if(string.IsNullOrEmpty(temp.ComfirmKey))
                 {
-                    EncryCodeStorage.Add(temp);
-                });
+                    await temp.Read();
+                }
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () =>
+                    {
+                        EncryCodeStorage.Add(temp);
+                    });
             }
-
 
 
             ReadVisibility = Visibility.Collapsed;
@@ -141,7 +146,6 @@ namespace encryption_code_book.ViewModel
             }
             catch (Exception)
             {
-
             }
             return new List<SecretScribe>();
         }
