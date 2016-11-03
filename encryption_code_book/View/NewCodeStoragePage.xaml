@@ -8,6 +8,26 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel>
+                <TextBox Margin="10,10,10,10" Header="密码本名称："></TextBox>
+                <TextBox Margin="10,10,10,10" Header="请输入密码："
+                         PlaceholderText="密码可以是中文，长度大于3"></TextBox>
+                <TextBox Margin="10,10,10,10" Header="密码提示："></TextBox>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="10,10,10,10" Text="密码本位置"></TextBlock>
+                    <Button Content="选择"></Button>
+                </StackPanel>
+                <TextBlock ></TextBlock>
+                <TextBlock ></TextBlock>
+                <Grid>
+                    <Button Margin="10,10,10,10" Content="确定"></Button>
+                    <Button Margin="10,10,10,10" Content="返回"
+                            HorizontalAlignment="Right"></Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
