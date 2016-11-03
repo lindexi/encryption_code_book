@@ -1,5 +1,5 @@
 ﻿// lindexi
-// 19:13
+// 19:19
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,9 @@ using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using encryption_code_book.Model;
+using encryption_code_book.View;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Newtonsoft.Json;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
@@ -75,7 +77,8 @@ namespace encryption_code_book.ViewModel
 
         public void NewEncryCodeStorage()
         {
-            //AccountGoverment.View.Frame
+            Frame frame = AccountGoverment.View.Frame;
+            frame.Navigate(typeof(NewCodeStoragePage));
             //添加后退
         }
 
@@ -116,7 +119,7 @@ namespace encryption_code_book.ViewModel
 
             foreach (var temp in account.EncryCodeStorage)
             {
-                if(string.IsNullOrEmpty(temp.ComfirmKey))
+                if (string.IsNullOrEmpty(temp.ComfirmKey))
                 {
                     await temp.Read();
                 }

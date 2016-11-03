@@ -45,7 +45,8 @@
                 <Button Grid.Row="1"
                        Margin="10,10,10,10"
                        IsEnabled="{x:Bind View.EncryCodeStorageEnable,Mode=OneWay}"
-                       HorizontalAlignment="Stretch">
+                       HorizontalAlignment="Stretch"
+                       Click="{x:Bind View.NewEncryCodeStorage}">
                     <Button.Content>
                         <Grid>
                             <StackPanel Orientation="Horizontal">
