@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using encryption_code_book.ViewModel;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
@@ -24,7 +25,14 @@ namespace encryption_code_book.View
     {
         public NewCodeStoragePage()
         {
+            View = new NewCodeStorageModel();
             this.InitializeComponent();
+        }
+
+        private ViewModel.NewCodeStorageModel View
+        {
+            set;
+            get;
         }
     }
 }
