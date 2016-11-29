@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "encryption_code_book", "encryption_code_book\encryption_code_book.csproj", "{3A9497F7-147A-4963-8888-4297F5A4AACB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cencry_密码本", "cencry_密码本\cencry_密码本.csproj", "{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -33,6 +35,24 @@ Global
 		{3A9497F7-147A-4963-8888-4297F5A4AACB}.Release|x86.ActiveCfg = Release|x86
 		{3A9497F7-147A-4963-8888-4297F5A4AACB}.Release|x86.Build.0 = Release|x86
 		{3A9497F7-147A-4963-8888-4297F5A4AACB}.Release|x86.Deploy.0 = Release|x86
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|ARM.ActiveCfg = Debug|ARM
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|ARM.Build.0 = Debug|ARM
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|ARM.Deploy.0 = Debug|ARM
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|x64.ActiveCfg = Debug|x64
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|x64.Build.0 = Debug|x64
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|x64.Deploy.0 = Debug|x64
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|x86.ActiveCfg = Debug|x86
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|x86.Build.0 = Debug|x86
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Debug|x86.Deploy.0 = Debug|x86
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|ARM.ActiveCfg = Release|ARM
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|ARM.Build.0 = Release|ARM
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|ARM.Deploy.0 = Release|ARM
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x64.ActiveCfg = Release|x64
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x64.Build.0 = Release|x64
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x64.Deploy.0 = Release|x64
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x86.ActiveCfg = Release|x86
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x86.Build.0 = Release|x86
+		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

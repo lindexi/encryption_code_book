@@ -108,6 +108,7 @@
     </Compile>
     <Compile Include="Model\Iencryption.cs" />
     <Compile Include="Model\KeySecret.cs" />
+    <Compile Include="Model\NewKeyUrl.cs" />
     <Compile Include="Model\SecretCode.cs" />
     <Compile Include="Model\SecretScribe.cs" />
     <Compile Include="Model\string_encryption.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="ViewModel\EncryCodeStorageModel.cs" />
     <Compile Include="ViewModel\KeyModel.cs" />
     <Compile Include="ViewModel\NewCodeStorageModel.cs" />
+    <Compile Include="ViewModel\NewKeyUrlModel.cs" />
     <Compile Include="ViewModel\NotifyProperty.cs" />
     <Compile Include="View\CodePage.xaml.cs">
       <DependentUpon>CodePage.xaml</DependentUpon>

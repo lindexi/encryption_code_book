@@ -24,6 +24,11 @@
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
                         </Style>
                     </ListView.ItemContainerStyle>
+                    <!--<ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>-->
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="view:SecretScribe">
                             <Grid>
