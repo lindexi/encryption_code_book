@@ -34,8 +34,15 @@ namespace encryption_code_book.Model
             bool capitalKey, bool smallKey, bool numKey, bool specialCharacter, int standby = 0)
         {
             //string url = "https://www.divcss5.com/rumen/r93.shtml";
-            Uri uri = new Uri(url);
-            url = uri.Host;
+            try
+            {
+                Uri uri = new Uri(url);
+                url = uri.Host;
+            }
+            catch 
+            {
+                
+            }
             //System.Console.WriteLine(url); 
 
             string x = Md5(name + url + standby);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using newKey = encryption_code_book.Model.NewKeyUrl;
 namespace cencry_密码本
 {
     [TestClass]
-    class NewKeyUrl
+    public class NewKeyUrl
     {
         [TestMethod]
         public void NewKey()
@@ -18,6 +19,8 @@ namespace cencry_密码本
 
             StringBuilder str = new StringBuilder();
             NewKeyAccount(str);
+            //new DebugSettings().
+            Debug.Write(str.ToString());
         }
 
         private void NewKeyAccount(StringBuilder str)
@@ -99,9 +102,9 @@ namespace cencry_密码本
             //bool smallKey = true;
             //bool numKey = true;
             //bool specialCharacter = true;
-            NewKey(name,key,url,num,
-                true,true,true,true,
-                str,partition);
+            NewKey(name, key, url, num,
+                true, true, true, true,
+                str, partition);
         }
 
         private void NewKey(string name, string key, string url,
