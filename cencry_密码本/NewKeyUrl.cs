@@ -22,11 +22,14 @@ namespace cencry_密码本
 
             StringBuilder str = new StringBuilder();
 
-            NewKeyAccount(str);
+            //NewKeyAccount(str);
 
-            //string x = "lindexi",
-            //    x1 = "123456",
-            //    x2 = "csdn.net";
+            string x = "lindexi",
+                x1 = "123456",
+                x2 = "csdn.net";
+            str.Append(newKey.Md5(x) + "\r\n");
+            str.Append(newKey.Md5(x1) + "\r\n");
+            str.Append(newKey.Md5(x2) + "\r\n");
 
             //str.Append(newKey.HaKey(x, x1, x2));
 

@@ -307,7 +307,7 @@ namespace encryption_code_book.Model
             return n;
         }
 
-        private static string Md5(string str)
+        public static string Md5(string str)
         {
             if (string.IsNullOrEmpty(str))
             {
