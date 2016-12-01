@@ -14,9 +14,7 @@ namespace encryption_code_book.Model
 {
     public class NewKeyUrl
     {
-        public NewKeyUrl()
-        {
-        }
+
 
         /// <summary>
         ///     输入域名生成密码
@@ -39,9 +37,9 @@ namespace encryption_code_book.Model
                 Uri uri = new Uri(url);
                 url = uri.Host;
             }
-            catch 
+            catch
             {
-                
+
             }
             //System.Console.WriteLine(url); 
 
@@ -81,16 +79,20 @@ namespace encryption_code_book.Model
 
             for (int i = 0; i < key.Length; i++)
             {
-                int n = HaKey(x, x1, x2) ^ str[i%str.Length];
+                int n = HaKey(x, x1, x2) ^ str[i % str.Length];
                 if (n < 0)
                 {
-                    n = n*-1;
+                    n = n * -1;
                 }
 
-                n = n%length;
+                n = n % length;
                 while (finish[n])
                 {
                     n++;
+                    if (n >= length)
+                    {
+                        n = 0;
+                    }
                 }
 
                 temp[n] = key[i];
@@ -156,7 +158,7 @@ namespace encryption_code_book.Model
 
             foreach (var temp in keyAccount)
             {
-                temp.Scale = temp.Scale/num*36;
+                temp.Scale = temp.Scale / num * 36;
             }
 
             num = 0;
@@ -180,7 +182,7 @@ namespace encryption_code_book.Model
 
             foreach (var temp in keyAccount)
             {
-                key.Append(temp.Key[(int) num%temp.Key.Count]);
+                key.Append(temp.Key[(int)num % temp.Key.Count]);
             }
 
             return key.ToString();
@@ -217,7 +219,7 @@ namespace encryption_code_book.Model
             {
                 if (n - temp.Scale <= 0)
                 {
-                    n = x1%temp.Key.Count;
+                    n = x1 % temp.Key.Count;
                     return temp.Key[n];
                 }
             }
@@ -232,13 +234,13 @@ namespace encryption_code_book.Model
             {
                 var temp = new KeyAccount()
                 {
-                    Scale = (double) 1,
+                    Scale = (double)1,
                     Key = new List<string>()
                 };
                 keyCapital.Add(temp);
                 for (int i = 'A'; i < 'Z' + 1; i++)
                 {
-                    temp.Key.Add(((char) i).ToString());
+                    temp.Key.Add(((char)i).ToString());
                 }
                 n++;
             }
@@ -246,13 +248,13 @@ namespace encryption_code_book.Model
             {
                 var temp = new KeyAccount()
                 {
-                    Scale = (double) 1,
+                    Scale = (double)1,
                     Key = new List<string>()
                 };
                 keyCapital.Add(temp);
                 for (int i = 'a'; i < 'z' + 1; i++)
                 {
-                    temp.Key.Add(((char) i).ToString());
+                    temp.Key.Add(((char)i).ToString());
                 }
                 n++;
             }
@@ -260,7 +262,7 @@ namespace encryption_code_book.Model
             {
                 keyCapital.Add(new KeyAccount()
                 {
-                    Scale = (double) 1/2,
+                    Scale = (double)1 / 2,
                     Key = new List<string>()
                     {
                         "1",
@@ -281,7 +283,7 @@ namespace encryption_code_book.Model
             {
                 keyCapital.Add(new KeyAccount()
                 {
-                    Scale = (double) 1/2,
+                    Scale = (double)1 / 2,
                     Key = new List<string>()
                     {
                         "!",
