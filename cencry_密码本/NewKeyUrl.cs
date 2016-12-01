@@ -21,7 +21,15 @@ namespace cencry_密码本
             //newKey.NewKey()
 
             StringBuilder str = new StringBuilder();
+
             NewKeyAccount(str);
+
+            //string x = "lindexi",
+            //    x1 = "123456",
+            //    x2 = "csdn.net";
+
+            //str.Append(newKey.HaKey(x, x1, x2));
+
             //new DebugSettings().
             //Debug.Write(str.ToString());
             await Storage(str.ToString());
@@ -92,6 +100,7 @@ namespace cencry_密码本
             {
                 str.Append(partition + "url:" + temp + "\r\n");
                 NewKeyNum(name, key, temp, str, partition);
+                //str.Append($"has:{newKey.HaKey(name, key, temp)}\r\n");
             }
         }
 
@@ -162,7 +171,7 @@ namespace cencry_密码本
             }
             catch (Exception e)
             {
-                str.Append(partition+e.ToString());
+                str.Append(partition + e.ToString());
             }
         }
 
