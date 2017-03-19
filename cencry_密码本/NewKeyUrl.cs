@@ -31,6 +31,8 @@ namespace cencry_密码本
             str.Append(newKey.Md5(x1) + "\r\n");
             str.Append(newKey.Md5(x2) + "\r\n");
 
+
+
             //str.Append(newKey.HaKey(x, x1, x2));
 
             //new DebugSettings().

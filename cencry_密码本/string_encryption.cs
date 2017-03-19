@@ -14,6 +14,7 @@ namespace cencry密码本
     [TestClass]
     public class string_encryption
     {
+        
         [TestMethod]
         //public void encryption()
         //{
