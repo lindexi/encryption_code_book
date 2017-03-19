@@ -27,24 +27,28 @@ namespace encryption_code_book
             //view = new note();
             InitializeComponent();
             //frame.Navigate(typeof(note_page));
+            ViewModel = (ViewModel.ViewModel) DataContext;
+            ViewModel.OnNavigatedTo(frame);
         }
+
+        public ViewModel.ViewModel ViewModel { set; get; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            AccountGoverment.View.Frame = frame;
+            //AccountGoverment.View.Frame = frame;
 
-            if (string.IsNullOrEmpty(AccountGoverment.View.Account?.Key?.Key))
-            {
-                AccountGoverment.View.NavigateKey();
-            }
-            else
-            {
-                AccountGoverment.View.NacigateCode();
-            }
+            //if (string.IsNullOrEmpty(AccountGoverment.View.Account?.Key?.Key))
+            //{
+            //    AccountGoverment.View.NavigateKey();
+            //}
+            //else
+            //{
+            //    AccountGoverment.View.NacigateCode();
+            //}
 
-            frame.Navigate(typeof(EncryCodeStoragePage));
+            //frame.Navigate(typeof(EncryCodeStoragePage));
 
-            base.OnNavigatedTo(e);
+            //base.OnNavigatedTo(e);
 
         }
 
@@ -52,7 +56,7 @@ namespace encryption_code_book
 
         private void button_click(object sender, RoutedEventArgs e)
         {
-            split_view.IsPaneOpen = !split_view.IsPaneOpen;
+            //split_view.IsPaneOpen = !split_view.IsPaneOpen;
         }
 
         private void nagivate(object sender, SelectionChangedEventArgs e)

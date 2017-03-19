@@ -360,11 +360,17 @@
   <ProductReservedInfo>
     <MainPackageIdentityName>43179.5635982EE69E1</MainPackageIdentityName>
     <ReservedNames>
+      <ReservedName>私密密码本 uwp</ReservedName>
+      <ReservedName>EncryptionCodeBook</ReservedName>
       <ReservedName>私密密码本</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
+    <MainPackageIdentityName>43179.90040479E301</MainPackageIdentityName>
+    <MainPackageIdentityName>43179.uwp</MainPackageIdentityName>
+    <MainPackageIdentityName>43179.1161685EE70AE</MainPackageIdentityName>
     <MainPackageIdentityName>43179.winMarkdown</MainPackageIdentityName>
+    <MainPackageIdentityName>43179.171160C88AB1</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://dev.windows.com/dashboard/Application?appId=9NBLGGH5CC3G" />
+  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9NBLGGH5CC3G" />
 </StoreAssociation>

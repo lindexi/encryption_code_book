@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+      <Image Source="ms-appx:///Assets/2017年3月19日 100252.jpg"></Image>
     </Grid>
 </Page>
