@@ -63,40 +63,40 @@ namespace encryption_code_book.ViewModel
 
         public EventHandler OnRead;
 
-        private async void Read()
+        private void Read()
         {
-            //文件夹
-            Key = new KeySecret();
-            Account.Key = Key;
-            try
-            {
-                StorageFolder folder = null;
-                StorageFile file;
-                try
-                {
-                    folder = await ApplicationData.Current.LocalFolder.GetFolderAsync(
-                        Account.Folder);
-                    file = await folder.GetFileAsync(
-                        Account.FacitFile);
-                    await Key.Read(file);
-                }
-                catch (FileNotFoundException)
-                {
-                    if (folder == null)
-                    {
-                        folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(
-                            Account.Folder);
-                    }
-                    file = await folder.CreateFileAsync(Account.FacitFile);
-                    Key.File = file;
-                }
-            }
-            catch
-            {
+            ////文件夹
+            //Key = new KeySecret();
+            //Account.Key = Key;
+            //try
+            //{
+            //    StorageFolder folder = null;
+            //    StorageFile file;
+            //    try
+            //    {
+            //        folder = await ApplicationData.Current.LocalFolder.GetFolderAsync(
+            //            Account.Folder);
+            //        file = await folder.GetFileAsync(
+            //            Account.FacitFile);
+            //        await Key.Read(file);
+            //    }
+            //    catch (FileNotFoundException)
+            //    {
+            //        if (folder == null)
+            //        {
+            //            folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(
+            //                Account.Folder);
+            //        }
+            //        file = await folder.CreateFileAsync(Account.FacitFile);
+            //        Key.File = file;
+            //    }
+            //}
+            //catch
+            //{
 
-            }
+            //}
 
-            OnRead?.Invoke(this,null);
+            //OnRead?.Invoke(this,null);
         }
 
         public void NavigateKey()

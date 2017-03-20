@@ -5,9 +5,10 @@
     xmlns:local="using:encryption_code_book.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding Source={StaticResource ViewModel},Path=[CodeModel]}"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{x:Bind View}">
          <Grid.ColumnDefinitions>
              <ColumnDefinition Width="Auto"></ColumnDefinition>
              <ColumnDefinition Width="*"></ColumnDefinition>

@@ -21,12 +21,14 @@ namespace encryption_code_book.View
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
+    [ViewModel(ViewModel = typeof(NewCodeStorageModel))]
     public sealed partial class NewCodeStoragePage : Page
     {
         public NewCodeStoragePage()
         {
-            View = new NewCodeStorageModel();
+            //View = new NewCodeStorageModel();
             this.InitializeComponent();
+            View = (NewCodeStorageModel)DataContext;
         }
 
         private ViewModel.NewCodeStorageModel View

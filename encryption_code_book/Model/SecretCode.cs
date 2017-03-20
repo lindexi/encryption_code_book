@@ -6,6 +6,7 @@ namespace encryption_code_book.Model
         {
         }
 
+        public string Str { get; set; }
 
     }
 }

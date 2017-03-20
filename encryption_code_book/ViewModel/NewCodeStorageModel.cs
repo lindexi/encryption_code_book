@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using encryption_code_book.Model;
 
 namespace encryption_code_book.ViewModel
 {
-    public class NewCodeStorageModel:NotifyProperty
+    public class NewCodeStorageModel : ViewModelBase
     {
         public NewCodeStorageModel()
         {
@@ -30,7 +31,7 @@ namespace encryption_code_book.ViewModel
         }
 
         private string _comfirmKey;
-       
+
 
         public string Str
         {
@@ -78,17 +79,89 @@ namespace encryption_code_book.ViewModel
 
         public void NewCodeStorage()
         {
-            
+            if (Comfirm())
+            {
+                //Send
+                SecretCode key =new SecretCode();
+                key.Str = Str;
+                key.Key = ComfirmKey;
+                key.Name = Name;
+                key.Folder = EncryCodeFolder;
+                Send?.Invoke(this,new NewCodeStorageMessage(this)
+                {
+                    Secret = key
+                });
+            }
+        }
+
+        private bool Comfirm()
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                return false;
+            }
+            if (ComfirmKey.Length <= 3 || ComfirmKey.Length >= 30)
+            {
+                return false;
+            }
+            return true;
         }
 
         public void NewEncryCodeFolder()
         {
-            
+
         }
 
         public void NavigateEncryCodeStoragePage()
         {
-            
+
         }
+
+        public override void OnNavigatedFrom(object obj)
+        {
+            Name = string.Empty;
+            ComfirmKey = string.Empty;
+
+        }
+
+        public override void OnNavigatedTo(object obj)
+        {
+            //Key = (KeySecret)obj;
+            Name = "默认密码本";
+        }
+
+        public override void Receive(object source, Message message)
+        {
+        }
+    }
+
+    internal class NewCodeStorageMessage:Message
+    {
+        public NewCodeStorageMessage(ViewModelBase source) : base(source)
+        {
+
+        }
+
+        public SecretCode Secret { set; get; }
+    }
+
+    internal class CodeStorageComposite : Composite
+    {
+        public CodeStorageComposite()
+        {
+            Message = typeof(NewCodeStorageMessage);
+        }
+
+        public override async void Run(object sender, Message o)
+        {
+            var message = (NewCodeStorageMessage) o;
+            var viewModel = sender as ViewModel;
+            if (viewModel != null)
+            {
+                viewModel.Account.Key = message.Secret;
+                await viewModel.Account.Storage();
+            }
+        }
+
     }
 }

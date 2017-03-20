@@ -1,4 +1,12 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using Windows.Data.Json;
+using Windows.Storage;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Provider;
+using Newtonsoft.Json;
 
 namespace encryption_code_book.Model
 {
@@ -9,6 +17,7 @@ namespace encryption_code_book.Model
 
         }
 
+
         public KeySecret Key
         {
             set;
@@ -17,44 +26,85 @@ namespace encryption_code_book.Model
 
         public string Folder
         {
-            set;
             get;
         } = "encryption";
 
         public string Patched
         {
-            set;
             get;
         } = ".encry";
 
         public string FacitFile
         {
-            set;
             get;
         } = "encryption.encry";
 
         public string EncryptionCodeNoteFolder
         {
-            set;
             get;
         } = "EncryptionCode";
 
-        public string Encry
-        {
-            set;
-            get;
-        } = "私密密码本 2";
+        public const string Encry
+         = "私密密码本 2";
 
-        public int ComfirmkeyLength
+        public static string Serializer()
         {
-            set;
-            get;
-        } = 1024;
+            string str = Encry + "\r\n" +
+                         "林德熙" + "\r\n" +
+                         ComfirmkeyLength + "\r\n";
+            return str.PadRight(1024);
+        }
+
+        public const int ComfirmkeyLength
+        = 1024;
 
         public Encoding Encod
         {
             set;
             get;
         } = Encoding.Unicode;
+
+        public static async Task<Account> Read(StorageFile file)
+        {
+            CachedFileManager.DeferUpdates(file);
+
+            string str = await FileIO.ReadTextAsync(file);
+            var comfirm = str.Substring(0, 1024);
+            if (comfirm == Serializer())
+            {
+                
+            }
+            str = str.Substring(1024);
+
+            FileUpdateStatus updateStatus = await CachedFileManager.CompleteUpdatesAsync(file);
+
+            var account = JsonConvert.DeserializeObject<Account>(str);
+            if (account == null)
+            {
+                throw new Exception();
+            }
+            var key = account.Key;
+            if (string.IsNullOrEmpty(key.Token))
+            {
+                key.AreNewEncrypt = true;
+            }
+            else
+            {
+                key.Folder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(key.Token);
+            }
+
+            return account;
+        }
+
+        public async Task Storage()
+        {
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
+            var file = await folder.CreateFileAsync(FacitFile,CreationCollisionOption.ReplaceExisting);
+            string str = JsonConvert.SerializeObject(this);
+            str = Serializer() + str;
+            CachedFileManager.DeferUpdates(file);
+            await FileIO.WriteTextAsync(file, str);
+            FileUpdateStatus updateStatus = await CachedFileManager.CompleteUpdatesAsync(file);
+        }
     }
 }

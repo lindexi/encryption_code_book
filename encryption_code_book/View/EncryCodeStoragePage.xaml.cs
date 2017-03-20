@@ -21,6 +21,7 @@ namespace encryption_code_book.View
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
+    [ViewModel(ViewModel = typeof(EncryCodeStorageModel))]
     public sealed partial class EncryCodeStoragePage : Page
     {
         public EncryCodeStoragePage()

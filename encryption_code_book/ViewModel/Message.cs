@@ -7,10 +7,11 @@
 
     public class Message : IMessage
     {
-        public Message()
+        public Message(ViewModelBase source)
         {
-
+            Source = source;
         }
+
         /// <summary>
         /// 发送者
         /// </summary>

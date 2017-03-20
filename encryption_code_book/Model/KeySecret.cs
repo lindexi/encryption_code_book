@@ -1,6 +1,10 @@
+using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Provider;
+using Windows.UI.Popups;
 using encryption_code_book.ViewModel;
 using Newtonsoft.Json;
 
@@ -12,6 +16,16 @@ namespace encryption_code_book.Model
         {
             AreNewEncrypt = true;
         }
+
+        [JsonIgnore]
+        private Account Account { get; }
+
+        public KeySecret(Account account)
+        {
+            AreNewEncrypt = true;
+            Account = account;
+        }
+
         [JsonIgnore]
         public string Key
         {
@@ -53,7 +67,10 @@ namespace encryption_code_book.Model
             set;
             get;
         }
-        
+
+        [JsonIgnore]
+        public StorageFolder Folder { set; get; }
+
         public string Token
         {
             set;
@@ -65,26 +82,35 @@ namespace encryption_code_book.Model
             //读了确认
             try
             {
-                byte[] buffer = new byte[AccountGoverment.View.Account.ComfirmkeyLength];
-
+                CachedFileManager.DeferUpdates(file);
                 using (Stream stream = await file.OpenStreamForReadAsync())
                 {
-                    stream.Read(buffer, 0, AccountGoverment.View.Account.ComfirmkeyLength);
+                    byte[] buffer = new byte[1024];
+                    stream.Read(buffer, 0, 1024);
+                    string comfirm = Account.Encod.GetString(buffer).Trim();
+                    if (!comfirm.Equals(Account.Serializer()))
+                    {
+                        //以前版本
+                        await (new MessageDialog("发现以前版本，请使用以前版本软件打开")).ShowAsync();
+                    }
+                    ComfirmKey = Account.Encod.GetString(buffer);
                 }
-
-                ComfirmKey = AccountGoverment.View.Account.Encod.GetString(buffer);
-                File = file;
-                AreNewEncrypt = false;
+                FileUpdateStatus updateStatus = await CachedFileManager.CompleteUpdatesAsync(file);
+                if (updateStatus == FileUpdateStatus.Complete)
+                {
+                    File = file;
+                    AreNewEncrypt = false;
+                }
             }
             catch
             {
-                
+
             }
         }
 
         public void Storage()
         {
-            
+
         }
     }
 }

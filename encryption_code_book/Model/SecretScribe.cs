@@ -15,7 +15,7 @@ namespace encryption_code_book.Model
     {
         public EncryCodeSecretScribe()
         {
-            Encry = AccountGoverment.View.Account.Encry;
+            Encry = Account.Encry;
         }
 
         public EncryCodeSecretScribe(string name, string comfirmKey)

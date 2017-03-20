@@ -30,6 +30,7 @@ namespace encryption_code_book.ViewModel
             _viewModel?.OnNavigatedFrom(null);
             ViewModelPage view = ViewModel.Find(temp =>temp.Equals(viewModel));
             await view.Navigate(Content, paramter);
+            view.ViewModel.Send += Receive;
             _viewModel = view.ViewModel;
         }
         //当前ViewModel

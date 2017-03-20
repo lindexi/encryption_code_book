@@ -7,7 +7,8 @@ using encryption_code_book.Model;
 
 namespace encryption_code_book.ViewModel
 {
-    public class CodeModel:NotifyProperty
+    [ViewModel]
+    public class CodeModel:ViewModelBase
     {
         public CodeModel()
         {
@@ -15,14 +16,26 @@ namespace encryption_code_book.ViewModel
 
         private void Read()
         {
-            if (AccountGoverment.View.Key is SecretCode)
-            {
+            //if (AccountGoverment.View.Key is SecretCode)
+            //{
                 
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 
-            }
+            //}
+        }
+
+        public override void OnNavigatedFrom(object obj)
+        {
+        }
+
+        public override void OnNavigatedTo(object obj)
+        {
+        }
+
+        public override void Receive(object source, Message message)
+        {
         }
     }
 

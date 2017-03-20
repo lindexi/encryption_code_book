@@ -19,11 +19,12 @@ using encryption_code_book.Model;
 using encryption_code_book.View;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Newtonsoft.Json;
+using FileIO = encryption_code_book.Model.FileIO;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace encryption_code_book.ViewModel
 {
-    public class EncryCodeStorageModel : NotifyProperty
+    public class EncryCodeStorageModel : ViewModelBase
     {
         public EncryCodeStorageModel()
         {
@@ -151,6 +152,18 @@ namespace encryption_code_book.ViewModel
             {
             }
             return new List<SecretScribe>();
+        }
+
+        public override void OnNavigatedFrom(object obj)
+        {
+        }
+
+        public override void OnNavigatedTo(object obj)
+        {
+        }
+
+        public override void Receive(object source, Message message)
+        {
         }
     }
 }
