@@ -24,7 +24,7 @@ namespace encryption_code_book.Model
         public static async Task WriteTextAsync(StorageFile file, string contents)
         {
             await WriteTextAsync(file, contents, UnicodeEncoding.Utf8);
-        }
+        } 
 
         public static async Task WriteTextAsync(StorageFile file, string contents, UnicodeEncoding encoding )
         {

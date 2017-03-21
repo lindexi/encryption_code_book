@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using encryption_code_book.Model;
 
 namespace encryption_code_book.ViewModel
@@ -159,7 +160,16 @@ namespace encryption_code_book.ViewModel
             if (viewModel != null)
             {
                 viewModel.Account.Key = message.Secret;
+                if (message.Secret.Folder == null)
+                {
+                    message.Secret.Folder =
+                        await  ApplicationData.Current.LocalFolder.CreateFolderAsync(viewModel.Account.Folder);
+                }
+                var folder = message.Secret.Folder;
+                viewModel.Account.Key.Token= StorageApplicationPermissions.FutureAccessList.Add(folder);
+
                 await viewModel.Account.Storage();
+                await viewModel.Account.Key.Storage();
             }
         }
 
