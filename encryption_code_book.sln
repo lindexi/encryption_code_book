@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "encryption_code_book", "encryption_code_book\encryption_code_book.csproj", "{3A9497F7-147A-4963-8888-4297F5A4AACB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cencry_密码本", "cencry_密码本\cencry_密码本.csproj", "{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionCodeBook", "EncryptionCodeBook\EncryptionCodeBook.csproj", "{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,8 +55,29 @@ Global
 		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x86.ActiveCfg = Release|x86
 		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x86.Build.0 = Release|x86
 		{46473BE9-2B28-4338-94D5-CE7B09BAC1E1}.Release|x86.Deploy.0 = Release|x86
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|ARM.Build.0 = Debug|ARM
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|ARM.Deploy.0 = Debug|ARM
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|x64.ActiveCfg = Debug|x64
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|x64.Build.0 = Debug|x64
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|x64.Deploy.0 = Debug|x64
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|x86.ActiveCfg = Debug|x86
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|x86.Build.0 = Debug|x86
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Debug|x86.Deploy.0 = Debug|x86
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|ARM.ActiveCfg = Release|ARM
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|ARM.Build.0 = Release|ARM
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|ARM.Deploy.0 = Release|ARM
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|x64.ActiveCfg = Release|x64
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|x64.Build.0 = Release|x64
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|x64.Deploy.0 = Release|x64
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|x86.ActiveCfg = Release|x86
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|x86.Build.0 = Release|x86
+		{4B5D1BAB-D448-4BD9-94EC-36474BD57A48}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14A3DB3B-7AB9-48C0-ABB3-BD0800452A69}
 	EndGlobalSection
 EndGlobal
