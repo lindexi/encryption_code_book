@@ -36,7 +36,7 @@ namespace EncryptionCodeBook.Model
         /// </summary>
         /// <param name="key"></param>
         /// <param name="str"></param>
-        public string Decryption(string key, byte[] str)
+        public string Decrypt(string key, byte[] str)
         {
             var jaypejapeazaGeakeleargairhem = StringToBuffer(key);
 
