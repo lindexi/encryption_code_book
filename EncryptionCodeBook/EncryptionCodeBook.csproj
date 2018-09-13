@@ -100,6 +100,30 @@
     </Compile>
     <Compile Include="Model\LaculooTome.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\CerpislaTeerurchuModel.cs" />
+    <Compile Include="ViewModel\KasteFirmouModel.cs" />
+    <Compile Include="ViewModel\KekerYallkuModel.cs" />
+    <Compile Include="ViewModel\LaimibairJatraljilairModel.cs" />
+    <Compile Include="ViewModel\LerewheStaroucarModel.cs" />
+    <Compile Include="ViewModel\MooborNursouModel.cs" />
+    <Compile Include="View\CerpislaTeerurchuPage.xaml.cs">
+      <DependentUpon>CerpislaTeerurchuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\KasteFirmouPage.xaml.cs">
+      <DependentUpon>KasteFirmouPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\KekerYallkuPage.xaml.cs">
+      <DependentUpon>KekerYallkuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LaimibairJatraljilairPage.xaml.cs">
+      <DependentUpon>LaimibairJatraljilairPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LerewheStaroucarPage.xaml.cs">
+      <DependentUpon>LerewheStaroucarPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MooborNursouPage.xaml.cs">
+      <DependentUpon>MooborNursouPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -126,6 +150,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\CerpislaTeerurchuPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\KasteFirmouPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\KekerYallkuPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LaimibairJatraljilairPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LerewheStaroucarPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MooborNursouPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="lindexi.MVVM.Framework">
@@ -138,9 +186,7 @@
       <Version>6.1.7</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
