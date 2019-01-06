@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using EncryptionCodeBook.Model;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -25,6 +26,11 @@ namespace EncryptionCodeBook
         public MainPage()
         {
             this.InitializeComponent();
+
+            var laculooTome = new LaculooTome();
+            var merebowTalwenee = "林德熙";
+            var tereboteabaFoope = laculooTome.Encryption(merebowTalwenee,"lindexi");
+            var saneapoKarikai = laculooTome.Decrypt(merebowTalwenee, tereboteabaFoope);
         }
     }
 }
