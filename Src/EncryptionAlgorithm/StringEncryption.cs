@@ -5,11 +5,19 @@ namespace Lindexi.Src.EncryptionAlgorithm
 {
     public static class StringEncryption
     {
+        private const int DefaultTempStringLength = 1024;
+        private const string DefaultSuffix = "结束";
+
         // 要求 text 小于 1024 个字符
-        public static char[] Encrypt(string text, string key, int tempStringLength = 1024, string suffix = "结束")
+        public static char[] Encrypt(string text, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
         {
             // 缓存长度
             // 后缀
+
+            if (text.Length + suffix.Length > tempStringLength)
+            {
+                throw new ArgumentOutOfRangeException($"需要加密的字符串的长度加上后缀的长度，需要小于缓存长度");
+            }
 
             var random = new Random();
 
@@ -64,7 +72,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
         }
 
 
-        public static string Decrypt(string str, string key, int tempStringLength = 1024, string suffix = "结束")
+        public static string Decrypt(string str, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
         {
             // 缓存长度
             // 后缀
