@@ -6,14 +6,17 @@ namespace Lindexi.Src.EncryptionAlgorithm
     public static class StringEncryption
     {
         // 要求 text 小于 1024 个字符
-        public static char[] Encrypt(string text, string key)
+        public static char[] Encrypt(string text, string key, int tempStringLength = 1024, string suffix = "结束")
         {
+            // 缓存长度
+            // 后缀
+
             var random = new Random();
 
-            char[] tempCharList = new char[TempStringLength];
+            char[] tempCharList = new char[tempStringLength];
             var str = text;
-            str += Suffix;
-            for (var i = 0; i < TempStringLength; i++)
+            str += suffix;
+            for (var i = 0; i < tempStringLength; i++)
             {
                 // 理论上是不存在字符串里面有 0 这个字符的，因此可以在后续判断是否为零，如果是那么证明这里是不存在内容
                 // 其实也可以不需要清空，但是为了在 .NET 5 里面，减少因为申请数组的时候，设置是清空的有锅，因此这里依然保持和论文相同的方式，先清空
@@ -28,11 +31,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 var keyChar = key[keyPlace];
                 // hashValue 字符位置
                 var hashValue = Convert.ToInt32(keyChar);
-                hashValue = hashValue % TempStringLength;
+                hashValue = hashValue % tempStringLength;
                 while (tempCharList[hashValue] != Convert.ToChar(0)) //如果位置有别的字符就下一个，到没有字符位置
                 {
                     hashValue++;
-                    if (hashValue >= TempStringLength)
+                    if (hashValue >= tempStringLength)
                     {
                         hashValue = 0; //出错 TempStringLength 太小
                     }
@@ -47,7 +50,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
 
             // 把空填充
-            for (var i = 0; i < TempStringLength; i++)
+            for (var i = 0; i < tempStringLength; i++)
             {
                 if (tempCharList[i] == Convert.ToChar(0))
                 {
@@ -61,8 +64,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
         }
 
 
-        public static string Decrypt(string str, string key)
+        public static string Decrypt(string str, string key, int tempStringLength = 1024, string suffix = "结束")
         {
+            // 缓存长度
+            // 后缀
+
             StringBuilder temp = new StringBuilder();
             char[] encryptionCharList = str.ToCharArray();
 
@@ -70,7 +76,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             var isAccomplish = false;
             // keyPlace 密码位置
             var keyPlace = 0;
-            if (encryptionCharList.Length < TempStringLength - 1)
+            if (encryptionCharList.Length < tempStringLength - 1)
             {
                 // 理论上这是相等的，如果小于的话，那么也就是说输入的加密解析不符合
                 return null;
@@ -82,12 +88,12 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 var keyChar = key[keyPlace];
                 // 字符位置
                 var hashValue = Convert.ToInt32(keyChar);
-                hashValue = hashValue % TempStringLength; //密码给字符所在位置
+                hashValue = hashValue % tempStringLength; //密码给字符所在位置
                 while (encryptionCharList[hashValue] == Convert.ToChar(0))
                 {
                     // 其实这里是不会进入的，原因是加密有填补空白
                     hashValue++;
-                    if (hashValue >= TempStringLength)
+                    if (hashValue >= tempStringLength)
                     {
                         hashValue = 0;
                     }
@@ -102,14 +108,14 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 }
 
                 // 完全解密完成了
-                if (temp.Length == TempStringLength)
+                if (temp.Length == tempStringLength)
                 {
                     isAccomplish = true;
                 }
             }
 
             string tempText = temp.ToString();
-            int tempIndex = tempText.LastIndexOf(Suffix, StringComparison.Ordinal);
+            int tempIndex = tempText.LastIndexOf(suffix, StringComparison.Ordinal);
             if (tempIndex > 0)
             {
                 // 证明存在后缀内容，那么也就是解密成功了
@@ -120,14 +126,5 @@ namespace Lindexi.Src.EncryptionAlgorithm
             return null;
         }
 
-        /// <summary>
-        /// 缓存长度
-        /// </summary>
-        private const int TempStringLength = 1024;
-
-        /// <summary>
-        /// 后缀
-        /// </summary>
-        private const string Suffix = "结束";
     }
 }
