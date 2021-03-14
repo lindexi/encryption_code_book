@@ -27,7 +27,7 @@ namespace encryption_code_book
             //view = new note();
             InitializeComponent();
             //frame.Navigate(typeof(note_page));
-            ViewModel = (ViewModel.ViewModel) DataContext;
+            ViewModel = (ViewModel.ViewModel)DataContext;
             ViewModel.OnNavigatedTo(frame);
         }
 

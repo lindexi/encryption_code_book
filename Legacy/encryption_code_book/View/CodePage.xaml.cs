@@ -27,7 +27,7 @@ namespace encryption_code_book.View
         public CodePage()
         {
             this.InitializeComponent();
-            View = (CodeModel) DataContext;
+            View = (CodeModel)DataContext;
         }
 
         private CodeModel View

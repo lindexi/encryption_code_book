@@ -112,7 +112,7 @@ namespace encryption_code_book
             using (Stream filestream = await file.OpenStreamForReadAsync())
             {
                 byte[] buff = new byte[1000];
-                if (filestream.Read(buff , 0 , 1000) > 0)
+                if (filestream.Read(buff, 0, 1000) > 0)
                 {
                     return Encoding.Unicode.GetString(buff);
                 }
@@ -162,7 +162,7 @@ namespace encryption_code_book
             //int len;
             //string temp;
             //len = 2048;
-            return string.Equals(jia.n_md5(key) , jia.decryption(key_encry));
+            return string.Equals(jia.n_md5(key), jia.decryption(key_encry));
             //FileStream fs = new FileStream(file_address , FileMode.Open);
             //using (Stream fs = await file.OpenStreamForReadAsync())
             //{
@@ -214,12 +214,12 @@ namespace encryption_code_book
             while (sub != -1)
             {
                 //如果开头\r\n\r\n那么直接去空
-                temp = key.Substring(0 , sub);
+                temp = key.Substring(0, sub);
                 if (temp.Length > 0)
                 {
                     while (temp.Length > max_count)
                     {
-                        file_key.Add(temp.Substring(0 , max_count));
+                        file_key.Add(temp.Substring(0, max_count));
                         temp = temp.Substring(max_count);
                     }
                     file_key.Add(temp);
@@ -240,7 +240,7 @@ namespace encryption_code_book
             file_key.Clear();//污染
             while (key.Length > 100)
             {
-                file_key.Add(key.Substring(0 , 100));
+                file_key.Add(key.Substring(0, 100));
                 key = key.Substring(100);
             }
             file_key.Add(key);
@@ -251,7 +251,7 @@ namespace encryption_code_book
             //}
         }
 
-        public async void new_use(string key,AsyncCallback call_back)
+        public async void new_use(string key, AsyncCallback call_back)
         {
             jia.key = key;
             file_key.Clear();
@@ -259,7 +259,7 @@ namespace encryption_code_book
             first = false;
 
             StorageFolder folder = ApplicationData.Current.LocalFolder;
-            file = await folder.CreateFileAsync(file_address , CreationCollisionOption.OpenIfExists);
+            file = await folder.CreateFileAsync(file_address, CreationCollisionOption.OpenIfExists);
 
             await hold_decryption_key();
             //x_write();2015年5月12日19:55:57
@@ -336,7 +336,7 @@ namespace encryption_code_book
             catch //(FileNotFoundException e)
             {
                 localFolder_find_file_address = true;
-               
+
             }
             if (localFolder_find_file_address)
             {
@@ -370,7 +370,7 @@ namespace encryption_code_book
                 foreach (string temp in decryption)
                 {
                     buf = Encoding.Unicode.GetBytes(temp);
-                    xiaFile.Write(buf , 0 , buf.Length);
+                    xiaFile.Write(buf, 0, buf.Length);
                 }
                 //decryption.Clear();  
                 decryption.RemoveAt(0);
@@ -398,12 +398,12 @@ namespace encryption_code_book
                     //FileStream fs = new FileStream(file_address , FileMode.Open);
                     //缓冲
                     byte[] buffer = new byte[len];
-                    fs.Read(buffer , 0 , len);//不密码
+                    fs.Read(buffer, 0, len);//不密码
                     //lock (key_encry)
                     {
                         key_encry = Encoding.Unicode.GetString(buffer);
                     }
-                    while (fs.Read(buffer , 0 , len) != 0)
+                    while (fs.Read(buffer, 0, len) != 0)
                     {
                         temp = Encoding.Unicode.GetString(buffer);
                         //没有解密
@@ -441,6 +441,6 @@ namespace encryption_code_book
             await x_write();
         }
     }
-    
+
 
 }

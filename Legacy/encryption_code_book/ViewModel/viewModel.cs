@@ -131,7 +131,7 @@ namespace encryption_code_book.ViewModel
         //    get { return Account.Key; }
         //}
 
-       
+
 
         private async void Read()
         {

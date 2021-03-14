@@ -56,11 +56,11 @@ namespace encryption_code_book.Model
         public static string Serializer()
         {
             string str = Encry + "\r\n" +
-                         "林德熙" + "\r\n" + "邮箱:lindexi_gd@163.com"+ "\r\n"+
-                         "哈希路径: 一元n次函数"+"\r\n"+
-                         "步长:加密钥unicode，冲突过多使用步长1"+"\r\n"+
+                         "林德熙" + "\r\n" + "邮箱:lindexi_gd@163.com" + "\r\n" +
+                         "哈希路径: 一元n次函数" + "\r\n" +
+                         "步长:加密钥unicode，冲突过多使用步长1" + "\r\n" +
                          ComfirmkeyLength + "\r\n";
-           
+
             return str.PadRight(1024);
         }
 
@@ -79,7 +79,7 @@ namespace encryption_code_book.Model
             var comfirm = str.Substring(0, 1024);
             if (comfirm == Serializer())
             {
-                
+
             }
             str = str.Substring(1024);
 
@@ -104,7 +104,7 @@ namespace encryption_code_book.Model
         public async Task Storage()
         {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
-            var file = await folder.CreateFileAsync(FacitFile,CreationCollisionOption.ReplaceExisting);
+            var file = await folder.CreateFileAsync(FacitFile, CreationCollisionOption.ReplaceExisting);
             string str = JsonConvert.SerializeObject(this);
             str = Serializer() + str;
             await FileIO.WriteTextAsync(file, str);

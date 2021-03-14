@@ -225,7 +225,7 @@ namespace encryption_code_book.Model
             }
             string temp = str.Substring(0, temp_length);
             encryption_key = str.Substring(temp_length, temp_length);
-            encryption_text = str.Substring(temp_length*2);
+            encryption_text = str.Substring(temp_length * 2);
             return "";
         }
 
@@ -262,7 +262,7 @@ namespace encryption_code_book.Model
                         ulong size = read_stream.Size;
                         if (size <= uint.MaxValue)
                         {
-                            uint num_bytes_loaded = await data_reader.LoadAsync((uint) size);
+                            uint num_bytes_loaded = await data_reader.LoadAsync((uint)size);
                             deserilization(data_reader.ReadString(num_bytes_loaded));
                         }
                     }

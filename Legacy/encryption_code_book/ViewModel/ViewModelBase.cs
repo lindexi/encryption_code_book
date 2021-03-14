@@ -48,7 +48,7 @@ namespace encryption_code_book.ViewModel
                 {
                     if (message.GetType() == temp.Message)
                     {
-                        temp.Run(this,message);
+                        temp.Run(this, message);
                     }
                 }
             }
@@ -58,7 +58,7 @@ namespace encryption_code_book.ViewModel
         /// 全部调用发送信息的处理在<see cref="Composite"/>
         /// </summary>
         protected static List<Composite> Composite { set; get; }
-     
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

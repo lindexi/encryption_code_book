@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace encryption_code_book.ViewModel
 {
-    public class ViewModelPage:IEquatable<Type>
+    public class ViewModelPage : IEquatable<Type>
     {
         public ViewModelPage()
         {
@@ -63,7 +63,7 @@ namespace encryption_code_book.ViewModel
         {
             if (ViewModel == null)
             {
-                ViewModel = (ViewModelBase) _viewModel.GetConstructor(Type.EmptyTypes).Invoke(null);
+                ViewModel = (ViewModelBase)_viewModel.GetConstructor(Type.EmptyTypes).Invoke(null);
             }
             ViewModel.OnNavigatedTo(paramter);
 #if NOGUI
@@ -72,11 +72,11 @@ namespace encryption_code_book.ViewModel
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () =>
                 {
-                    content.Navigate(Page,ViewModel);
+                    content.Navigate(Page, ViewModel);
                 });
         }
 
-         
+
 
         private Type _viewModel;
 
@@ -90,7 +90,7 @@ namespace encryption_code_book.ViewModel
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((ViewModelPage) obj);
+            return Equals((ViewModelPage)obj);
         }
 
         public override int GetHashCode()
@@ -100,7 +100,7 @@ namespace encryption_code_book.ViewModel
 
         public bool Equals(Type other)
         {
-            return _viewModel == other; 
+            return _viewModel == other;
         }
     }
 }

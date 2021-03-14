@@ -23,12 +23,12 @@ namespace encryption_code_book.ViewModel
         {
             set;
             get;
-        } 
+        }
 
         public async void Navigate(Type viewModel, object paramter)
         {
             _viewModel?.OnNavigatedFrom(null);
-            ViewModelPage view = ViewModel.Find(temp =>temp.Equals(viewModel));
+            ViewModelPage view = ViewModel.Find(temp => temp.Equals(viewModel));
             await view.Navigate(Content, paramter);
             view.ViewModel.Send += Receive;
             _viewModel = view.ViewModel;

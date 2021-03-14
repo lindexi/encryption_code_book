@@ -154,8 +154,8 @@ namespace encryption_code_book.Model
         }
 
         [JsonIgnore]
-        private IEncryption _stringEncryption=new StringEncryption();
-         
+        private IEncryption _stringEncryption = new StringEncryption();
+
         private bool _check;
 
         //private string _name;
@@ -189,7 +189,7 @@ namespace encryption_code_book.Model
                 {
                     Name = Name,
                     ComfirmKey = ComfirmKey,
-                    Str=Str
+                    Str = Str
                 };
 
                 string str = "data.encry";

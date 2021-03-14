@@ -8,7 +8,7 @@ using encryption_code_book.Model;
 namespace encryption_code_book.ViewModel
 {
     [ViewModel]
-    public class CodeModel:ViewModelBase
+    public class CodeModel : ViewModelBase
     {
         public CodeModel()
         {
@@ -18,11 +18,11 @@ namespace encryption_code_book.ViewModel
         {
             //if (AccountGoverment.View.Key is SecretCode)
             //{
-                
+
             //}
             //else
             //{
-                
+
             //}
         }
 

@@ -16,7 +16,7 @@ namespace encryption_code_book.Model
             CachedFileManager.DeferUpdates(file);
 
             string str = await Windows.Storage.FileIO.ReadTextAsync(file);
-         
+
             FileUpdateStatus updateStatus = await CachedFileManager.CompleteUpdatesAsync(file);
             return str;
         }
@@ -24,11 +24,11 @@ namespace encryption_code_book.Model
         public static async Task WriteTextAsync(StorageFile file, string contents)
         {
             await WriteTextAsync(file, contents, UnicodeEncoding.Utf8);
-        } 
+        }
 
-        public static async Task WriteTextAsync(StorageFile file, string contents, UnicodeEncoding encoding )
+        public static async Task WriteTextAsync(StorageFile file, string contents, UnicodeEncoding encoding)
         {
-            await Windows.Storage.FileIO.WriteTextAsync(file, contents,encoding);
+            await Windows.Storage.FileIO.WriteTextAsync(file, contents, encoding);
 
 
         }

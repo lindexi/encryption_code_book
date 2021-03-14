@@ -14,7 +14,7 @@ namespace cencry密码本
     [TestClass]
     public class string_encryption
     {
-        
+
         [TestMethod]
         //public void encryption()
         //{
@@ -42,7 +42,7 @@ namespace cencry密码本
             str.Clear();
             for (int i = 0; i < count; i++)
             {
-                str.Append(Convert.ToChar(ran.Next()%2 == 0 ? ran.Next(19968, 40864) : ran.Next(33, 126)));
+                str.Append(Convert.ToChar(ran.Next() % 2 == 0 ? ran.Next(19968, 40864) : ran.Next(33, 126)));
             }
             return str.ToString();
         }

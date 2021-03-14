@@ -9,7 +9,7 @@ namespace encryption_code_book.ViewModel
 
         public virtual void Run(object sender, Message o)
         {
-            
+
         }
     }
 }

@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("EncryptionAlgorithm.Tests")]
+[assembly: InternalsVisibleTo("EncryptionAlgorithm.Tests")]

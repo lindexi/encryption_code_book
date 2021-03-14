@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,7 +89,7 @@ namespace encryption_code_book.Model
 
         public async Task Read(StorageFile file)
         {
-            //读了确认
+            //璇讳簡纭
             try
             {
                 CachedFileManager.DeferUpdates(file);
@@ -101,8 +101,8 @@ namespace encryption_code_book.Model
                     string comfirm = Account.Encod.GetString(buffer).Trim();
                     if (!comfirm.Equals(Account.Serializer()))
                     {
-                        //以前版本
-                        await (new MessageDialog("发现以前版本，请使用以前版本软件打开")).ShowAsync();
+                        //浠ュ墠鐗堟湰
+                        await (new MessageDialog("鍙戠幇浠ュ墠鐗堟湰锛岃浣跨敤浠ュ墠鐗堟湰杞欢鎵撳紑")).ShowAsync();
                     }
 
                     stream.Read(buffer, 0, n);
@@ -131,7 +131,7 @@ namespace encryption_code_book.Model
             using (Stream stream = await file.OpenStreamForWriteAsync())
             {
                 Account.Encod.GetBytes(str).CopyTo(buffer, 0);
-                stream.Write(buffer,0,n);
+                stream.Write(buffer, 0, n);
                 var key = new StringEncryption();
                 ComfirmKey = key.Encryption(Key, Key);
                 buffer = Account.Encod.GetBytes(str);

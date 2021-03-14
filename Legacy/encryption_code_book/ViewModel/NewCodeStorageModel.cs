@@ -83,12 +83,12 @@ namespace encryption_code_book.ViewModel
             if (Comfirm())
             {
                 //Send
-                SecretCode key =new SecretCode();
+                SecretCode key = new SecretCode();
                 key.Str = Str;
                 key.Key = ComfirmKey;
                 key.Name = Name;
                 key.Folder = EncryCodeFolder;
-                Send?.Invoke(this,new NewCodeStorageMessage(this)
+                Send?.Invoke(this, new NewCodeStorageMessage(this)
                 {
                     Secret = key
                 });
@@ -136,7 +136,7 @@ namespace encryption_code_book.ViewModel
         }
     }
 
-    internal class NewCodeStorageMessage:Message
+    internal class NewCodeStorageMessage : Message
     {
         public NewCodeStorageMessage(ViewModelBase source) : base(source)
         {
@@ -155,7 +155,7 @@ namespace encryption_code_book.ViewModel
 
         public override async void Run(object sender, Message o)
         {
-            var message = (NewCodeStorageMessage) o;
+            var message = (NewCodeStorageMessage)o;
             var viewModel = sender as ViewModel;
             if (viewModel != null)
             {
@@ -163,10 +163,10 @@ namespace encryption_code_book.ViewModel
                 if (message.Secret.Folder == null)
                 {
                     message.Secret.Folder =
-                        await  ApplicationData.Current.LocalFolder.CreateFolderAsync(viewModel.Account.Folder);
+                        await ApplicationData.Current.LocalFolder.CreateFolderAsync(viewModel.Account.Folder);
                 }
                 var folder = message.Secret.Folder;
-                viewModel.Account.Key.Token= StorageApplicationPermissions.FutureAccessList.Add(folder);
+                viewModel.Account.Key.Token = StorageApplicationPermissions.FutureAccessList.Add(folder);
 
                 await viewModel.Account.Storage();
                 await viewModel.Account.Key.Storage();

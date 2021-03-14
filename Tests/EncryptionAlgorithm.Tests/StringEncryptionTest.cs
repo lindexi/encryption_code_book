@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using Lindexi.Src.EncryptionAlgorithm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MSTest.Extensions.Contracts;
@@ -11,13 +11,13 @@ namespace EncryptionAlgorithm.Tests
         [ContractTestCase]
         public void EncryptText()
         {
-            "¼ÓÃÜÁ½Ç§¸öÖĞÎÄ×Ö·û£¬¿ÉÒÔÔÚ½âÃÜÖ®ºóÄÃµ½¼ÓÃÜÇ°µÄ×Ö·û".Test(() =>
+            "åŠ å¯†ä¸¤åƒä¸ªä¸­æ–‡å­—ç¬¦ï¼Œå¯ä»¥åœ¨è§£å¯†ä¹‹åæ‹¿åˆ°åŠ å¯†å‰çš„å­—ç¬¦".Test(() =>
             {
                 var originCharList = new char[2000];
-                const string key = "ÁÖµÂÎõ";
+                const string key = "æ—å¾·ç†™";
                 for (int i = 0; i < originCharList.Length; i++)
                 {
-                    originCharList[i] = 'ÁÖ';
+                    originCharList[i] = 'æ—';
                 }
 
                 var text = new string(originCharList);
@@ -29,10 +29,10 @@ namespace EncryptionAlgorithm.Tests
                 Assert.AreEqual(text, decryptionText);
             });
 
-            "¼ÓÃÜÒ»°Ù¸ö×Ö·û£¬¿ÉÒÔÔÚ½âÃÜÖ®ºóÄÃµ½¼ÓÃÜÇ°µÄ×Ö·û".Test(() =>
+            "åŠ å¯†ä¸€ç™¾ä¸ªå­—ç¬¦ï¼Œå¯ä»¥åœ¨è§£å¯†ä¹‹åæ‹¿åˆ°åŠ å¯†å‰çš„å­—ç¬¦".Test(() =>
             {
                 var originCharList = new char[100];
-                const string key = "ÁÖµÂÎõ";
+                const string key = "æ—å¾·ç†™";
                 for (int i = 0; i < originCharList.Length; i++)
                 {
                     originCharList[i] = 'a';
@@ -47,10 +47,10 @@ namespace EncryptionAlgorithm.Tests
                 Assert.AreEqual(text, decryptionText);
             });
 
-            "¼ÓÃÜÁ½Ç§¸ö×Ö·û£¬¿ÉÒÔÔÚ½âÃÜÖ®ºóÄÃµ½¼ÓÃÜÇ°µÄ×Ö·û".Test(() =>
+            "åŠ å¯†ä¸¤åƒä¸ªå­—ç¬¦ï¼Œå¯ä»¥åœ¨è§£å¯†ä¹‹åæ‹¿åˆ°åŠ å¯†å‰çš„å­—ç¬¦".Test(() =>
             {
                 var originCharList = new char[2000];
-                const string key = "ÁÖµÂÎõ";
+                const string key = "æ—å¾·ç†™";
                 for (int i = 0; i < originCharList.Length; i++)
                 {
                     originCharList[i] = 'a';
@@ -62,17 +62,17 @@ namespace EncryptionAlgorithm.Tests
 
                 var decryptionText = StringEncryption.DecryptText(byteList, key);
 
-                Assert.AreEqual(text,decryptionText);
+                Assert.AreEqual(text, decryptionText);
             });
         }
 
         [ContractTestCase]
         public void Encryption()
         {
-            "¼ÓÃÜ¼òµ¥×Ö·û´®£¬½âÃÜºóÄÜ»ñÈ¡¼ÓÃÜÇ°µÄ×Ö·û´®".Test(() =>
+            "åŠ å¯†ç®€å•å­—ç¬¦ä¸²ï¼Œè§£å¯†åèƒ½è·å–åŠ å¯†å‰çš„å­—ç¬¦ä¸²".Test(() =>
             {
-                var text = "¼ÓÃÜ×Ö·û´®";
-                var key = "ÁÖµÂÎõ";
+                var text = "åŠ å¯†å­—ç¬¦ä¸²";
+                var key = "æ—å¾·ç†™";
 
                 var encryptionCharList = StringEncryption.Encrypt(text, key);
                 var encryptionString = new string(encryptionCharList);
@@ -85,12 +85,12 @@ namespace EncryptionAlgorithm.Tests
         [ContractTestCase]
         public void CharListToByteList()
         {
-            "¸ø¶¨Ò»¸öÖĞÎÄCharÊı×é£¬¿ÉÒÔ×ª»»ÎªByteÊı×é".Test(() =>
+            "ç»™å®šä¸€ä¸ªä¸­æ–‡Charæ•°ç»„ï¼Œå¯ä»¥è½¬æ¢ä¸ºByteæ•°ç»„".Test(() =>
             {
-                var text = "ÁÖµÂÎõ";
+                var text = "æ—å¾·ç†™";
 
                 var charList = text.ToCharArray();
-                // ÄÜ×ª»»³É¹¦¾ÍÊÇ¶ÔÁË
+                // èƒ½è½¬æ¢æˆåŠŸå°±æ˜¯å¯¹äº†
                 var byteList = StringEncryption.CharListToByteList(charList);
                 var newByteList = StringEncryption.ByteListToCharList(byteList);
 
@@ -101,7 +101,7 @@ namespace EncryptionAlgorithm.Tests
         [ContractTestCase]
         public void ByteListToCharList()
         {
-            "¸ø¶¨Ò»¸öÓ¢ÎÄ×Ö·û´®£¬¿ÉÒÔ×ª»»ÎªByteÊı×é£¬¿ÉÒÔÔÙ×ª»»»ØÔ­À´×Ö·û´®".Test(() =>
+            "ç»™å®šä¸€ä¸ªè‹±æ–‡å­—ç¬¦ä¸²ï¼Œå¯ä»¥è½¬æ¢ä¸ºByteæ•°ç»„ï¼Œå¯ä»¥å†è½¬æ¢å›åŸæ¥å­—ç¬¦ä¸²".Test(() =>
             {
                 var text = "aasdfasdfasdf";
 

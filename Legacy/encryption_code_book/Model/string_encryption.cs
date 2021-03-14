@@ -28,7 +28,7 @@ namespace encryption_code_book.Model
         //    }
         //    return _string_decryption;
         //}
-     
+
 
         ~StringEncryption()
         {
@@ -77,7 +77,7 @@ namespace encryption_code_book.Model
         /// <param name="str"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string Encryption(string str , string key)
+        public string Encryption(string str, string key)
         {
             //验证密钥
             int tempLength = 0;
@@ -94,20 +94,20 @@ namespace encryption_code_book.Model
             //分明文            
             List<string> clearstr = new List<string>();//明文
             //均匀分？最小
-            int count = (int)( tempLength * per ) - hstr.Length;
+            int count = (int)(tempLength * per) - hstr.Length;
             while (str.Length >= tempLength * per - hstr.Length)
             {
-                clearstr.Add(str.Substring(0 , count));//+hstr);
+                clearstr.Add(str.Substring(0, count));//+hstr);
                 str = str.Substring(count);
             }
             clearstr.Add(str);
             //加密
             StringBuilder ciphertext = new StringBuilder();//密文
             int[] position = new int[tempLength];
-            Hash(ref position , tempLength , key);
+            Hash(ref position, tempLength, key);
             foreach (string temp in clearstr)
             {
-                ciphertext.Append(encryption_string(temp , tempLength , hstr , key , position));
+                ciphertext.Append(encryption_string(temp, tempLength, hstr, key, position));
             }
             return ciphertext.ToString();
         }
@@ -117,7 +117,7 @@ namespace encryption_code_book.Model
         /// <param name="str"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string Decryption(string str , string key)
+        public string Decryption(string str, string key)
         {
             //验证密钥
             int tempLength = 0;
@@ -130,17 +130,17 @@ namespace encryption_code_book.Model
             List<string> ciphertext = new List<string>();//密文
             while (str.Length > tempLength)
             {
-                ciphertext.Add(str.Substring(0 , tempLength));
+                ciphertext.Add(str.Substring(0, tempLength));
                 str = str.Substring(tempLength);
             }
             //解密
             StringBuilder temp = new StringBuilder();
             ciphertext.Add(str);
             int[] position = new int[tempLength];
-            Hash(ref position , tempLength , key);
+            Hash(ref position, tempLength, key);
             foreach (string t in ciphertext)
             {
-                temp.Append(decryption_string(t , tempLength , hstr , key , position));
+                temp.Append(decryption_string(t, tempLength, hstr, key, position));
             }
             return temp.ToString();
         }
@@ -150,12 +150,12 @@ namespace encryption_code_book.Model
         /// <param name="keystr">密码加密</param>
         /// <param name="key">要确认密码</param>
         /// <returns></returns>
-        public bool Confirm(string keystr , string key)
+        public bool Confirm(string keystr, string key)
         {
-            return string.Equals(Decryption(keystr , key) , Nmd5(key));
+            return string.Equals(Decryption(keystr, key), Nmd5(key));
         }
 
-        private string encryption_string(string str , int tempLength , string hstr , string key , int[] position)
+        private string encryption_string(string str, int tempLength, string hstr, string key, int[] position)
         {
             //缓冲区
             char[] temp = new char[tempLength];
@@ -167,11 +167,11 @@ namespace encryption_code_book.Model
                 temp[position[i]] = str[i];
             }
             //填补空白
-            fill_gaps(ref temp , key);
+            fill_gaps(ref temp, key);
             //加密字符
             for (int i = 0; i < tempLength; i++)
             {
-                temp[i] = encryption_character(temp[i] , key , i);
+                temp[i] = encryption_character(temp[i], key, i);
             }
             return new string(temp);
 
@@ -201,7 +201,7 @@ namespace encryption_code_book.Model
             return new string(temp);
             */
         }
-        private static string decryption_string(string str , int tempLength , string hstr , string key , int[] position)
+        private static string decryption_string(string str, int tempLength, string hstr, string key, int[] position)
         {
             //申请缓冲区
             char[] tempclearstr = new char[tempLength];
@@ -209,7 +209,7 @@ namespace encryption_code_book.Model
             //解密字符
             for (int i = 0; i < str.Length; i++)
             {
-                tempciphertext[i] = decryption_character(str[i] , key , i);
+                tempciphertext[i] = decryption_character(str[i], key, i);
             }
             //哈希函数
             for (int i = 0; i < tempLength; i++)
@@ -224,7 +224,7 @@ namespace encryption_code_book.Model
             count = temp.IndexOf(hstr);
             if (count > 0)
             {
-                temp = temp.Substring(0 , count);
+                temp = temp.Substring(0, count);
             }
             else
             {
@@ -266,7 +266,7 @@ namespace encryption_code_book.Model
                 return t;
             }*/
         }
-        private static void Hash(ref int[] position , int tempLength , string key)
+        private static void Hash(ref int[] position, int tempLength, string key)
         {
             bool[] exist = new bool[tempLength];
             int i;
@@ -307,7 +307,7 @@ namespace encryption_code_book.Model
                 exist[temp] = true;
             }
         }
-        private static int Conflict(int position , int i , int count , string key , int tempLength)
+        private static int Conflict(int position, int i, int count, string key, int tempLength)
         {
             int countconflict;
             int sum;
@@ -320,19 +320,19 @@ namespace encryption_code_book.Model
             sum += key[i];
             return sum % tempLength;
         }
-        private static char encryption_character(char str , string key , int i)
+        private static char encryption_character(char str, string key, int i)
         {
             //return str;
             i = i % key.Length;
-            return (char)( str + key[i] % 10 );
+            return (char)(str + key[i] % 10);
         }
-        private static char decryption_character(char str , string key , int i)
+        private static char decryption_character(char str, string key, int i)
         {
             //return str;
             i = i % key.Length;
-            return (char)( str - key[i] % 10 );
+            return (char)(str - key[i] % 10);
         }
-        private void fill_gaps(ref char[] temp , string key)
+        private void fill_gaps(ref char[] temp, string key)
         {
             for (int i = 0; i < temp.Length; i++)
             {
@@ -481,7 +481,7 @@ namespace encryption_code_book.Model
             if (string.IsNullOrEmpty(key))
             {
                 temp = "";
-                return temp.PadRight(32 , '0');
+                return temp.PadRight(32, '0');
             }
             else
             {
@@ -515,7 +515,7 @@ namespace encryption_code_book.Model
             }
             get
             {
-                return _random.Next(2) == 0 ? _random.Next(19968 , 40864) : _random.Next(33 , 126);
+                return _random.Next(2) == 0 ? _random.Next(19968, 40864) : _random.Next(33, 126);
             }
         }
         /// <summary>
@@ -527,7 +527,7 @@ namespace encryption_code_book.Model
         {
             Windows.Security.Cryptography.Core.HashAlgorithmProvider objAlgProv = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm(Windows.Security.Cryptography.Core.HashAlgorithmNames.Md5);
             Windows.Security.Cryptography.Core.CryptographicHash md5 = objAlgProv.CreateHash();
-            Windows.Storage.Streams.IBuffer buffMsg1 = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(str , Windows.Security.Cryptography.BinaryStringEncoding.Utf16BE);
+            Windows.Storage.Streams.IBuffer buffMsg1 = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(str, Windows.Security.Cryptography.BinaryStringEncoding.Utf16BE);
             md5.Append(buffMsg1);
             Windows.Storage.Streams.IBuffer buffHash1 = md5.GetValueAndReset();
             return Windows.Security.Cryptography.CryptographicBuffer.EncodeToBase64String(buffHash1);
@@ -543,18 +543,18 @@ namespace encryption_code_book.Model
             //}
             //return strb.ToString().ToLower();
         }
-        private int Range(int a , int b , int up , int down)
+        private int Range(int a, int b, int up, int down)
         {
             int r = up;
             int l = down;
             int mod = r - l + 1;
             if (a > 0 && b > 0)
             {
-                return ( a % mod + b % mod + mod ) % mod + l;
+                return (a % mod + b % mod + mod) % mod + l;
             }
             else if (a > 0 && b < 0)
             {
-                return ( a % mod - b % mod + mod ) % mod + l;
+                return (a % mod - b % mod + mod) % mod + l;
             }
             else
             {

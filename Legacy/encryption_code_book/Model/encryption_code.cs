@@ -34,11 +34,11 @@ encryption_code".PadRight(1024);
         {
             if (_folder == null)
             {
-                _folder =await ApplicationData.Current.LocalFolder.CreateFolderAsync(file_address,
+                _folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(file_address,
                     CreationCollisionOption.OpenIfExists);
             }
         }
     }
 
-     
+
 }

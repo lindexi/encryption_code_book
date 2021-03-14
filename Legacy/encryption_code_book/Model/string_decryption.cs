@@ -15,7 +15,7 @@ namespace encryption_code_book
             file_address = @".\data.data";
             _temp_string_lenth = 1024;
         }
-        public string_decryption(string file_加密的文件 , int key_length_more512)
+        public string_decryption(string file_加密的文件, int key_length_more512)
         {
             key_length_more512 = 1024;
             _temp_string_lenth = key_length_more512;
@@ -37,7 +37,7 @@ namespace encryption_code_book
         }
         public static string_decryption g_获得类(string file_加密的文件)
         {
-            _string_decryption = new string_decryption(file_加密的文件 , 1024);
+            _string_decryption = new string_decryption(file_加密的文件, 1024);
             return _string_decryption;
         }
 
@@ -52,7 +52,7 @@ namespace encryption_code_book
             set
             {
                 _key = value;
-                h_后缀 = n_md5(_key)+ "结束";//密码改，后缀n_md5
+                h_后缀 = n_md5(_key) + "结束";//密码改，后缀n_md5
             }
             get
             {
@@ -61,7 +61,7 @@ namespace encryption_code_book
                     return "林德熙";
                 }
                 return _key;
-            }            
+            }
         }
         /// <summary>
         /// 加密文件绝对位置
@@ -85,7 +85,7 @@ namespace encryption_code_book
             }
             get
             {
-                if (_后缀 == null || _后缀.Length==0)
+                if (_后缀 == null || _后缀.Length == 0)
                 {
                     return "结束";
                 }
@@ -99,7 +99,7 @@ namespace encryption_code_book
         public string encryption(string str)
         {
             char[] temp_str = new char[_temp_string_lenth];
-            int i , has , key_place;//has字符位置，key_place密码位置
+            int i, has, key_place;//has字符位置，key_place密码位置
             //str = encryptDes(str);
             str += h_后缀;
             str.PadRight(_temp_string_lenth);
@@ -122,7 +122,7 @@ namespace encryption_code_book
                     //has=has>=_temp_string_lenth?0:has++;
                 }
                 //temp_str[l] = (char)(str[i]);//+key[key_l]);
-                temp_str[has] = (char)((str[i]) + key[key_place]%1024);
+                temp_str[has] = (char)((str[i]) + key[key_place] % 1024);
                 key_place++;
                 if (key_place == key.Length)
                 {
@@ -147,7 +147,7 @@ namespace encryption_code_book
         {
             StringBuilder temp = new StringBuilder();
             char[] jie = str.ToCharArray();
-            int has , key_place;//has字符位置，key_place密码位置
+            int has, key_place;//has字符位置，key_place密码位置
             //int accomplish_position;//accomplish_position==h_后缀.length accomplish=true
             bool accomplish;
             accomplish = false;//初始
@@ -177,16 +177,16 @@ namespace encryption_code_book
                         //break;
                     }
                 }
-                
+
                 //s.Append((char)(jie[l]));//-key[key_l]));
-                temp.Append((char)((jie[has]) - key[key_place]%1024));
+                temp.Append((char)((jie[has]) - key[key_place] % 1024));
                 jie[has] = Convert.ToChar(0);//把原来位置0
                 key_place++;
                 if (key_place == key.Length)
                 {
                     key_place = 0;
                 }
-                if(temp.Length==_temp_string_lenth)
+                if (temp.Length == _temp_string_lenth)
                 {
                     accomplish = true;
                 }
@@ -209,9 +209,9 @@ namespace encryption_code_book
             if (temp_l > 0)
             {
                 //return decryptDes(temp_str.Substring(0 , temp_l));
-                return temp_str.Substring(0 , temp_l);
+                return temp_str.Substring(0, temp_l);
             }
-            if(temp_l==0)
+            if (temp_l == 0)
             {
                 return temp_str;
             }
@@ -233,7 +233,7 @@ namespace encryption_code_book
             if (string.IsNullOrEmpty(key))
             {
                 temp = "";
-                return temp.PadRight(32 , '0');
+                return temp.PadRight(32, '0');
             }
             else
             {
@@ -258,7 +258,7 @@ namespace encryption_code_book
         private string _file_address;
         private string _key;
         private string _后缀;
-        
+
         private int ran
         {
             set
@@ -267,7 +267,7 @@ namespace encryption_code_book
             }
             get
             {
-                return _random.Next(2) == 0 ? _random.Next(19968 , 40864) : _random.Next(33 , 126);
+                return _random.Next(2) == 0 ? _random.Next(19968, 40864) : _random.Next(33, 126);
             }
         }
         /// <summary>
@@ -279,7 +279,7 @@ namespace encryption_code_book
         {
             HashAlgorithmProvider objAlgProv = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
             CryptographicHash md5 = objAlgProv.CreateHash();
-            IBuffer buffMsg1 = CryptographicBuffer.ConvertStringToBinary(str , BinaryStringEncoding.Utf16BE);
+            IBuffer buffMsg1 = CryptographicBuffer.ConvertStringToBinary(str, BinaryStringEncoding.Utf16BE);
             md5.Append(buffMsg1);
             IBuffer buffHash1 = md5.GetValueAndReset();
             return CryptographicBuffer.EncodeToBase64String(buffHash1);

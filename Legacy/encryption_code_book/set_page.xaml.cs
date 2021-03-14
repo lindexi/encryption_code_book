@@ -13,7 +13,7 @@ namespace encryption_code_book
         private fit view;
         public set_page()
         {
-            view=new fit();
+            view = new fit();
             InitializeComponent();
             //使用task，后台加密，保存
             //转入后台，加密保存

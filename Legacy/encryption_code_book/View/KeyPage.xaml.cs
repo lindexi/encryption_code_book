@@ -26,7 +26,7 @@ namespace encryption_code_book.View
     {
         public KeyPage()
         {
-            View=new KeyModel();
+            View = new KeyModel();
             this.InitializeComponent();
         }
 

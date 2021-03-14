@@ -81,7 +81,7 @@ namespace encryption_code_book.ViewModel
 
         public void deserilization()
         {
-            frame?.Navigate(typeof (key_page), this);
+            frame?.Navigate(typeof(key_page), this);
             if (first)
             {
                 prompt = "第一次使用，请输入密码";

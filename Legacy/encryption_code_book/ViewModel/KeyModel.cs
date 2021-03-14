@@ -1,6 +1,6 @@
 ﻿namespace encryption_code_book.ViewModel
 {
-    public class KeyModel:ViewModelBase
+    public class KeyModel : ViewModelBase
     {
         public KeyModel()
         {
