@@ -40,9 +40,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
         }
 
-
-
-        public static byte[] CharListToByteList(char[] charList)
+        internal static byte[] CharListToByteList(char[] charList)
         {
             var byteList = new byte[charList.Length * 2];
 
@@ -50,7 +48,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             return byteList;
         }
 
-        public static char[] ByteListToCharList(byte[] byteList)
+        internal static char[] ByteListToCharList(byte[] byteList)
         {
             var charList = new char[byteList.Length / 2];
 
@@ -60,7 +58,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
         }
 
         // 要求 text 小于 1024 个字符
-        public static char[] Encrypt(string text, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
+        internal static char[] Encrypt(string text, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
         {
             // 缓存长度
             // 后缀
@@ -152,7 +150,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
         }
 
-        public static string? Decrypt(string str, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
+        internal static string? Decrypt(string str, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
         {
             // 缓存长度
             // 后缀
@@ -161,7 +159,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             return Decrypt(encryptionCharList, key, tempStringLength, suffix);
         }
 
-        public static string? Decrypt(char[] encryptionCharList, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
+        internal static string? Decrypt(char[] encryptionCharList, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
         {
             StringBuilder temp = new StringBuilder();
             // 是否完全完成
@@ -218,6 +216,5 @@ namespace Lindexi.Src.EncryptionAlgorithm
             // 解密失败了，没有后缀的内容
             return null;
         }
-
     }
 }
