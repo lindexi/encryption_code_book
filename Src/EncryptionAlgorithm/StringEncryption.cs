@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text;
 
 namespace Lindexi.Src.EncryptionAlgorithm
@@ -7,6 +8,56 @@ namespace Lindexi.Src.EncryptionAlgorithm
     {
         private const int DefaultTempStringLength = 1024;
         private const string DefaultSuffix = "结束";
+
+        public static byte[] EncryptText(string text, string key)
+        {
+            // 如果超过了 DefaultTempStringLength 的长度，那么自动拆分
+            const int maxTextLengthInt = DefaultTempStringLength / 2;
+            const double maxTextLength = maxTextLengthInt;
+
+            if (text.Length < maxTextLength)
+            {
+                var charList = Encrypt(text, key);
+                return CharListToByteList(charList);
+            }
+            else
+            {
+                // 拆分多个逻辑
+                var maxCount = (int)Math.Ceiling(text.Length / maxTextLength);
+                const int sizeOfChar = 2; // sizeof char
+                var byteList = new byte[maxCount * DefaultTempStringLength * sizeOfChar];
+
+                for (int i = 0; i < maxCount; i++)
+                {
+                    var subString = text.Substring(i * maxTextLengthInt, Math.Min(maxTextLengthInt, text.Length - i * maxTextLengthInt));
+                    var charList = Encrypt(subString, key);
+
+                    const int charListByteLength = DefaultTempStringLength * sizeOfChar;
+                    Buffer.BlockCopy(charList, 0, byteList, charListByteLength * i, charListByteLength);
+                }
+
+                return byteList;
+            }
+        }
+
+
+
+        public static byte[] CharListToByteList(char[] charList)
+        {
+            var byteList = new byte[charList.Length * 2];
+
+            Buffer.BlockCopy(charList, 0, byteList, 0, byteList.Length);
+            return byteList;
+        }
+
+        public static char[] ByteListToCharList(byte[] byteList)
+        {
+            var charList = new char[byteList.Length / 2];
+
+            Buffer.BlockCopy(byteList, 0, charList, 0, byteList.Length);
+
+            return charList;
+        }
 
         // 要求 text 小于 1024 个字符
         public static char[] Encrypt(string text, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
@@ -49,7 +100,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     }
                 }
 
-                tempCharList[hashValue] = (char) ((str[i]) + keyChar % 1024);
+                tempCharList[hashValue] = (char)((str[i]) + keyChar % 1024);
                 keyPlace++;
                 if (keyPlace == key.Length)
                 {
@@ -71,15 +122,48 @@ namespace Lindexi.Src.EncryptionAlgorithm
             return tempCharList;
         }
 
+        public static string? DecryptText(byte[] encryptionData, string key)
+        {
+            const int sizeOfChar = 2; // sizeof char
+            const int encryptionByteListLengthInt = DefaultTempStringLength * sizeOfChar;
+            const double encryptionByteListLength = encryptionByteListLengthInt;
+            var blockCount = (int)Math.Ceiling(encryptionData.Length / encryptionByteListLength);
+            if (blockCount == 1)
+            {
+                var charList = ByteListToCharList(encryptionData);
+                return Decrypt(charList, key);
+            }
+            else
+            {
+                StringBuilder temp = new StringBuilder();
 
-        public static string Decrypt(string str, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
+                for (int i = 0; i < blockCount; i++)
+                {
+                    char[] encryptionCharList = new char[DefaultTempStringLength];
+
+                    Buffer.BlockCopy(encryptionData, encryptionByteListLengthInt * i, encryptionCharList, 0,
+                        // 理论上是刚刚好整数倍的，如果不是，那么在后续解密也会炸
+                        Math.Min(encryptionByteListLengthInt, encryptionData.Length - encryptionByteListLengthInt * i));
+
+                    temp.Append(Decrypt(encryptionCharList, key));
+                }
+
+                return temp.ToString();
+            }
+        }
+
+        public static string? Decrypt(string str, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
         {
             // 缓存长度
             // 后缀
-
-            StringBuilder temp = new StringBuilder();
             char[] encryptionCharList = str.ToCharArray();
 
+            return Decrypt(encryptionCharList, key, tempStringLength, suffix);
+        }
+
+        public static string? Decrypt(char[] encryptionCharList, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
+        {
+            StringBuilder temp = new StringBuilder();
             // 是否完全完成
             var isAccomplish = false;
             // keyPlace 密码位置
@@ -107,7 +191,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     }
                 }
 
-                temp.Append((char) ((encryptionCharList[hashValue]) - keyChar % 1024));
+                temp.Append((char)((encryptionCharList[hashValue]) - keyChar % 1024));
                 encryptionCharList[hashValue] = Convert.ToChar(0); //把原来位置0
                 keyPlace++;
                 if (keyPlace == key.Length)
@@ -130,6 +214,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 return tempText.Substring(0, tempIndex);
             }
 
+            // 其实找不到后缀，也许是忘记后缀了
             // 解密失败了，没有后缀的内容
             return null;
         }

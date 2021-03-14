@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Lindexi.Src.EncryptionAlgorithm</AssemblyName>
     <RootNamespace>Lindexi.Src.EncryptionAlgorithm</RootNamespace>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 </Project>
