@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- 这个项目使用 Tag 打包，这里的版本号仅作为本地调试 -->
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+</Project>

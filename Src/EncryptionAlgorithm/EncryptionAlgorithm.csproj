@@ -6,6 +6,7 @@
     <RootNamespace>Lindexi.Src.EncryptionAlgorithm</RootNamespace>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Description>简单的字符串加密库，使用林德熙加密方法加密字符串，密码支持中文</Description>
   </PropertyGroup>
 
 </Project>

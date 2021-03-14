@@ -1,0 +1,21 @@
+﻿<Project>
+  <Import Project="build\Version.props" />
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)</PackageOutputPath>
+    <Company>lindexi</Company>
+ 
+    <Authors>dotnet-campus</Authors>
+    <RepositoryUrl>https://github.com/lindexi/encryption_code_book</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/lindexi/encryption_code_book</PackageProjectUrl>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>Copyright © 2021 lindexi, All Rights Reserved.</Copyright> 
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 这段代码用于解决提示 error : SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true 构建失败 -->
+    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+  </ItemGroup>
+</Project>
