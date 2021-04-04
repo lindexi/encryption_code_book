@@ -95,12 +95,13 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="encryption_code_book_StoreKey.pfx" />
-    <None Include="encryption_code_book_TemporaryKey.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
     <PRIResource Include="Strings\zh-CN\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\EncryptionAlgorithm\StringEncryption.cs">
+      <Link>Core\EncryptionAlgorithm\StringEncryption.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -108,12 +109,12 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\FileIO.cs" />
-    <Compile Include="Model\Iencryption.cs" />
+    <Compile Include="Core\Iencryption.cs" />
     <Compile Include="Model\KeySecret.cs" />
     <Compile Include="Model\NewKeyUrl.cs" />
     <Compile Include="Model\SecretCode.cs" />
     <Compile Include="Model\SecretScribe.cs" />
-    <Compile Include="Model\string_encryption.cs" />
+    <Compile Include="Core\string_encryption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Account.cs" />
     <Compile Include="ViewModel\AccountGoverment.cs" />
@@ -291,6 +292,7 @@
       <Version>9.0.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
@@ -298,7 +300,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>encryption_code_book_StoreKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

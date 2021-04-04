@@ -1,0 +1,72 @@
+﻿<Page
+    x:Class="encryption_code_book.View.EncryCodeStoragePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:encryption_code_book.View"
+    xmlns:view="using:encryption_code_book.Model"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <!--密码本-->
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid>
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ListView ItemsSource="{x:Bind View.EncryCodeStorage}"
+                          >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <!--<ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="view:SecretScribe">
+                            <Grid>
+                                <Grid Margin="10,10,10,10" 
+                                  Background="#FFBDBDBD">
+                                    <CheckBox Margin="10,10,10,10">
+                                        <CheckBox.Content>
+                                            <Grid>
+                                                <TextBlock Margin="10,0,10,10" Text="{x:Bind Name}"></TextBlock>
+                                            </Grid>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Button Grid.Row="1"
+                       Margin="10,10,10,10"
+                       IsEnabled="{x:Bind View.EncryCodeStorageEnable,Mode=OneWay}"
+                       HorizontalAlignment="Stretch"
+                       Click="{x:Bind View.NewEncryCodeStorage}">
+                    <Button.Content>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="+"></TextBlock>
+                                <TextBlock Text="添加密码本"></TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            <ProgressRing IsActive="True"
+                          Visibility="{x:Bind View.ReadVisibility,Mode=OneWay}"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"></ProgressRing>
+        </Grid>
+
+    </Grid>
+</Page>

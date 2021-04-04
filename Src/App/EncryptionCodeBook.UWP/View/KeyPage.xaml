@@ -1,0 +1,21 @@
+﻿<Page
+    x:Class="encryption_code_book.View.KeyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:encryption_code_book.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Background="Transparent">
+            <Grid Width="200" Height="200">
+                <StackPanel>
+                    <TextBox Header="请输入密码" PlaceholderText="输入密码"></TextBox>
+                    <Button Margin="10,10,10,10" Content="确定" HorizontalAlignment="Right" 
+                            Click="{x:Bind View.Comfirm}"></Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

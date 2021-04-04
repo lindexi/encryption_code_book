@@ -1,0 +1,13 @@
+﻿<Page
+    x:Class="encryption_code_book.View.SplashPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:encryption_code_book.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      <Image Source="ms-appx:///Assets/2017年3月19日 100252.jpg"></Image>
+    </Grid>
+</Page>
