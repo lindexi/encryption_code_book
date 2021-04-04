@@ -26,7 +26,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 // 拆分多个逻辑
                 var maxDataLength = maxLength / 2;
-                var maxCount = (int)Math.Ceiling(data.Length / (double)maxDataLength);
+                var maxCount = (int) Math.Ceiling(data.Length / (double) maxDataLength);
                 var byteList = new byte[maxCount * bufferLength];
 
                 for (int i = 0; i < maxCount; i++)
@@ -58,21 +58,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
             // 和 buffer 构成哈希，用来决定 buffer 上的位置是否被写入值
             var hashList = new bool[bufferLength];
             // 密码位置
-            var keyPlace = 0;
             for (int i = 0; i < data.Length + suffixData.Length; i++)
             {
-                // 读取的密码位置，可以计算出字符位置
-                var keyValue = key[keyPlace];
-                var hashValue = keyValue % bufferLength;
-                //如果位置有别的数据就读取下一个，到没有字符位置
-                while (hashList[hashValue])
-                {
-                    hashValue++;
-                    if (hashValue >= bufferLength)
-                    {
-                        hashValue = 0;
-                    }
-                }
+                var hashData = GetPlace(hashList, key, bufferLength, data, suffixData, i);
 
                 byte dataValue;
 
@@ -85,15 +73,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     dataValue = suffixData[i - data.Length];
                 }
 
-                dataValue = (byte)(dataValue + keyValue);
-                buffer[hashValue] = dataValue;
-                hashList[hashValue] = true;
-
-                keyPlace++;
-                if (keyPlace == key.Length)
-                {
-                    keyPlace = 0;
-                }
+                dataValue = (byte) (dataValue + hashData.KeyValue);
+                buffer[hashData.HashValue] = dataValue;
+                hashList[hashData.HashValue] = true;
             }
 
             random ??= new Random();
@@ -101,13 +83,113 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 if (!hashList[i])
                 {
-                    buffer[i] = (byte)random.Next(byte.MinValue, byte.MaxValue);
+                    buffer[i] = (byte) random.Next(byte.MinValue, byte.MaxValue);
                     hashList[i] = true;
                 }
             }
 
             return buffer;
         }
+
+        /// <summary>
+        /// 根据传入参数，获取第 <paramref name="i"/> 个坐标
+        /// </summary>
+        /// <param name="hashList"></param>
+        /// <param name="key">密码</param>
+        /// <param name="bufferLength">缓存长度</param>
+        /// <param name="data">明文数据</param>
+        /// <param name="suffixData">后缀</param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private static HashData GetPlace(bool[] hashList, int[] key, int bufferLength, byte[] data, byte[] suffixData,
+            int i)
+        {
+            var keyPlace = i % key.Length;
+
+            // 读取的密码位置，可以计算出字符位置
+            var keyValue = key[keyPlace];
+
+            var hashValue = keyValue % bufferLength;
+            if (!hashList[hashValue]) return new HashData(hashValue, keyValue);
+            // 第一圈是使用密码自身
+            foreach (var _ in key)
+            {
+                keyPlace++;
+                keyPlace = keyPlace % key.Length;
+                keyValue += key[keyPlace] * i;
+                hashValue = keyValue % bufferLength;
+
+                if (!hashList[hashValue])
+                {
+                    return new HashData(hashValue, keyValue);
+                }
+            }
+
+            // 第二圈是尝试加上明文本身
+            const int sizeOfInt = 4;
+            if (i > sizeOfInt)
+            {
+                // 为什么 j = i - 1 原因是如果是解密的过程，那么当前的明文依然未知
+                for (int j = i - 1; j >= sizeOfInt; j -= sizeOfInt)
+                {
+                    var byte1 = GetByte(data, suffixData, j);
+                    var byte2 = GetByte(data, suffixData, j - 1);
+                    var byte3 = GetByte(data, suffixData, j - 2);
+                    var byte4 = GetByte(data, suffixData, j - 3);
+
+                    int n = (byte1 << 3 * 8)
+                            + (byte2 << 2 * 8)
+                            + (byte3 << 1 * 8)
+                            + byte4;
+                    n *= i;
+                    keyValue = keyValue ^ n;
+                    if (keyValue < 0)
+                    {
+                        keyValue *= -1;
+                    }
+
+                    hashValue = keyValue % bufferLength;
+                    if (!hashList[hashValue])
+                    {
+                        return new HashData(hashValue, keyValue);
+                    }
+                }
+            }
+            else if (i > 0)
+            {
+                // 为什么 j = i - 1 原因是如果是解密的过程，那么当前的明文依然未知
+                for (int j = i - 1; j >= 0; j--)
+                {
+                    keyValue += GetByte(data, suffixData, j);
+                    hashValue = keyValue % bufferLength;
+
+                    if (!hashList[hashValue])
+                    {
+                        return new HashData(hashValue, keyValue);
+                    }
+                }
+            }
+
+            while (hashList[hashValue])
+            {
+                // 最后就是 +1 了
+                keyValue++;
+                hashValue = keyValue % bufferLength;
+            }
+
+            return new HashData(hashValue, keyValue);
+
+            static byte GetByte(byte[] a, byte[] b, int n)
+            {
+                if (n < a.Length)
+                {
+                    return a[n];
+                }
+
+                return b[n - a.Length];
+            }
+        }
+
 
         public static byte[]? Decrypt(byte[] encryptionData, int[] key, int bufferLength = 1024,
             byte[]? suffixData = null)
@@ -118,7 +200,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
             else
             {
-                var blockCount = (int)Math.Ceiling(encryptionData.Length / (double)bufferLength);
+                var blockCount = (int) Math.Ceiling(encryptionData.Length / (double) bufferLength);
                 List<byte> byteList = new List<byte>();
                 for (int i = 0; i < blockCount; i++)
                 {
@@ -129,12 +211,13 @@ namespace Lindexi.Src.EncryptionAlgorithm
                         // 理论上是刚刚好整数倍的，如果不是，那么在后续解密也会炸
                         Math.Min(bufferLength, encryptionData.Length - bufferLength * i));
 
-                    var decryptionData = DecryptData(encryptionByteList, key, bufferLength,suffixData);
+                    var decryptionData = DecryptData(encryptionByteList, key, bufferLength, suffixData);
                     if (decryptionData is null)
                     {
                         // 解密失败了
                         return null;
                     }
+
                     byteList.AddRange(decryptionData);
                 }
 
@@ -147,8 +230,6 @@ namespace Lindexi.Src.EncryptionAlgorithm
         {
             suffixData ??= DefaultSuffixData;
 
-            // keyPlace 密码位置
-            var keyPlace = 0;
             if (encryptionData.Length < bufferLength - 1)
             {
                 // 理论上这是相等的，如果小于的话，那么也就是说输入的加密解析不符合
@@ -160,27 +241,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
             var hashList = new bool[bufferLength];
             for (int i = 0; i < bufferLength; i++)
             {
-                // keyPlace 密码位置
-                var keyValue = key[keyPlace];
-                var hashValue = keyValue % bufferLength;
-                while (hashList[hashValue])
-                {
-                    hashValue++;
-                    if (hashValue >= bufferLength)
-                    {
-                        hashValue = 0;
-                    }
-                }
+                var hashData = GetPlace(hashList, key, bufferLength, data, suffixData, i);
 
-                var dataValue = (byte)(encryptionData[hashValue] - keyValue);
+                var dataValue = (byte) (encryptionData[hashData.HashValue] - hashData.KeyValue);
                 data[i] = dataValue;
-                hashList[hashValue] = true;
-
-                keyPlace++;
-                if (keyPlace == key.Length)
-                {
-                    keyPlace = 0;
-                }
+                hashList[hashData.HashValue] = true;
             }
 
             var index = LastIndexOf(data, suffixData);
@@ -239,6 +304,24 @@ namespace Lindexi.Src.EncryptionAlgorithm
         /// 数据的后缀
         /// </summary>
         /// 这里的内容就是“结束”的 Utf-8 内容
-        private static readonly byte[] DefaultSuffixData = new byte[] { 0xE7, 0xBB, 0x93, 0xE6, 0x9D, 0x9F };
+        private static readonly byte[] DefaultSuffixData = new byte[] {0xE7, 0xBB, 0x93, 0xE6, 0x9D, 0x9F};
+
+        readonly struct HashData
+        {
+            public HashData(int hashValue, int keyValue) : this()
+            {
+                HashValue = hashValue;
+                KeyValue = keyValue;
+            }
+
+            public int HashValue { get; }
+            public int KeyValue { get; }
+
+            public void Deconstruct(out int hashValue, out int keyValue)
+            {
+                hashValue = HashValue;
+                keyValue = KeyValue;
+            }
+        }
     }
 }
