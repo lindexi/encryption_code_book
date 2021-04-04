@@ -17,11 +17,9 @@ using FileIO = encryption_code_book.Model.FileIO;
 
 namespace encryption_code_book.ViewModel
 {
-
-
-    public class ViewModel : NavigateViewModel
+    public class MainViewModel : NavigateViewModel
     {
-        public ViewModel()
+        public MainViewModel()
         {
             Account = new Account();
         }
@@ -59,7 +57,7 @@ namespace encryption_code_book.ViewModel
             }
         }
 
-        public ViewModel View
+        public MainViewModel MainView
         {
             set;
             get;

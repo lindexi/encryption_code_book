@@ -2,7 +2,6 @@
     x:Class="encryption_code_book.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:encryption_code_book"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{StaticResource ViewModel}"
@@ -19,17 +18,7 @@
                     <ToggleButton TabIndex="1" Width="48" IsChecked="{Binding IsPaneOpen,ElementName=split_view,Mode=TwoWay}" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="#876ed7" />
                     <TextBlock Margin="100,1,1,1"></TextBlock>
                 </Grid>
-                <!--<Button Grid.Row="0" Content="展开" HorizontalAlignment="Left" VerticalAlignment="Top" Click="button_click" />-->
-                <!--<SplitView Grid.Row="1" x:Name="split_view" DisplayMode="CompactOverlay" CompactPaneLength="0">
-                    <SplitView.Pane>
-                        <ListBox SelectionChanged="nagivate">
-                            <ListBoxItem x:Name="encryption_note" Content="私密文本" IsSelected="True" />
-                            <ListBoxItem x:Name="encryption_code" Content="密码本" />
-                        </ListBox>
-                    </SplitView.Pane>
-                </SplitView>-->
             </Grid>
-
         </Grid>
     </Grid>
 </Page>

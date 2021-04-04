@@ -26,7 +26,7 @@ namespace encryption_code_book.View
     {
         public NewCodeStoragePage()
         {
-            //View = new NewCodeStorageModel();
+            //MainView = new NewCodeStorageModel();
             this.InitializeComponent();
             View = (NewCodeStorageModel)DataContext;
         }

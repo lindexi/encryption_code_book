@@ -6,6 +6,6 @@
     xmlns:viewModel="using:encryption_code_book.ViewModel"
     RequestedTheme="Light">
     <Application.Resources>
-        <viewModel:ViewModel x:Key="ViewModel"/>
+        <viewModel:MainViewModel x:Key="ViewModel"/>
     </Application.Resources>
 </Application>

@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Navigation;
 using encryption_code_book.View;
 using encryption_code_book.ViewModel;
 
-//using encryption_code_book.ViewModel;
+//using encryption_code_book.MainViewModel;
 
 #endregion
 
@@ -27,23 +27,23 @@ namespace encryption_code_book
             //view = new note();
             InitializeComponent();
             //frame.Navigate(typeof(note_page));
-            ViewModel = (ViewModel.ViewModel)DataContext;
-            ViewModel.OnNavigatedTo(frame);
+            MainViewModel = (ViewModel.MainViewModel)DataContext;
+            MainViewModel.OnNavigatedTo(frame);
         }
 
-        public ViewModel.ViewModel ViewModel { set; get; }
+        public ViewModel.MainViewModel MainViewModel { set; get; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //AccountGoverment.View.Frame = frame;
+            //AccountGoverment.MainView.Frame = frame;
 
-            //if (string.IsNullOrEmpty(AccountGoverment.View.Account?.Key?.Key))
+            //if (string.IsNullOrEmpty(AccountGoverment.MainView.Account?.Key?.Key))
             //{
-            //    AccountGoverment.View.NavigateKey();
+            //    AccountGoverment.MainView.NavigateKey();
             //}
             //else
             //{
-            //    AccountGoverment.View.NacigateCode();
+            //    AccountGoverment.MainView.NacigateCode();
             //}
 
             //frame.Navigate(typeof(EncryCodeStoragePage));

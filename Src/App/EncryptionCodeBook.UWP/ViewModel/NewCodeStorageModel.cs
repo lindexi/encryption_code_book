@@ -156,7 +156,7 @@ namespace encryption_code_book.ViewModel
         public override async void Run(object sender, Message o)
         {
             var message = (NewCodeStorageMessage)o;
-            var viewModel = sender as ViewModel;
+            var viewModel = sender as MainViewModel;
             if (viewModel != null)
             {
                 viewModel.Account.Key = message.Secret;

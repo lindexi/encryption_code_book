@@ -109,10 +109,13 @@ namespace encryption_code_book.Model
 
                     // 看起来 Buffer 内容可以复用
                     const int confirmKeyLength = Account.ConfirmKeyLength;
+#pragma warning disable 162
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                     if (confirmKeyLength != applicationHeaderLength)
                     {
                         buffer = new byte[confirmKeyLength];
                     }
+#pragma warning restore 162
 
                     stream.Read(buffer, 0, confirmKeyLength);
                     ConfirmKey = buffer;

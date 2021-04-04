@@ -149,7 +149,7 @@
     <Compile Include="ViewModel\NewCodeStorageModel.cs" />
     <Compile Include="ViewModel\NewKeyUrlModel.cs" />
     <Compile Include="ViewModel\NotifyProperty.cs" />
-    <Compile Include="ViewModel\viewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelAttribute.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelPage.cs" />

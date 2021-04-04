@@ -16,7 +16,7 @@ namespace encryption_code_book.ViewModel
 
         private void Read()
         {
-            //if (AccountGoverment.View.Key is SecretCode)
+            //if (AccountGoverment.MainView.Key is SecretCode)
             //{
 
             //}

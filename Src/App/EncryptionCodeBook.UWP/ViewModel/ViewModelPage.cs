@@ -13,9 +13,9 @@ namespace encryption_code_book.ViewModel
     {
         public ViewModelPage()
         {
-            //if (ViewModel == null)
+            //if (MainViewModel == null)
             //{
-            //    //ViewModel=View.GetConstructor(null)
+            //    //MainViewModel=MainView.GetConstructor(null)
             //}
         }
 
