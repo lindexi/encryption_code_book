@@ -122,8 +122,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\Iencryption.cs" />
-    <Compile Include="Core\string_encryption.cs" />
+    <Compile Include="Core\StringEncryption.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -145,13 +144,11 @@
     <Compile Include="ViewModel\IReceiveMessage.cs" />
     <Compile Include="ViewModel\ISendMessage.cs" />
     <Compile Include="ViewModel\KeyModel.cs" />
-    <Compile Include="ViewModel\MasterSendMessage.cs" />
     <Compile Include="ViewModel\Message.cs" />
     <Compile Include="ViewModel\NavigateViewModel.cs" />
     <Compile Include="ViewModel\NewCodeStorageModel.cs" />
     <Compile Include="ViewModel\NewKeyUrlModel.cs" />
     <Compile Include="ViewModel\NotifyProperty.cs" />
-    <Compile Include="ViewModel\notify_property.cs" />
     <Compile Include="ViewModel\viewModel.cs" />
     <Compile Include="ViewModel\ViewModelAttribute.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />

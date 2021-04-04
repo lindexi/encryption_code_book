@@ -6,7 +6,7 @@ using Windows.Devices.SmartCards;
 
 namespace encryption_code_book.Model
 {
-    public class StringEncryption //: IEncryption
+    public class StringEncryption
     {
         /// <summary>
         /// 加密字符串
