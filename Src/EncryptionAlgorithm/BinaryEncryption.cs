@@ -6,6 +6,15 @@ namespace Lindexi.Src.EncryptionAlgorithm
 {
     public static class BinaryEncryption
     {
+        /// <summary>
+        /// 分段加密数据，用于数据量特别大的情况。但是不足在于，传入的数据都是相同的数据，那么将会让返回值具有循环，可以被用来删除填补空白的数据。如果数据传入可能考虑攻击者传入数据，可以调用为 <see cref="EncryptData"/> 方法，通过更底层方式进行加密
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="key"></param>
+        /// <param name="bufferLength"></param>
+        /// <param name="suffixData"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
         public static byte[] Encrypt(byte[] data, int[] key, int bufferLength = 1024,
             byte[]? suffixData = null, Random? random = null)
         {
@@ -44,7 +53,16 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
         }
 
-        private static byte[] EncryptData(byte[] data, int[] key, int bufferLength = 1024,
+        /// <summary>
+        /// 提供底层的加密算法进行加密，要求 data 明文的长度加上后缀的长度一定小于 <paramref name="bufferLength"/> 的长度。如果想要拿到比较好的密文，让 <paramref name="data"/> 的长度小于 <paramref name="bufferLength"/> 一半
+        /// </summary>
+        /// <param name="data">明文</param>
+        /// <param name="key">密码</param>
+        /// <param name="bufferLength">缓存长度，这个长度和加密后返回值长度相等</param>
+        /// <param name="suffixData">后缀，默认是 <see cref="DefaultSuffixData"/> 的值 </param>
+        /// <param name="random">随机数生成</param>
+        /// <returns></returns>
+        public static byte[] EncryptData(byte[] data, int[] key, int bufferLength = 1024,
             byte[]? suffixData = null, Random? random = null)
         {
             suffixData ??= DefaultSuffixData;
@@ -225,7 +243,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
         }
 
-        private static byte[]? DecryptData(byte[] encryptionData, int[] key, int bufferLength = 1024,
+        public static byte[]? DecryptData(byte[] encryptionData, int[] key, int bufferLength = 1024,
             byte[]? suffixData = null)
         {
             suffixData ??= DefaultSuffixData;
