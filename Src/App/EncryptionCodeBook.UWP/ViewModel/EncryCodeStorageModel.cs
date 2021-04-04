@@ -120,7 +120,7 @@ namespace encryption_code_book.ViewModel
 
             foreach (var temp in account.EncryCodeStorage)
             {
-                if (string.IsNullOrEmpty(temp.ConfirmKey))
+                if (temp.ConfirmKey == null)
                 {
                     await temp.Read();
                 }
