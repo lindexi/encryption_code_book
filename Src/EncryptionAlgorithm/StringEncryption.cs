@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Lindexi.Src.EncryptionAlgorithm
@@ -56,6 +57,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
             return charList;
         }
+
 
         // 要求 text 小于 1024 个字符
         internal static char[] Encrypt(string text, string key, int tempStringLength = DefaultTempStringLength, string suffix = DefaultSuffix)
@@ -181,7 +183,6 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 hashValue = hashValue % tempStringLength; //密码给字符所在位置
                 while (encryptionCharList[hashValue] == Convert.ToChar(0))
                 {
-                    // 其实这里是不会进入的，原因是加密有填补空白
                     hashValue++;
                     if (hashValue >= tempStringLength)
                     {
