@@ -81,8 +81,8 @@ namespace encryption_code_book.Model
         {
             Windows.Security.Cryptography.Core.HashAlgorithmProvider objAlgProv = Windows.Security.Cryptography.Core.HashAlgorithmProvider.OpenAlgorithm(Windows.Security.Cryptography.Core.HashAlgorithmNames.Md5);
             Windows.Security.Cryptography.Core.CryptographicHash md5 = objAlgProv.CreateHash();
-             Windows.Storage.Streams.IBuffer bufferMessage = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(str, Windows.Security.Cryptography.BinaryStringEncoding.Utf16BE);
-            md5.Append(bufferMessage );
+            Windows.Storage.Streams.IBuffer bufferMessage = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(str, Windows.Security.Cryptography.BinaryStringEncoding.Utf16BE);
+            md5.Append(bufferMessage);
             Windows.Storage.Streams.IBuffer bufferHash = md5.GetValueAndReset();
             return Windows.Security.Cryptography.CryptographicBuffer.EncodeToBase64String(bufferHash);
         }
