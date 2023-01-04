@@ -226,6 +226,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 keyPlace++;
                 keyPlace = keyPlace % key.Length;
                 keyValue += key[keyPlace] * i;
+                // 由于 key[keyPlace] * i 可能存在越界问题，如果越界就会计算出负数，这里需要重新修改为正数
+                keyValue = Math.Abs(keyValue);
                 hashValue = keyValue % bufferLength;
 
                 if (!hashList[hashValue])
@@ -239,6 +241,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             if (i > sizeOfInt)
             {
                 // 为什么 j = i - 1 原因是如果是解密的过程，那么当前的明文依然未知
+                // 只能取已经解密过的明文来参加计算
                 for (var j = i - 1; j >= sizeOfInt; j -= sizeOfInt)
                 {
                     var byte1 = GetByte(data, suffixData, j);
@@ -252,10 +255,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
                             + byte4;
                     n *= i;
                     keyValue = keyValue ^ n;
-                    if (keyValue < 0)
-                    {
-                        keyValue *= -1;
-                    }
+                    //if (keyValue < 0)
+                    //{
+                    //    keyValue *= -1;
+                    //}
+                    keyValue = Math.Abs(keyValue); // 使用 Math.Abs 会比判断小于零再乘以负一快一点，使用 Math.Abs 指令优化
 
                     hashValue = keyValue % bufferLength;
                     if (!hashList[hashValue])
@@ -295,7 +299,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     return a[n];
                 }
 
-                return b[n - a.Length];
+                var length = n - a.Length;
+                return b.Length > length ? b[length] : (byte) 0;
             }
         }
 
