@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="EncryptionDirectory.Wpf.EncryptionDirectoryUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EncryptionDirectory.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <local:EncryptionDirectoryViewModel></local:EncryptionDirectoryViewModel>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid>
+                <StackPanel Margin="10,10,10,10">
+                    <TextBlock>源文件夹：</TextBlock>
+                    <TextBox Text="{Binding SourcePath}"></TextBox>
+                    <TextBlock Margin="0,5,0,0">加密输出文件夹：</TextBlock>
+                    <TextBox Text="{Binding TargetPath}"></TextBox>
+                    <TextBlock Margin="0,5,0,0">密码：</TextBlock>
+                    <Grid>
+                        <TextBox Text="{Binding Key}"></TextBox>
+                    </Grid>
+
+                    <CheckBox x:Name="DecryptionCheckBox" Margin="0,5,0,0">解密</CheckBox>
+                    <Button Margin="10,10,0,10" HorizontalAlignment="Right" Click="Button_OnClick">开始</Button>
+
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <TextBox x:Name="LogTextBox" Margin="10,10,10,10" Text="{Binding LogText}" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" VerticalAlignment="Bottom" VerticalScrollBarVisibility="Visible" TextChanged="LogTextBox_OnTextChanged"></TextBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

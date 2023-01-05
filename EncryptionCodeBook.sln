@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EncryptionDirectory", "Encr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptionDirectory", "Src\App\EncryptionDirectory\EncryptionDirectory\EncryptionDirectory.csproj", "{9976007D-457D-45C9-9867-882806167538}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionDirectory.Wpf", "Src\App\EncryptionDirectory\EncryptionDirectory.Wpf\EncryptionDirectory.Wpf.csproj", "{B5427E66-A138-431D-8DA3-0820F4D2753A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,26 @@ Global
 		{9976007D-457D-45C9-9867-882806167538}.Release|x64.Build.0 = Release|Any CPU
 		{9976007D-457D-45C9-9867-882806167538}.Release|x86.ActiveCfg = Release|Any CPU
 		{9976007D-457D-45C9-9867-882806167538}.Release|x86.Build.0 = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|x64.Build.0 = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Debug|x86.Build.0 = Debug|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|ARM.Build.0 = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|ARM64.Build.0 = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|x64.ActiveCfg = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|x64.Build.0 = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|x86.ActiveCfg = Release|Any CPU
+		{B5427E66-A138-431D-8DA3-0820F4D2753A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +145,7 @@ Global
 		{1CF299A7-03A6-46F7-9D50-01DB82F5AEC4} = {726DEF6D-C995-4B2B-A417-EB6E594AAD45}
 		{A66A4EEB-A08E-4F66-98AC-7279EFEC00F7} = {726DEF6D-C995-4B2B-A417-EB6E594AAD45}
 		{9976007D-457D-45C9-9867-882806167538} = {A66A4EEB-A08E-4F66-98AC-7279EFEC00F7}
+		{B5427E66-A138-431D-8DA3-0820F4D2753A} = {A66A4EEB-A08E-4F66-98AC-7279EFEC00F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2ED772D-7242-462C-8F8B-E000CA2D037C}
