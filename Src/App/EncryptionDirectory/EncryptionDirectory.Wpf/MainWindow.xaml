@@ -5,8 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EncryptionDirectory.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="加密文件夹" Height="450" Width="800" Icon="Icon.ico">
     <Grid>
-        <local:EncryptionDirectoryUserControl></local:EncryptionDirectoryUserControl>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto">
+                    <!--菜单栏-->
+                </RowDefinition>
+                <RowDefinition>
+                    <!--功能区-->
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Menu>
+                    <MenuItem Header="文件(_F)">
+                        <MenuItem x:Name="OpenMenuItem" Header="打开(_O)" Click="OpenMenuItem_OnClick"></MenuItem>
+                        <MenuItem x:Name="SaveMenuItem" Header="保存(_S)" Click="SaveMenuItem_OnClick"></MenuItem>
+                        <MenuItem x:Name="QuitMenuItem" Header="退出(_Q)" Click="QuitMenuItem_OnClick"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="关于" Click="AboutMenuItem_OnClick"></MenuItem>
+                </Menu>
+            </StackPanel>
+            <local:EncryptionDirectoryUserControl x:Name="EncryptionDirectoryUserControl" Grid.Row="1"></local:EncryptionDirectoryUserControl>
+        </Grid>
     </Grid>
 </Window>

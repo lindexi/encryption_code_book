@@ -28,7 +28,7 @@ public partial class EncryptionDirectoryUserControl : UserControl
         ViewModel = (EncryptionDirectoryViewModel) DataContext;
     }
 
-    private EncryptionDirectoryViewModel ViewModel { get; }
+    public EncryptionDirectoryViewModel ViewModel { get; }
 
     private void LogTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
