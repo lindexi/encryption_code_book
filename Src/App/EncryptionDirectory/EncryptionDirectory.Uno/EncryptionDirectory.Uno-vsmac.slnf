@@ -1,0 +1,14 @@
+{
+  "solution": {
+    "path": "EncryptionDirectory.Uno.sln",
+    "projects": [
+		"EncryptionDirectory.Uno.Shared\\EncryptionDirectory.Uno.Shared.shproj",
+
+		"EncryptionDirectory.Uno.Mobile\\EncryptionDirectory.Uno.Mobile.csproj",
+
+		"EncryptionDirectory.Uno.Wasm\\EncryptionDirectory.Uno.Wasm.csproj",
+
+		"EncryptionDirectory.Uno.Skia.Gtk\\EncryptionDirectory.Uno.Skia.Gtk.csproj",
+    ]
+  }
+}

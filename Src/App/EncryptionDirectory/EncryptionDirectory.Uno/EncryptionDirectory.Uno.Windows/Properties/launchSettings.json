@@ -1,0 +1,10 @@
+{
+	"profiles": {
+		"EncryptionDirectory.Uno.Windows (Package)": {
+			"commandName": "MsixPackage"
+		},
+		"EncryptionDirectory.Uno.Windows (Unpackaged)": {
+			"commandName": "Project"
+		}
+	}
+}
