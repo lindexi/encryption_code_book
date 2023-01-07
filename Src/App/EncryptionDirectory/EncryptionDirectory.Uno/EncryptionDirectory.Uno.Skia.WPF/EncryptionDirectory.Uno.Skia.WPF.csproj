@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType Condition="'$(Configuration)'=='Release'">WinExe</OutputType>
     <OutputType Condition="'$(Configuration)'=='Debug'">Exe</OutputType>
@@ -30,6 +30,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\uno-fluentui-assets.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EncryptionDirectory\EncryptionDirectory.csproj" />
   </ItemGroup>
   <Import Project="..\EncryptionDirectory.Uno.Shared\EncryptionDirectory.Uno.Shared.projitems" Label="Shared" />
 </Project>

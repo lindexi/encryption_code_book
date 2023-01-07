@@ -40,39 +40,44 @@ public partial class EncryptionDirectoryUserControl : UserControl
         var button = (Button) sender;
         button.IsEnabled = false;
 
-        if (string.IsNullOrEmpty(ViewModel.SourcePath) || !Directory.Exists(ViewModel.SourcePath))
+        try
         {
-            ViewModel.Log($"没有找到源文件夹 {ViewModel.SourcePath}");
-            return;
-        }
-
-        if (string.IsNullOrEmpty(ViewModel.TargetPath))
-        {
-            ViewModel.Log("加密输出文件夹不能为空");
-            return;
-        }
-
-        if (string.IsNullOrEmpty(ViewModel.Key))
-        {
-            ViewModel.Log("密码不能是空");
-            return;
-        }
-
-        var directoryEncryption = ViewModel.CreateDirectoryEncryption();
-
-        if (DecryptionCheckBox.IsChecked is true)
-        {
-            await directoryEncryption.DecryptDirectoryAsync(new DirectoryInfo(ViewModel.SourcePath));
-        }
-        else
-        {
-            await directoryEncryption.UpdateAsync(new Progress<UpdateProgress>(progress =>
+            if (string.IsNullOrEmpty(ViewModel.SourcePath) || !Directory.Exists(ViewModel.SourcePath))
             {
-                ViewModel.Log($"开始转换 {progress.CurrentFileName} {progress.RelativePath} {progress.CurrentFileIndex}/{progress.FileCount}");
-            }));
-        }
+                ViewModel.Log($"没有找到源文件夹 {ViewModel.SourcePath}");
+                return;
+            }
 
-        button.IsEnabled = true;
+            if (string.IsNullOrEmpty(ViewModel.TargetPath))
+            {
+                ViewModel.Log("加密输出文件夹不能为空");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(ViewModel.Key))
+            {
+                ViewModel.Log("密码不能是空");
+                return;
+            }
+
+            var directoryEncryption = ViewModel.CreateDirectoryEncryption();
+
+            if (DecryptionCheckBox.IsChecked is true)
+            {
+                await directoryEncryption.DecryptDirectoryAsync(new DirectoryInfo(ViewModel.SourcePath));
+            }
+            else
+            {
+                await directoryEncryption.UpdateAsync(new Progress<UpdateProgress>(progress =>
+                {
+                    ViewModel.Log($"开始转换 {progress.CurrentFileName} {progress.RelativePath} {progress.CurrentFileIndex}/{progress.FileCount}");
+                }));
+            }
+        }
+        finally
+        {
+            button.IsEnabled = true;
+        }
     }
 }
 

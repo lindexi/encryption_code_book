@@ -1,4 +1,4 @@
-<Page
+﻿<Page
     x:Class="EncryptionDirectory.Uno.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,6 +9,20 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-      <TextBlock Text="Hello, world!" Margin="20" FontSize="30" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto">
+                    <!--菜单栏-->
+                </RowDefinition>
+                <RowDefinition>
+                    <!--功能区-->
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <MenuBar>
+                <MenuBarItem Title="File" ></MenuBarItem>
+            </MenuBar>
+            <local:EncryptionDirectoryPage Grid.Row="1"/>
+        </Grid>
+      
     </Grid>
 </Page>
