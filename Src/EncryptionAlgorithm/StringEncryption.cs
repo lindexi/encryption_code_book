@@ -24,7 +24,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             else
             {
                 // 拆分多个逻辑
-                var maxCount = (int)Math.Ceiling(text.Length / maxTextLength);
+                var maxCount = (int) Math.Ceiling(text.Length / maxTextLength);
                 const int sizeOfChar = 2; // sizeof char
                 var byteList = new byte[maxCount * DefaultTempStringLength * sizeOfChar];
 
@@ -100,7 +100,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     }
                 }
 
-                tempCharList[hashValue] = (char)((str[i]) + keyChar % 1024);
+                tempCharList[hashValue] = (char) ((str[i]) + keyChar % 1024);
                 keyPlace++;
                 if (keyPlace == key.Length)
                 {
@@ -127,7 +127,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             const int sizeOfChar = 2; // sizeof char
             const int encryptionByteListLengthInt = DefaultTempStringLength * sizeOfChar;
             const double encryptionByteListLength = encryptionByteListLengthInt;
-            var blockCount = (int)Math.Ceiling(encryptionData.Length / encryptionByteListLength);
+            var blockCount = (int) Math.Ceiling(encryptionData.Length / encryptionByteListLength);
             if (blockCount == 1)
             {
                 var charList = ByteListToCharList(encryptionData);
@@ -190,7 +190,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     }
                 }
 
-                temp.Append((char)((encryptionCharList[hashValue]) - keyChar % 1024));
+                temp.Append((char) ((encryptionCharList[hashValue]) - keyChar % 1024));
                 encryptionCharList[hashValue] = Convert.ToChar(0); //把原来位置0
                 keyPlace++;
                 if (keyPlace == key.Length)
