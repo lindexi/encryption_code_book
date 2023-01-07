@@ -35,7 +35,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
             // 拆分多个逻辑
             var maxDataLength = maxLength / 2;
-            var maxCount = (int)Math.Ceiling(data.Length / (double)maxDataLength);
+            var maxCount = (int) Math.Ceiling(data.Length / (double) maxDataLength);
             var byteList = new byte[maxCount * bufferLength];
 
             for (var i = 0; i < maxCount; i++)
@@ -89,7 +89,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     dataValue = suffixData[i - data.Length];
                 }
 
-                dataValue = (byte)(dataValue + hashData.KeyValue);
+                dataValue = (byte) (dataValue + hashData.KeyValue);
                 buffer[hashData.HashValue] = dataValue;
                 hashList[hashData.HashValue] = true;
             }
@@ -99,7 +99,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 if (!hashList[i])
                 {
-                    buffer[i] = (byte)random.Next(byte.MinValue, byte.MaxValue);
+                    buffer[i] = (byte) random.Next(byte.MinValue, byte.MaxValue);
                     hashList[i] = true;
                 }
             }
@@ -123,7 +123,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 return DecryptData(encryptionData, key, bufferLength, suffixData);
             }
 
-            var blockCount = (int)Math.Ceiling(encryptionData.Length / (double)bufferLength);
+            var blockCount = (int) Math.Ceiling(encryptionData.Length / (double) bufferLength);
             List<byte> byteList = new();
             for (var i = 0; i < blockCount; i++)
             {
@@ -173,7 +173,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 var hashData = GetPlace(hashList, key, bufferLength, data, suffixData, i);
 
-                var dataValue = (byte)(encryptionData[hashData.HashValue] - hashData.KeyValue);
+                var dataValue = (byte) (encryptionData[hashData.HashValue] - hashData.KeyValue);
                 data[i] = dataValue;
                 hashList[hashData.HashValue] = true;
             }
