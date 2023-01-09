@@ -70,8 +70,10 @@ public partial class EncryptionDirectoryUserControl : UserControl
             {
                 await directoryEncryption.UpdateAsync(new Progress<UpdateProgress>(progress =>
                 {
-                    ViewModel.Log($"开始转换 {progress.CurrentFileName} {progress.RelativePath} {progress.CurrentFileIndex}/{progress.FileCount}");
+                    ViewModel.Log($"开始转换 {progress.CurrentFileName} {progress.RelativePath} {progress.CurrentFileIndex+1}/{progress.FileCount}");
                 }));
+
+                ViewModel.Log("转换完成");
             }
         }
         finally

@@ -156,9 +156,15 @@ public class DirectoryEncryption
                 await File.WriteAllBytesAsync(path, encryptionFileByteList);
             }
 
+            if (Path.IsPathFullyQualified(path))
+            {
+                // 如果路径包含绝对路径，就需要转换为相对路径，方便后续解密使用
+                path = Path.GetRelativePath(TargetDirectory.FullName, path);
+            }
+
             fileStorageInfoList.Add(new FileStorageInfo(source.Name, relativePath,
-                new DateTimeOffset(source.LastWriteTimeUtc), source.Length, hash,
-                Path.GetRelativePath(TargetDirectory.FullName, path), salt));
+                new DateTimeOffset(source.LastWriteTimeUtc), source.Length, hash, path,
+                salt));
         }
 
         await SaveIndexFile(fileStorageInfoList);
