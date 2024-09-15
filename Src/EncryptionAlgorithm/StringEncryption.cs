@@ -113,7 +113,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 if (tempCharList[i] == Convert.ToChar(0))
                 {
-                    // 加入的内容就是英文和汉子内容
+                    // 加入的内容就是英文和汉字内容
                     var ran = random.Next(2) == 0 ? random.Next(19968, 40864) : random.Next(33, 126);
                     tempCharList[i] = Convert.ToChar(ran);
                 }
