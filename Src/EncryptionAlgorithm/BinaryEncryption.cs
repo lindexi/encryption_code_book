@@ -220,7 +220,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             var hashValue = keyValue % bufferLength;
             if (!hashList[hashValue])
             {
-                return new HashData(hashValue, keyValue, keyPlace);
+                return new HashData(hashValue, keyValue);
             }
 
             // 第一圈是使用密码自身
@@ -235,7 +235,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 if (!hashList[hashValue])
                 {
-                    return new HashData(hashValue, keyValue, keyPlace);
+                    return new HashData(hashValue, keyValue);
                 }
             }
 
@@ -345,16 +345,14 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
         private readonly struct HashData
         {
-            public HashData(int hashValue, int keyValue, int keyPlace) : this()
+            public HashData(int hashValue, int keyValue) : this()
             {
                 HashValue = hashValue;
                 KeyValue = keyValue;
-                KeyPlace = keyPlace;
             }
 
             public int HashValue { get; }
             public int KeyValue { get; }
-            public int KeyPlace { get; }
 
             public void Deconstruct(out int hashValue, out int keyValue)
             {
