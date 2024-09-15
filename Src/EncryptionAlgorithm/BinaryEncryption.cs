@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Lindexi.Src.EncryptionAlgorithm
 {
-    public static class BinaryEncryption
+    public  static partial class BinaryEncryption
     {
         /// <summary>
         ///     分段加密数据，用于数据量特别大的情况。但是不足在于，传入的数据都是相同的数据，那么将会让返回值具有循环，可以被用来删除填补空白的数据。如果数据传入可能考虑攻击者传入数据，可以调用为
