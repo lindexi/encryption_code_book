@@ -57,20 +57,37 @@ namespace Lindexi.Src.EncryptionAlgorithm
         private static void EncryptDataCore_1_1_2(EncryptionContext context)
         {
             var dataLength = context.DataLength;
+            int hashValue = 0;
             for (var i = 0; i < dataLength; i++)
             {
                 // 密码位置
-                var hashData = GetPlace_1_1_2(context, i);
+                // 需要读取两次，首次读取的是地址，二次读取的是密码。防止地址和密码关联导致的破译
+                if (i == 0)
+                {
+                    // 首次读取出地址
+                    hashValue = GetPlace_1_1_2(context, i).HashValue;
+                }
+                else
+                {
+                    // 上一个数据已经读取出地址了，就不用再次读取了
+                }
+
+                var secondHashData = GetPlace_1_1_2(context, i + 1);
+                var keyData = secondHashData.KeyValue;
+                var nextHashValue = secondHashData.HashValue;
 
                 byte dataValue = context.GetData(i);
 
                 // 这里算法上存在缺陷，那就是让某个下标的元素的数据耦合了 Key 的数据，让其之间存在关联关系
                 // 用人话说就是 HashValue 这个下标是依靠 KeyValue 计算出来的，因此在知道总数是 1024 的情况下，即可推断 HashValue 下标的内容加的可能是多少的值。假定不考虑二圈的情况，只考虑一圈时，如果此时 HashValue 是 2 的值，密文里是 99 的值，那极有可能是 KeyValue 是 2 或 1026 的值，将其减去 2 则得到密码是 97 即 'a' 的值。如此即可大概破解部分内容，甚至为后续更进一步推断提供更多信息
                 // 原设计里面，这里应该加的是计算出 HashValue 的后一位密码
-                dataValue = (byte) (dataValue + hashData.KeyValue);
+                dataValue = (byte) (dataValue + keyData);
 
-                context.Buffer[hashData.HashValue] = dataValue;
-                context.HashList[hashData.HashValue] = true;
+                context.Buffer[hashValue] = dataValue;
+                context.HashList[hashValue] = true;
+
+                // 将下一个地址给到下一个数据
+                hashValue = nextHashValue;
             }
 
             // 填充空白部分
@@ -96,13 +113,15 @@ namespace Lindexi.Src.EncryptionAlgorithm
             var keyPlace = index % key.Length;
 
             // 读取的密码位置，可以计算出字符位置
-            var keyValue = key[keyPlace];
+            int keyValue = key[keyPlace];
             BitArray hashList = context.HashList;
 
             var hashValue = keyValue % bufferLength;
             if (!hashList[hashValue])
             {
                 // 第零次，首次命中，此时不应该使用密码本身，应该选用下一个密码，避免被此计算出来
+                // 由于 hashValue 是依靠 keyValue 计算出来的。因此不能再使用这个 keyValue 值。否则拿到对应的位置，即可了解到当前这个位置被 bufferLength 倍的 keyValue 加密，从而可以进行猜测破解
+                // 要求上层调用方，不能同时使用相同一次返回的 HashData 的 hashValue 和 keyValue 作为地址和加密，需要再跑一次。即首次获取的是地址，二次获取的是加密密码。二次获取时须将 index 加一
                 return new HashData(hashValue, keyValue);
             }
 
