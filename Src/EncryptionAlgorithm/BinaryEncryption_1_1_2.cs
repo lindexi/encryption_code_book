@@ -142,11 +142,12 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
             // 第二圈是尝试加上明文本身
             const int sizeOfInt = 4;
-            if (index > sizeOfInt)
+            const int skipCount = 2;
+            if (index - skipCount >= sizeOfInt)
             {
-                // 为什么 j = i - 1 原因是如果是解密的过程，那么当前的明文依然未知
+                // 使用 j = i - skipCount 原因是如果是解密的过程，那么当前的明文依然未知
                 // 只能取已经解密过的明文来参加计算
-                for (var j = index - 1; j >= sizeOfInt; j -= sizeOfInt)
+                for (var j = index - skipCount; j >= sizeOfInt; j -= sizeOfInt)
                 {
                     var byte1 = ReadByte(context, j);
                     var byte2 = ReadByte(context, j - 1);
