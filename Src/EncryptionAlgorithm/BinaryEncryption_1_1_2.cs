@@ -72,6 +72,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     // 上一个数据已经读取出地址了，就不用再次读取了
                 }
 
+                // 此方法是不可实现的，原因在于后续会取明文作为密码部分
                 var secondHashData = GetPlace_1_1_2(context, i + 1);
                 var keyData = secondHashData.KeyValue;
                 var nextHashValue = secondHashData.HashValue;
