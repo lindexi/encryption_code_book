@@ -74,9 +74,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     hashValue = nextHashValue;
                 }
 
-                var secondHashData = GetPlace_1_1_2(context, i + 1);
-                var keyData = secondHashData.KeyValue;
-                nextHashValue = secondHashData.HashValue;
+                (nextHashValue, var keyData) = GetPlace_1_1_2(context, i + 1);
 
                 byte dataValue = context.GetData(i);
 
