@@ -49,7 +49,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
 
             var rawDataSpan = new ByteSpan(data, dataStart, dataLength);
-            var hashList = new BitArray(outputBuffer.Length);
+            var hashList = new BitArray(bufferLength);
             var context = new EncryptionContext(rawDataSpan, key, hashList, outputBuffer, bufferLength, random);
             EncryptDataCore_1_1_2(context);
         }
