@@ -57,11 +57,12 @@ namespace Lindexi.Src.EncryptionAlgorithm
         private static void EncryptDataCore_1_1_2(EncryptionContext context)
         {
             var dataLength = context.DataLength;
-            int hashValue = 0;
+            int nextHashValue = 0;
             for (var i = 0; i < dataLength; i++)
             {
                 // 密码位置
                 // 需要读取两次，首次读取的是地址，二次读取的是密码。防止地址和密码关联导致的破译
+                int hashValue;
                 if (i == 0)
                 {
                     // 首次读取出地址
@@ -70,12 +71,12 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 else
                 {
                     // 上一个数据已经读取出地址了，就不用再次读取了
+                    hashValue = nextHashValue;
                 }
 
-                // 此方法是不可实现的，原因在于后续会取明文作为密码部分
                 var secondHashData = GetPlace_1_1_2(context, i + 1);
                 var keyData = secondHashData.KeyValue;
-                var nextHashValue = secondHashData.HashValue;
+                nextHashValue = secondHashData.HashValue;
 
                 byte dataValue = context.GetData(i);
 
@@ -86,9 +87,6 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 context.Buffer[hashValue] = dataValue;
                 context.HashList[hashValue] = true;
-
-                // 将下一个地址给到下一个数据
-                hashValue = nextHashValue;
             }
 
             // 填充空白部分
