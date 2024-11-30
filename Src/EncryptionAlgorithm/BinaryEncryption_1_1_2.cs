@@ -33,7 +33,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 throw new ArgumentException($"data.Length({data.Length}) < dataStart({dataStart}) + dataLength({dataLength})");
             }
 
-            if (dataLength + SizeofDataLengthInt > bufferLength)
+            var totalLength = dataLength + SizeofDataLengthInt;
+            if (totalLength > bufferLength)
             {
                 throw new ArgumentException($"数据长度大于缓冲区长度，必须至少比缓冲区长度小 4 的长度 dataLength({dataLength}) + 4 > bufferLength({bufferLength})");
             }
@@ -48,20 +49,22 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
 
             var rawDataSpan = new ByteSpan(data, dataStart, dataLength);
-
+            var hashList = new BitArray(outputBuffer.Length);
+            var context = new EncryptionContext(rawDataSpan, key, hashList, outputBuffer, bufferLength, random);
         }
 
         private const int SizeofDataLengthInt = 4; // sizeof(int)
 
         class EncryptionContext
         {
-            public EncryptionContext(ByteSpan rawDataSpan, int[] key, BitArray hashList, byte[] buffer, int bufferLength)
+            public EncryptionContext(ByteSpan rawDataSpan, int[] key, BitArray hashList, byte[] buffer, int bufferLength, Random random)
             {
                 _rawDataSpan = rawDataSpan;
                 Key = key;
                 HashList = hashList;
                 Buffer = buffer;
                 BufferLength = bufferLength;
+                Random = random;
             }
 
             private readonly ByteSpan _rawDataSpan;
@@ -71,6 +74,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
             public int BufferLength { get; }
 
             public int DataLength => _rawDataSpan.Length + SizeofDataLengthInt;
+            public Random Random { get; }
+
             public unsafe byte GetData(int index)
             {
                 // 前 4 个 byte 是长度信息
