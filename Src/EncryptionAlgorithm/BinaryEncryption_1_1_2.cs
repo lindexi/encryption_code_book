@@ -25,17 +25,17 @@ namespace Lindexi.Src.EncryptionAlgorithm
         {
             if (bufferLength > outputBuffer.Length)
             {
-                throw new ArgumentException("缓冲区数据的长度比缓冲区长度小 bufferLength > outputBuffer.Length");
+                throw new ArgumentException($"缓冲区数据的长度比缓冲区长度小 bufferLength({bufferLength}) > outputBuffer.Length({outputBuffer.Length})");
             }
 
             if (data.Length < dataStart + dataLength)
             {
-                throw new ArgumentException("data.Length < dataStart + dataLength");
+                throw new ArgumentException($"data.Length({data.Length}) < dataStart({dataStart}) + dataLength({dataLength})");
             }
 
             if (dataLength + SizeofDataLengthInt > bufferLength)
             {
-                throw new ArgumentException("数据长度大于缓冲区长度，必须至少比缓冲区长度小 4 的长度 dataLength + 4 > bufferLength");
+                throw new ArgumentException($"数据长度大于缓冲区长度，必须至少比缓冲区长度小 4 的长度 dataLength({dataLength}) + 4 > bufferLength({bufferLength})");
             }
 
             if (random == null)
