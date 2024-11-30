@@ -57,38 +57,23 @@ namespace Lindexi.Src.EncryptionAlgorithm
         private static void EncryptDataCore_1_1_2(EncryptionContext context)
         {
             var dataLength = context.DataLength;
-            int hashValue = 0;
+            
             for (var i = 0; i < dataLength; i++)
             {
                 // 密码位置
-                // 需要读取两次，首次读取的是地址，二次读取的是密码。防止地址和密码关联导致的破译
-                if (i == 0)
-                {
-                    // 首次读取出地址
-                    hashValue = GetPlace_1_1_2(context, i).HashValue;
-                }
-                else
-                {
-                    // 上一个数据已经读取出地址了，就不用再次读取了
-                }
-
-                // 此方法是不可实现的，原因在于后续会取明文作为密码部分
-                var secondHashData = GetPlace_1_1_2(context, i + 1);
-                var keyData = secondHashData.KeyValue;
-                var nextHashValue = secondHashData.HashValue;
+                var hashData = GetPlace_1_1_2(context, i);
+                int hashValue = hashData.HashValue;
+                var keyValue = hashData.KeyValue;
 
                 byte dataValue = context.GetData(i);
 
                 // 这里算法上存在缺陷，那就是让某个下标的元素的数据耦合了 Key 的数据，让其之间存在关联关系
                 // 用人话说就是 HashValue 这个下标是依靠 KeyValue 计算出来的，因此在知道总数是 1024 的情况下，即可推断 HashValue 下标的内容加的可能是多少的值。假定不考虑二圈的情况，只考虑一圈时，如果此时 HashValue 是 2 的值，密文里是 99 的值，那极有可能是 KeyValue 是 2 或 1026 的值，将其减去 2 则得到密码是 97 即 'a' 的值。如此即可大概破解部分内容，甚至为后续更进一步推断提供更多信息
                 // 原设计里面，这里应该加的是计算出 HashValue 的后一位密码
-                dataValue = (byte) (dataValue + keyData);
+                dataValue = (byte) (dataValue + keyValue);
 
                 context.Buffer[hashValue] = dataValue;
                 context.HashList[hashValue] = true;
-
-                // 将下一个地址给到下一个数据
-                hashValue = nextHashValue;
             }
 
             // 填充空白部分
