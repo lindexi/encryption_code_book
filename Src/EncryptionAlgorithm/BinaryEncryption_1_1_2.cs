@@ -356,33 +356,30 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
             // 先解密出数据长度
             int nextHashValue = 0;
-            var dataLengthByteList = new byte[SizeofDataLengthInt];
-            for (int i = 0; i < SizeofDataLengthInt; i++)
-            {
-                int hashValue;
-                if (i == 0)
-                {
-                    hashValue = GetPlace_1_1_2(decryptionContext, i).HashValue;
-                }
-                else
-                {
-                    hashValue = nextHashValue;
-                }
-
-                (nextHashValue, var keyData) = GetPlace_1_1_2(decryptionContext, i + 1);
-                var value = encryptionDataSpan[hashValue];
-                value = (byte) (value - keyData);
-                dataLengthByteList[i] = value;
-
-                hashList[hashValue] = true;
-            }
-
             unsafe
             {
-                fixed (byte* p = dataLengthByteList)
+                var dataLengthByteList = stackalloc byte[SizeofDataLengthInt];
+                for (int i = 0; i < SizeofDataLengthInt; i++)
                 {
-                    decryptionContext.DataLength = *(int*) p;
+                    int hashValue;
+                    if (i == 0)
+                    {
+                        hashValue = GetPlace_1_1_2(decryptionContext, i).HashValue;
+                    }
+                    else
+                    {
+                        hashValue = nextHashValue;
+                    }
+
+                    (nextHashValue, var keyData) = GetPlace_1_1_2(decryptionContext, i + 1);
+                    var value = encryptionDataSpan[hashValue];
+                    value = (byte) (value - keyData);
+                    dataLengthByteList[i] = value;
+
+                    hashList[hashValue] = true;
                 }
+
+                decryptionContext.DataLength = *(int*) dataLengthByteList;
             }
             var dataLength = decryptionContext.DataLength;
             decryptionResultBufferLength = dataLength;

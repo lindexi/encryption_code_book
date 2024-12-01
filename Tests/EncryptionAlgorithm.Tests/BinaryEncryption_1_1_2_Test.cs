@@ -36,7 +36,7 @@ namespace EncryptionAlgorithm.Tests
                 BinaryEncryption.DecryptData_1_1_2(encryptionByteList, 0, encryptionByteList.Length, key,
                     decryptionData, 1024, out var decryptionResultBufferLength);
 
-                Assert.AreEqual(encryptionByteList.Length, decryptionResultBufferLength);
+                Assert.AreEqual(textData.Length, decryptionResultBufferLength);
 
                 var decryptionText = Encoding.UTF8.GetString(decryptionData,0, decryptionResultBufferLength);
 
