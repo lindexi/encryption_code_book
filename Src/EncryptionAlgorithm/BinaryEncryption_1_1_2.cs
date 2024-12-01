@@ -102,7 +102,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
         ///     根据传入参数，获取第 <paramref name="index" /> 个坐标
         /// </summary>
         /// <returns></returns>
-        private static HashData GetPlace_1_1_2(EncryptionContext context,int index)
+        private static HashData GetPlace_1_1_2(IContext context, int index)
         {
             int bufferLength = context.BufferLength;
 
@@ -195,7 +195,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
             return new HashData(hashValue, keyValue);
 
-            static byte ReadByte(EncryptionContext context, int index)
+            static byte ReadByte(IContext context, int index)
             {
                 return context.GetData(index);
             }
@@ -203,7 +203,25 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
         private const int SizeofDataLengthInt = 4; // sizeof(int)
 
-        class EncryptionContext
+        interface IContext
+        {
+            int[] Key { get; }
+            int BufferLength { get; }
+
+            /// <summary>
+            /// 和 buffer 构成哈希，用来决定 buffer 上的位置是否被写入值
+            /// </summary>
+            BitArray HashList { get; }
+
+            /// <summary>
+            /// 获取明文数据
+            /// </summary>
+            /// <param name="index"></param>
+            /// <returns></returns>
+            byte GetData(int index);
+        }
+
+        class EncryptionContext : IContext
         {
             public EncryptionContext(ByteSpan rawDataSpan, int[] key, BitArray hashList, byte[] buffer, int bufferLength, Random random)
             {
@@ -261,6 +279,126 @@ namespace Lindexi.Src.EncryptionAlgorithm
             public byte[] Data { get; }
             public int Start { get; }
             public int Length { get; }
+        }
+
+        class DecryptionContext : IContext
+        {
+            public DecryptionContext(int[] key, int bufferLength, BitArray hashList, byte[] data)
+            {
+                Key = key;
+                BufferLength = bufferLength;
+                HashList = hashList;
+                Data = data;
+            }
+
+            public int[] Key { get; }
+            public int BufferLength { get; }
+            public BitArray HashList { get; }
+
+            /// <summary>
+            /// 数据长度
+            /// </summary>
+            public int DataLength { get; set; }
+
+            /// <summary>
+            /// 明文
+            /// </summary>
+            public byte[] Data { get; }
+
+            /// <summary>
+            /// 当前解密到的点
+            /// </summary>
+            public int CurrentDecryptIndex { get; set; }
+
+            public unsafe byte GetData(int index)
+            {
+                // 前 4 个 byte 是长度信息
+                if (index < SizeofDataLengthInt)
+                {
+                    var length = DataLength;
+                    /*
+                         byte[] bytes = new byte[sizeof(int)];
+                                Unsafe.As<byte, int>(ref bytes[0]) = value;
+                                return bytes;
+                     */
+                    int* p = &length;
+                    byte* pByte = (byte*) p;
+                    return pByte[index];
+                }
+
+                var dataIndex = index - SizeofDataLengthInt;
+                if (dataIndex > CurrentDecryptIndex)
+                {
+                    throw new InvalidOperationException($"当前所取的数据超过解密的点");
+                }
+                return Data[dataIndex];
+            }
+        }
+
+        /// <summary>
+        /// 使用 1.1.2 版本的数据解密算法
+        /// </summary>
+        /// <param name="encryptionData">加密了的数据</param>
+        /// <param name="encryptionDataStart"></param>
+        /// <param name="encryptionDataLength"></param>
+        /// <param name="key"></param>
+        /// <param name="outputBuffer">承载加密输出的缓冲数组</param>
+        /// <param name="bufferLength">加密解密过程使用的缓冲数组长度。要求加密解密长度相同</param>
+        /// <param name="decryptionResultBufferLength">解密得到的数据长度</param>
+        public static void DecryptData_1_1_2(byte[] encryptionData, int encryptionDataStart, int encryptionDataLength, int[] key, byte[] outputBuffer, int bufferLength, out int decryptionResultBufferLength)
+        {
+            decryptionResultBufferLength = 0;
+
+            var encryptionDataSpan = new ByteSpan(encryptionData, encryptionDataStart, encryptionDataLength);
+
+            var hashList = new BitArray(bufferLength);
+            var decryptionContext = new DecryptionContext(key, bufferLength, hashList, outputBuffer);
+
+            // 先解密出数据长度
+            int nextHashValue = 0;
+            var dataLengthByteList = new byte[SizeofDataLengthInt];
+            for (int i = 0; i < SizeofDataLengthInt; i++)
+            {
+                int hashValue;
+                if (i == 0)
+                {
+                    hashValue = GetPlace_1_1_2(decryptionContext, i).HashValue;
+                }
+                else
+                {
+                    hashValue = nextHashValue;
+                }
+
+                (nextHashValue, var keyData) = GetPlace_1_1_2(decryptionContext, i + 1);
+                var value = encryptionDataSpan[hashValue];
+                value = (byte) (value - keyData);
+                dataLengthByteList[i] = value;
+
+                hashList[hashValue] = true;
+            }
+
+            unsafe
+            {
+                fixed (byte* p = dataLengthByteList)
+                {
+                    decryptionContext.DataLength = *(int*) p;
+                }
+            }
+            var dataLength = decryptionContext.DataLength;
+            decryptionResultBufferLength = dataLength;
+
+            for (int i = 0; i < dataLength; i++)
+            {
+                var index = SizeofDataLengthInt + i;
+                var hashValue = nextHashValue;
+                (nextHashValue, var keyData) = GetPlace_1_1_2(decryptionContext, index + 1);
+                var value = encryptionDataSpan[hashValue];
+                value = (byte) (value - keyData);
+                outputBuffer[i] = value;
+
+                hashList[hashValue] = true;
+                decryptionContext.CurrentDecryptIndex++;
+            }
         }
     }
 }

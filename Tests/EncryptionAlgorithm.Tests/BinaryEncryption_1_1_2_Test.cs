@@ -32,12 +32,15 @@ namespace EncryptionAlgorithm.Tests
                 var encryptionByteList = new byte[1024];
                 BinaryEncryption.EncryptData_1_1_2(textData,0,textData.Length, key,encryptionByteList, encryptionByteList.Length);
 
-                //var decryptionData = BinaryEncryption.Decrypt(byteList, key);
-                //Assert.IsNotNull(decryptionData);
+                var decryptionData = new byte[1024];
+                BinaryEncryption.DecryptData_1_1_2(encryptionByteList, 0, encryptionByteList.Length, key,
+                    decryptionData, 1024, out var decryptionResultBufferLength);
 
-                //var decryptionText = Encoding.UTF8.GetString(decryptionData);
+                Assert.AreEqual(encryptionByteList.Length, decryptionResultBufferLength);
 
-                //Assert.AreEqual(text, decryptionText);
+                var decryptionText = Encoding.UTF8.GetString(decryptionData,0, decryptionResultBufferLength);
+
+                Assert.AreEqual(text, decryptionText);
             });
 
             //"加密一百个字符，可以在解密之后拿到加密前的字符".Test(() =>
