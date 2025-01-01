@@ -381,7 +381,14 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 decryptionContext.DataLength = *(int*) dataLengthByteList;
             }
+
             var dataLength = decryptionContext.DataLength;
+            if (dataLength < 0)
+            {
+                // 证明解密失败
+                decryptionResultBufferLength = 0;
+                return;
+            }
             decryptionResultBufferLength = dataLength;
 
             for (int i = 0; i < dataLength; i++)
