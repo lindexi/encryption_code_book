@@ -20,7 +20,7 @@ public class BinaryEncryptionStreamTest
         "测试对超长的 Stream 进行加密解密，可以加密解密成功".Test(() =>
         {
             // 一个超长的数据
-            var data = new byte[10245];
+            var data = new byte[102456];
             new Random().NextBytes(data);
 
             var key = new int[]

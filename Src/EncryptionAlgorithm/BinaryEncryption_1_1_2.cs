@@ -67,6 +67,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 {
                     // 首次读取出地址
                     hashValue = GetPlace_1_1_2(context, i).HashValue;
+
+                    // 需要立刻标记，防止后续再次读取到这个地址
+                    context.HashList[hashValue] = true;
                 }
                 else
                 {
@@ -75,6 +78,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 }
 
                 (nextHashValue, var keyData) = GetPlace_1_1_2(context, i + 1);
+                // 需要立刻标记，防止后续再次读取到这个地址
+                context.HashList[nextHashValue] = true;
 
                 byte dataValue = context.GetData(i);
 
@@ -84,7 +89,6 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 dataValue = (byte) (dataValue + keyData);
 
                 context.Buffer[hashValue] = dataValue;
-                context.HashList[hashValue] = true;
             }
 
             // 填充空白部分
@@ -365,6 +369,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     if (i == 0)
                     {
                         hashValue = GetPlace_1_1_2(decryptionContext, i).HashValue;
+
+                        // 需要立刻标记，防止后续再次读取到这个地址
+                        hashList[hashValue] = true;
                     }
                     else
                     {
@@ -372,11 +379,13 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     }
 
                     (nextHashValue, var keyData) = GetPlace_1_1_2(decryptionContext, i + 1);
+                    // 需要立刻标记，防止后续再次读取到这个地址
+                    hashList[nextHashValue] = true;
+
                     var value = encryptionDataSpan[hashValue];
                     value = (byte) (value - keyData);
                     dataLengthByteList[i] = value;
 
-                    hashList[hashValue] = true;
                 }
 
                 decryptionContext.DataLength = *(int*) dataLengthByteList;
@@ -396,11 +405,12 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 var index = SizeofDataLengthInt + i;
                 var hashValue = nextHashValue;
                 (nextHashValue, var keyData) = GetPlace_1_1_2(decryptionContext, index + 1);
+                hashList[nextHashValue] = true;
+
                 var value = encryptionDataSpan[hashValue];
                 value = (byte) (value - keyData);
                 outputBuffer[i] = value;
 
-                hashList[hashValue] = true;
                 decryptionContext.CurrentDecryptIndex++;
             }
         }

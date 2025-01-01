@@ -7,8 +7,6 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
-//using static Lindexi.Src.EncryptionAlgorithm.BinaryEncryption.StreamBinaryEncryptionConfiguration;
-
 namespace Lindexi.Src.EncryptionAlgorithm
 {
     static partial class BinaryEncryption
@@ -84,13 +82,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 // 首段特殊处理，包含校验密码的功能
                 // 校验密码方式是创建 MD5 哈希，测试其解密是否正确
-                random.NextBytes(inputBuffer.AsSpan(0, keyBlockByteLength));
-                for (int i = 0; i < keyBlockIntLength; i++)
-                {
-                    var keyValue = BitConverter.ToInt32(inputBuffer, byteCountOfInt * i);
-                    // 密码只取正数，因为加密模块里面对负数计算不正确，等后续修复了，再允许密码为负数
-                    keyBlock[i] = Math.Abs(keyValue);
-                }
+                FillKeyBlockData(inputBuffer.AsSpan(0, keyBlockByteLength), keyBlock, random);
 
                 // 计算用于拼接的 MD5 值
                 var computeHashResult = hash.TryComputeHash(inputBuffer.AsSpan().Slice(0, keyBlockByteLength),
@@ -101,13 +93,14 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 tempHashBuffer.AsSpan(0, hashByteLength)
                     .CopyTo(inputBuffer.AsSpan(keyBlockByteLength));
                 var currentInputBufferLength = keyBlockByteLength + hashByteLength;
+
                 // 再填充一些干扰数据项。因为 当前已用长度 必然是一个固定值，太好猜长度了，多加点垃圾数据，伤害一下攻击者心智
                 // 现在可填充的为剩余空间减去当前已用长度
                 var fillLength = bufferLength - currentInputBufferLength;
                 fillLength = random.Next(fillLength);
                 random.NextBytes(inputBuffer.AsSpan(currentInputBufferLength, fillLength));
-
                 currentInputBufferLength = currentInputBufferLength + fillLength;
+
                 // 将其加密后写入到输出里
                 EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, key, outputBuffer, bufferLength, random);
                 outputStream.Write(outputBuffer, 0, bufferLength);
@@ -120,6 +113,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 {
                     // 读取的长度为固定长加上随机的长度，但随机长度是受控制的，确保读取是在缓冲区的一半附近
                     var inputLength = bufferLength / 4 + random.Next(bufferLength / 4);
+
+//#if DEBUG
+//                    inputLength = bufferLength / 4;
+//#endif
+
                     var readLength = inputStream.Read(inputBuffer, 0, inputLength);
                     if (readLength == 0)
                     {
@@ -133,12 +131,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     currentInputBufferLength = readLength;
 
                     // 生成下一段的加密块
-                    random.NextBytes(inputBuffer.AsSpan(currentInputBufferLength, keyBlockByteLength));
-                    for (int i = 0; i < keyBlockIntLength; i++)
-                    {
-                        var keyValue = BitConverter.ToInt32(inputBuffer, currentInputBufferLength + byteCountOfInt * i);
-                        keyBlock[i] = Math.Abs(keyValue);
-                    }
+                    FillKeyBlockData(inputBuffer.AsSpan(currentInputBufferLength, keyBlockByteLength), keyBlock,
+                        random);
+                   
                     currentInputBufferLength = currentInputBufferLength + keyBlockByteLength;
                     // 下一段的密码块不需要再计算其 MD5 值了，直接拼接就好了。第一段之所以计算 MD5 只是为了进行校验
 
@@ -146,6 +141,21 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, currentKeyBlock, outputBuffer,
                         bufferLength, random);
                     outputStream.Write(outputBuffer, 0, bufferLength);
+
+#if DEBUG
+                    // 立刻解密，看是否正确
+                    var debugData = new byte[bufferLength];
+                    DecryptData_1_1_2(outputBuffer, 0, bufferLength, currentKeyBlock, debugData, bufferLength,
+                        out var decryptionResultBufferLength);
+                    Debug.Assert(decryptionResultBufferLength == currentInputBufferLength);
+
+                    for (var i = 0; i < decryptionResultBufferLength; i++)
+                    {
+                        if (debugData[i] != inputBuffer[i])
+                        {
+                        }
+                    }
+#endif
 
                     // 将密码块复制出来作为当前密码块，给下一段使用
                     keyBlock.CopyTo(currentKeyBlock.AsSpan());
@@ -155,6 +165,27 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 ArrayPool<byte>.Shared.Return(inputBuffer);
                 ArrayPool<byte>.Shared.Return(outputBuffer);
+            }
+        }
+
+        private static void FillKeyBlockData(Span<byte> keyBlockBuffer, int[] keyBlock, Random random)
+        {
+            const int byteCountOfInt = StreamBinaryEncryptionConfiguration.ByteCountOfInt;
+
+            const int keyBlockIntLength = StreamBinaryEncryptionConfiguration.KeyBlockIntLength;
+
+            random.NextBytes(keyBlockBuffer);
+//#if DEBUG
+//            for (int i = 0; i < keyBlockBuffer.Length; i++)
+//            {
+//                keyBlockBuffer[i] = (byte) i;
+//            }
+//#endif
+            for (int i = 0; i < keyBlockIntLength; i++)
+            {
+                var keyValue = BitConverter.ToInt32(keyBlockBuffer.Slice(byteCountOfInt * i));
+                // 密码只取正数，因为加密模块里面对负数计算不正确，等后续修复了，再允许密码为负数
+                keyBlock[i] = Math.Abs(keyValue);
             }
         }
 
@@ -187,7 +218,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 // 先读取第一个块，然后解密，判断其校验是否正确，如果不正确，则证明密码错误
                 // 先读取第一块。如果读取的长度不足，则说明数据错误
                 var readLength = inputStream.Read(inputBuffer, 0, bufferLength);
-                if (readLength < bufferLength)
+                if (readLength != bufferLength)
                 {
                     // 长度不够，则证明数据错误
                     return false;
