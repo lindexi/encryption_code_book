@@ -72,7 +72,6 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
             const int keyBlockIntLength = StreamBinaryEncryptionConfiguration.KeyBlockIntLength;
 
-            using var hash = MD5.Create();
             const int hashByteLength = StreamBinaryEncryptionConfiguration.HashByteLength; // 这是 md5 的默认固定长度
 
             // 只有首个加密块使用了输入的密码信息，后续的明文块都采用加密块的加密数据
@@ -97,6 +96,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 if (shouldAppendHashToKeyBlock)
                 {
                     // 计算用于拼接的 MD5 值
+                    using var hash = MD5.Create();
                     var computeHashResult = hash.TryComputeHash(inputBuffer.AsSpan().Slice(0, keyBlockByteLength),
                         tempHashBuffer.AsSpan(), out var hashWrittenByteLength);
                     Debug.Assert(computeHashResult is true);
@@ -232,7 +232,6 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
             const int keyBlockIntLength = StreamBinaryEncryptionConfiguration.KeyBlockIntLength;
 
-            using var hash = MD5.Create();
             const int hashByteLength = StreamBinaryEncryptionConfiguration.HashByteLength;
 
             // 只有首个加密块使用了输入的密码信息，后续的明文块都采用加密块的加密数据
@@ -265,7 +264,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                     // 取输出的部分内容作为哈希的缓冲，减少一次多余的内存分配
                     var tempHashBuffer = outputBuffer.AsSpan(keyBlockByteLength + hashByteLength);
-                    var computeHashResult = hash.TryComputeHash(outputBuffer.AsSpan(0, keyBlockByteLength), tempHashBuffer,
+                    using var hash = MD5.Create();
+                    var computeHashResult = hash.TryComputeHash(outputBuffer.AsSpan(0, keyBlockByteLength),
+                        tempHashBuffer,
                         out var hashWrittenByteLength);
                     Debug.Assert(computeHashResult is true);
                     Debug.Assert(hashWrittenByteLength == hashByteLength);
