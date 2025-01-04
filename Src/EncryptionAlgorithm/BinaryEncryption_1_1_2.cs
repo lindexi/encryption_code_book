@@ -20,8 +20,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
         /// <param name="key">密码</param>
         /// <param name="outputBuffer">用于承载输出的缓冲区，加密结果将会写入到这里</param>
         /// <param name="bufferLength">缓冲区长度，要求缓冲区长度不大于 <paramref name="outputBuffer"/> 数据长度</param>
-        /// <param name="random"></param>
-        public static void EncryptData_1_1_2(byte[] data, int dataStart, int dataLength, int[] key, byte[] outputBuffer, int bufferLength = 1024, Random? random = null)
+        /// <param name="randomNumberGenerator"></param>
+        public static void EncryptData_1_1_2(byte[] data, int dataStart, int dataLength, int[] key, byte[] outputBuffer, int bufferLength = 1024, IRandomNumberGenerator? randomNumberGenerator = null)
         {
             if (bufferLength > outputBuffer.Length)
             {
@@ -39,18 +39,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 throw new ArgumentException($"数据长度大于缓冲区长度，必须至少比缓冲区长度小 4 的长度 dataLength({dataLength}) + 4 > bufferLength({bufferLength})");
             }
 
-            if (random == null)
-            {
-#if NET6_0_OR_GREATER
-                random = Random.Shared;
-#else
-                random = new Random();
-#endif
-            }
+            randomNumberGenerator ??= new DefaultRandomNumberGenerator();
 
             var rawDataSpan = new ByteSpan(data, dataStart, dataLength);
             var hashList = new BitArray(bufferLength);
-            var context = new EncryptionContext(rawDataSpan, key, hashList, outputBuffer, bufferLength, random);
+            var context = new EncryptionContext(rawDataSpan, key, hashList, outputBuffer, bufferLength, randomNumberGenerator);
             EncryptDataCore_1_1_2(context);
         }
 
@@ -98,7 +91,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 if (!context.HashList[i])
                 {
-                    context.Buffer[i] = (byte) context.Random.Next(byte.MinValue, byte.MaxValue);
+                    context.Buffer[i] = context.RandomNumberGenerator.GenerateFillGapByte();
                     context.HashList[i] = true;
                 }
             }
@@ -229,14 +222,14 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
         class EncryptionContext : IContext
         {
-            public EncryptionContext(ByteSpan rawDataSpan, int[] key, BitArray hashList, byte[] buffer, int bufferLength, Random random)
+            public EncryptionContext(ByteSpan rawDataSpan, int[] key, BitArray hashList, byte[] buffer, int bufferLength, IRandomNumberGenerator randomNumberGenerator)
             {
                 _rawDataSpan = rawDataSpan;
                 Key = key;
                 HashList = hashList;
                 Buffer = buffer;
                 BufferLength = bufferLength;
-                Random = random;
+                RandomNumberGenerator = randomNumberGenerator;
             }
 
             private readonly ByteSpan _rawDataSpan;
@@ -249,7 +242,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             public int BufferLength { get; }
 
             public int DataLength => _rawDataSpan.Length + SizeofDataLengthInt;
-            public Random Random { get; }
+            public IRandomNumberGenerator RandomNumberGenerator { get; }
 
             public unsafe byte GetData(int index)
             {

@@ -34,5 +34,11 @@ public interface IRandomNumberGenerator
     /// </summary>
     /// <param name="keyBlock"></param>
     void FillKeyBlock(Span<byte> keyBlock);
+
+    /// <summary>
+    /// 填充空白，可使用低安全的随机数填充空白
+    /// </summary>
+    /// <param name="gap"></param>
+    void FillGap(Span<byte> gap);
 #endif
 }

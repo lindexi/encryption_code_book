@@ -15,7 +15,7 @@ public struct EncryptStreamSettings
     /// 由于密码块是生成的随机密码，当前随机数在 dotnet 6 下是依赖时间，则攻击者可以同时设置时间范围，找到所有的密码块从而进行破解。在 dotnet 6 以上使用的是共享的，可能此时经过了很多次的获取。期望能够注入随机数，允许设置为加密的随机数
     public bool ShouldAppendHashToKeyBlock { get; set; } = true;
 
-
+    public IRandomNumberGenerator? RandomNumberGenerator { get; set; }
 }
 
 #endif

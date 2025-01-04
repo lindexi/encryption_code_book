@@ -55,12 +55,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
         public static void EncryptStream(System.IO.Stream inputStream, System.IO.Stream outputStream, int[] key,
             EncryptStreamSettings? settings = null)
         {
-            Random random
-#if NET6_0_OR_GREATER
-                = Random.Shared;
-#else
-                = new Random();
-#endif
+            var randomNumberGenerator = settings?.RandomNumberGenerator ?? new DefaultRandomNumberGenerator();
 
             // 是否应该追加哈希到密码块
             var shouldAppendHashToKeyBlock = settings?.ShouldAppendHashToKeyBlock ?? true;
@@ -89,7 +84,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 // 首段特殊处理，包含校验密码的功能
                 // 校验密码方式是创建 MD5 哈希，测试其解密是否正确
-                FillKeyBlockData(inputBuffer.AsSpan(0, keyBlockByteLength), keyBlock, random);
+                FillKeyBlockData(inputBuffer.AsSpan(0, keyBlockByteLength), keyBlock, randomNumberGenerator);
 
                 var currentInputBufferLength = keyBlockByteLength;
 
@@ -114,12 +109,12 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 // 再填充一些干扰数据项。因为 当前已用长度 必然是一个固定值，太好猜长度了，多加点垃圾数据，伤害一下攻击者心智
                 // 现在可填充的为剩余空间减去当前已用长度
                 var fillLength = bufferLength - currentInputBufferLength;
-                fillLength = random.Next(fillLength);
-                random.NextBytes(inputBuffer.AsSpan(currentInputBufferLength, fillLength));
+                fillLength = randomNumberGenerator.GetRandomNumber(fillLength);
+                randomNumberGenerator.FillGap(inputBuffer.AsSpan(currentInputBufferLength, fillLength));
                 currentInputBufferLength = currentInputBufferLength + fillLength;
 
                 // 将其加密后写入到输出里
-                EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, key, outputBuffer, bufferLength, random);
+                EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, key, outputBuffer, bufferLength, randomNumberGenerator);
                 outputStream.Write(outputBuffer, 0, bufferLength);
 
                 // 将密码块复制出来作为当前密码块
@@ -129,7 +124,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 while (true)
                 {
                     // 读取的长度为固定长加上随机的长度，但随机长度是受控制的，确保读取是在缓冲区的一半附近
-                    var inputLength = bufferLength / 4 + random.Next(bufferLength / 4);
+                    var inputLength = bufferLength / 4 + randomNumberGenerator.GetRandomNumber(bufferLength / 4);
 
 //#if DEBUG
 //                    inputLength = bufferLength / 4;
@@ -149,7 +144,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                     // 生成下一段的加密块
                     FillKeyBlockData(inputBuffer.AsSpan(currentInputBufferLength, keyBlockByteLength), keyBlock,
-                        random);
+                        randomNumberGenerator);
                    
                     currentInputBufferLength = currentInputBufferLength + keyBlockByteLength;
 
@@ -161,7 +156,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                     // 明文块里面的加密都不使用传入的密码，而是采用密码块进行加密。如此可以确保明文是顺序重复的情况下，也能让密文不重复。同时减少传入的密码加密了多次明文之后的统计攻击
                     EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, currentKeyBlock, outputBuffer,
-                        bufferLength, random);
+                        bufferLength, randomNumberGenerator);
                     outputStream.Write(outputBuffer, 0, bufferLength);
 
 #if DEBUG
@@ -190,13 +185,13 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
         }
 
-        private static void FillKeyBlockData(Span<byte> keyBlockBuffer, int[] keyBlock, Random random)
+        private static void FillKeyBlockData(Span<byte> keyBlockBuffer, int[] keyBlock, IRandomNumberGenerator randomNumberGenerator)
         {
             const int byteCountOfInt = StreamBinaryEncryptionConfiguration.ByteCountOfInt;
 
             const int keyBlockIntLength = StreamBinaryEncryptionConfiguration.KeyBlockIntLength;
 
-            random.NextBytes(keyBlockBuffer);
+            randomNumberGenerator.FillKeyBlock(keyBlockBuffer);
 //#if DEBUG
 //            for (int i = 0; i < keyBlockBuffer.Length; i++)
 //            {

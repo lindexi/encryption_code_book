@@ -26,6 +26,11 @@ class DefaultRandomNumberGenerator : IRandomNumberGenerator
     {
         RandomNumberGenerator.Fill(keyBlock);
     }
+
+    public void FillGap(Span<byte> gap)
+    {
+        RandomNumberGenerator.Fill(gap);
+    }
 }
 
 #else // NET45
