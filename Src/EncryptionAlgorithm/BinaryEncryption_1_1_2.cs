@@ -83,9 +83,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 byte dataValue = context.GetData(i);
 
-                // 这里算法上存在缺陷，那就是让某个下标的元素的数据耦合了 Key 的数据，让其之间存在关联关系
+                // ~~这里算法上存在缺陷，那就是让某个下标的元素的数据耦合了 Key 的数据，让其之间存在关联关系
                 // 用人话说就是 HashValue 这个下标是依靠 KeyValue 计算出来的，因此在知道总数是 1024 的情况下，即可推断 HashValue 下标的内容加的可能是多少的值。假定不考虑二圈的情况，只考虑一圈时，如果此时 HashValue 是 2 的值，密文里是 99 的值，那极有可能是 KeyValue 是 2 或 1026 的值，将其减去 2 则得到密码是 97 即 'a' 的值。如此即可大概破解部分内容，甚至为后续更进一步推断提供更多信息
-                // 原设计里面，这里应该加的是计算出 HashValue 的后一位密码
+                // 原设计里面，这里应该加的是计算出 HashValue 的后一位密码~~
+                // 当前修复此问题，取 nextHashValue 对应的密码作为加密密码，如此即可规避此问题
+                // 感谢 @SeWZC https://github.com/lindexi/encryption_code_book/issues/12
                 dataValue = (byte) (dataValue + keyData);
 
                 context.Buffer[hashValue] = dataValue;
