@@ -54,7 +54,7 @@ public class DirectoryEncryption
                 var key = CreateSaltKey(fileStorageInfo.Salt);
 
                 await using var encryptionFileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                await using (var sourceFileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                await using (var sourceFileStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite))
                 {
                     var success = await BinaryEncryption.TryDecryptStreamAsync(encryptionFileStream, sourceFileStream,
                         key,
