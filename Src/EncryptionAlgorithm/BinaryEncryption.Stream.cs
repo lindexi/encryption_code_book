@@ -23,6 +23,11 @@ namespace Lindexi.Src.EncryptionAlgorithm
             public const int BufferLength = 1024;
 
             /// <summary>
+            /// 加密过程中需要添加的 Size 头的长度
+            /// </summary>
+            public const int SizeLength = 4;
+
+            /// <summary>
             /// 密码块的 Byte 长度
             /// </summary>
             /// 生成加密块，都是追加在明文之后，尺寸取更小。第一次取 512 为 1024 一半，为明文建议长度。后续再除以 4 表示取更小比例
@@ -110,7 +115,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 // 再填充一些干扰数据项。因为 当前已用长度 必然是一个固定值，太好猜长度了，多加点垃圾数据，伤害一下攻击者心智
                 // 现在可填充的为剩余空间减去当前已用长度
-                var fillLength = bufferLength - currentInputBufferLength;
+                var fillLength = bufferLength - currentInputBufferLength - StreamBinaryEncryptionConfiguration.SizeLength;
                 fillLength = randomNumberGenerator.GetRandomNumber(fillLength);
                 randomNumberGenerator.FillGap(inputBuffer.AsSpan(currentInputBufferLength, fillLength));
                 currentInputBufferLength = currentInputBufferLength + fillLength;
