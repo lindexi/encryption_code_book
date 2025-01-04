@@ -1,8 +1,12 @@
-﻿#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+﻿#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 namespace Lindexi.Src.EncryptionAlgorithm;
 
 public struct EncryptStreamSettings
 {
+    public EncryptStreamSettings()
+    {
+    }
+
     /// <summary>
     /// 是否允许给密码块追加哈希值。追加哈希值可以更方便业务层判断用户输入的密码是否正确，但是会降低爆破难度
     /// </summary>

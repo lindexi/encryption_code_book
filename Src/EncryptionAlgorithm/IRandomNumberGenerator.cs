@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+﻿#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 namespace Lindexi.Src.EncryptionAlgorithm;
 
 public interface IRandomNumberGenerator
