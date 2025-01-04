@@ -62,9 +62,12 @@ public partial class EncryptionDirectoryUserControl : UserControl
 
             var directoryEncryption = ViewModel.CreateDirectoryEncryption();
 
+            ViewModel.LogText = string.Empty;
             if (DecryptionCheckBox.IsChecked is true)
             {
+                ViewModel.Log("解密开始");
                 await directoryEncryption.DecryptDirectoryAsync(new DirectoryInfo(ViewModel.SourcePath));
+                ViewModel.Log("解密完成");
             }
             else
             {

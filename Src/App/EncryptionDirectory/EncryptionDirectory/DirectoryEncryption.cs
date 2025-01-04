@@ -32,7 +32,7 @@ public class DirectoryEncryption
 
         if (File.Exists(indexFile))
         {
-            var encryptionDirectoryIndexFileInfo = await DecryptIndexFile(indexFile);
+            var encryptionDirectoryIndexFileInfo = await DecryptIndexFile(indexFile).ConfigureAwait(false);
 
             foreach (var fileStorageInfo in encryptionDirectoryIndexFileInfo.FileStorageInfoList)
             {
@@ -95,7 +95,7 @@ public class DirectoryEncryption
 
         if (File.Exists(indexFile))
         {
-            var encryptionDirectoryIndexFileInfo = await DecryptIndexFile(indexFile);
+            var encryptionDirectoryIndexFileInfo = await DecryptIndexFile(indexFile).ConfigureAwait(false);
 
             foreach (var fileStorageInfo in encryptionDirectoryIndexFileInfo.FileStorageInfoList)
             {
@@ -140,7 +140,7 @@ public class DirectoryEncryption
             await using var sourceFileStream = source.OpenRead();
 
             using var sha256 = SHA256.Create();
-            var hashData = await sha256.ComputeHashAsync(sourceFileStream);
+            var hashData = await sha256.ComputeHashAsync(sourceFileStream).ConfigureAwait(false);
             sourceFileStream.Position = 0;
 
             var hash = ByteListToString(hashData);
@@ -170,7 +170,7 @@ public class DirectoryEncryption
                     {
                         // 只有 Index 才需要追加哈希，文件不需要，因为文本本身不做密码校验，而是靠最终的 SHA256 值
                         ShouldAppendHashToKeyBlock = false,
-                    });
+                    }).ConfigureAwait(false);
             }
 
             if (Path.IsPathFullyQualified(pathInTargetDirectory))
@@ -204,7 +204,7 @@ public class DirectoryEncryption
     {
         await using var indexFileStream = new FileStream(indexFile, FileMode.Open, FileAccess.Read, FileShare.Read);
         using var indexSourceStream = new MemoryStream();
-        var success = await BinaryEncryption.TryDecryptStreamAsync(indexFileStream, indexSourceStream, Key);
+        var success = await BinaryEncryption.TryDecryptStreamAsync(indexFileStream, indexSourceStream, Key).ConfigureAwait(false);
       
         if (!success)
         {
@@ -301,10 +301,10 @@ public class DirectoryEncryption
 
         await using var fileStream = new FileStream(indexFile,FileMode.Create,FileAccess.ReadWrite);
         using var jsonStream = new MemoryStream();
-        await JsonSerializer.SerializeAsync(jsonStream, encryptionDirectoryIndexFileInfo);
+        await JsonSerializer.SerializeAsync(jsonStream, encryptionDirectoryIndexFileInfo).ConfigureAwait(false);
         jsonStream.Position = 0;
 
-        await BinaryEncryption.EncryptStreamAsync(jsonStream, fileStream, Key);
+        await BinaryEncryption.EncryptStreamAsync(jsonStream, fileStream, Key).ConfigureAwait(false);
     }
 
     /// <summary>

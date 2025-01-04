@@ -35,7 +35,7 @@ public partial class MainWindow : Window
     {
         var openFileDialog = new OpenFileDialog()
         {
-            Filter = "加密文件夹配置文件(*.encd)|*.encd"
+            Filter = $"加密文件夹配置文件(*{FileExtension})|*{FileExtension}"
         };
         openFileDialog.ShowDialog(this);
 
@@ -58,7 +58,7 @@ public partial class MainWindow : Window
     {
         var saveFileDialog = new SaveFileDialog()
         {
-            Filter = "加密文件夹配置文件(*.encd)|*.encd"
+            Filter = $"加密文件夹配置文件(*{FileExtension})|*{FileExtension}"
         };
         saveFileDialog.ShowDialog(this);
         var file = saveFileDialog.FileName;
