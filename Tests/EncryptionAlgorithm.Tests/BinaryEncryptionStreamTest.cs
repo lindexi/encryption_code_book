@@ -92,4 +92,52 @@ public class BinaryEncryptionStreamTest
             }
         });
     }
+
+    [ContractTestCase]
+    public void TestAppendHash()
+    {
+        "测试不追加哈希，对超长的 Stream 进行加密解密，可以加密解密成功".Test(() =>
+        {
+            // 一个超长的数据
+            var data = new byte[102456];
+            new Random().NextBytes(data);
+
+            var key = new int[]
+            {
+                '林',
+                '德',
+                '熙'
+            };
+
+            var input = new MemoryStream();
+            var output = new MemoryStream();
+
+            input.Write(data.AsSpan());
+
+            var encryptStreamSettings = new EncryptStreamSettings()
+            {
+                // 不追加哈希
+                ShouldAppendHashToKeyBlock = false,
+            };
+
+            input.Position = 0;
+            BinaryEncryption.EncryptStream(input, output, key, encryptStreamSettings);
+
+            input.Position = 0;
+            output.Position = 0;
+            // 将输出作为输入，测试解密
+            var success = BinaryEncryption.TryDecryptStream(output, input, key, encryptStreamSettings);
+            Assert.IsTrue(success);
+
+            input.Position = 0;
+            for (var i = 0; i < data.Length; i++)
+            {
+                var currentByte = (byte) input.ReadByte();
+                if (data[i] != currentByte)
+                {
+                    Assert.Fail();
+                }
+            }
+        });
+    }
 }
