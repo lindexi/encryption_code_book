@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Lindexi.Src.EncryptionAlgorithm
 {
@@ -26,7 +27,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             /// </summary>
             /// 生成加密块，都是追加在明文之后，尺寸取更小。第一次取 512 为 1024 一半，为明文建议长度。后续再除以 4 表示取更小比例
             public const int KeyBlockByteLength =
-                    BufferLength / 2 / 4;
+                BufferLength / 2 / 4;
 
             /// <summary>
             /// 一个 int 等于几个 byte 长度
@@ -52,7 +53,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
         /// <param name="outputStream">密文</param>
         /// <param name="key">密码</param>
         /// <param name="settings">加密的设置。如传入加密设置时，解密过程应该传入相等的加密设置</param>
-        public static void EncryptStream(System.IO.Stream inputStream, System.IO.Stream outputStream, int[] key,
+        public static async Task EncryptStreamAsync(System.IO.Stream inputStream, System.IO.Stream outputStream,
+            int[] key,
             EncryptStreamSettings? settings = null)
         {
             var randomNumberGenerator = settings?.RandomNumberGenerator ?? new DefaultRandomNumberGenerator();
@@ -114,8 +116,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 currentInputBufferLength = currentInputBufferLength + fillLength;
 
                 // 将其加密后写入到输出里
-                EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, key, outputBuffer, bufferLength, randomNumberGenerator);
-                outputStream.Write(outputBuffer, 0, bufferLength);
+                EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, key, outputBuffer, bufferLength,
+                    randomNumberGenerator);
+                await outputStream.WriteAsync(outputBuffer, 0, bufferLength);
 
                 // 将密码块复制出来作为当前密码块
                 keyBlock.CopyTo(currentKeyBlock.AsSpan());
@@ -130,7 +133,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
 //                    inputLength = bufferLength / 4;
 //#endif
 
-                    var readLength = inputStream.Read(inputBuffer, 0, inputLength);
+                    var readLength = await inputStream.ReadAsync(inputBuffer, 0, inputLength);
                     if (readLength == 0)
                     {
                         // 全部读取完了
@@ -145,7 +148,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     // 生成下一段的加密块
                     FillKeyBlockData(inputBuffer.AsSpan(currentInputBufferLength, keyBlockByteLength), keyBlock,
                         randomNumberGenerator);
-                   
+
                     currentInputBufferLength = currentInputBufferLength + keyBlockByteLength;
 
                     if (shouldAppendHashToKeyBlock)
@@ -157,7 +160,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                     // 明文块里面的加密都不使用传入的密码，而是采用密码块进行加密。如此可以确保明文是顺序重复的情况下，也能让密文不重复。同时减少传入的密码加密了多次明文之后的统计攻击
                     EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, currentKeyBlock, outputBuffer,
                         bufferLength, randomNumberGenerator);
-                    outputStream.Write(outputBuffer, 0, bufferLength);
+                    await outputStream.WriteAsync(outputBuffer, 0, bufferLength);
 
 #if DEBUG
                     // 立刻解密，看是否正确
@@ -183,26 +186,27 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 ArrayPool<byte>.Shared.Return(inputBuffer, clearArray: true);
                 ArrayPool<byte>.Shared.Return(outputBuffer);
             }
-        }
 
-        private static void FillKeyBlockData(Span<byte> keyBlockBuffer, int[] keyBlock, IRandomNumberGenerator randomNumberGenerator)
-        {
-            const int byteCountOfInt = StreamBinaryEncryptionConfiguration.ByteCountOfInt;
+            static void FillKeyBlockData(Span<byte> keyBlockBuffer, int[] keyBlock,
+                IRandomNumberGenerator randomNumberGenerator)
+            {
+                const int byteCountOfInt = StreamBinaryEncryptionConfiguration.ByteCountOfInt;
 
-            const int keyBlockIntLength = StreamBinaryEncryptionConfiguration.KeyBlockIntLength;
+                const int keyBlockIntLength = StreamBinaryEncryptionConfiguration.KeyBlockIntLength;
 
-            randomNumberGenerator.FillKeyBlock(keyBlockBuffer);
+                randomNumberGenerator.FillKeyBlock(keyBlockBuffer);
 //#if DEBUG
 //            for (int i = 0; i < keyBlockBuffer.Length; i++)
 //            {
 //                keyBlockBuffer[i] = (byte) i;
 //            }
 //#endif
-            for (int i = 0; i < keyBlockIntLength; i++)
-            {
-                var keyValue = BitConverter.ToInt32(keyBlockBuffer.Slice(byteCountOfInt * i));
-                // 密码只取正数，因为加密模块里面对负数计算不正确，等后续修复了，再允许密码为负数
-                keyBlock[i] = Math.Abs(keyValue);
+                for (int i = 0; i < keyBlockIntLength; i++)
+                {
+                    var keyValue = BitConverter.ToInt32(keyBlockBuffer.Slice(byteCountOfInt * i));
+                    // 密码只取正数，因为加密模块里面对负数计算不正确，等后续修复了，再允许密码为负数
+                    keyBlock[i] = Math.Abs(keyValue);
+                }
             }
         }
 
@@ -214,7 +218,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
         /// <param name="key"></param>
         /// <param name="settings">加密的设置。解密过程中需要传入和加密相等的配置</param>
         /// <returns>True: 解密成功；False: 解密失败，密码错误、或数据错误</returns>
-        public static bool TryDecryptStream(System.IO.Stream inputStream, System.IO.Stream outputStream, int[] key,
+        public static async Task<bool> TryDecryptStreamAsync(System.IO.Stream inputStream,
+            System.IO.Stream outputStream, int[] key,
             EncryptStreamSettings? settings = null)
         {
             // 是否应该追加哈希到密码块
@@ -238,7 +243,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             {
                 // 先读取第一个块，然后解密，判断其校验是否正确，如果不正确，则证明密码错误
                 // 先读取第一块。如果读取的长度不足，则说明数据错误
-                var readLength = inputStream.Read(inputBuffer, 0, bufferLength);
+                var readLength = await inputStream.ReadAsync(inputBuffer, 0, bufferLength);
                 if (readLength != bufferLength)
                 {
                     // 长度不够，则证明数据错误
@@ -246,7 +251,8 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 }
 
                 // 解密第一个块
-                DecryptData_1_1_2(inputBuffer, 0, bufferLength, key, outputBuffer, bufferLength, out var decryptionResultBufferLength);
+                DecryptData_1_1_2(inputBuffer, 0, bufferLength, key, outputBuffer, bufferLength,
+                    out var decryptionResultBufferLength);
 
                 if (shouldAppendHashToKeyBlock)
                 {
@@ -257,23 +263,10 @@ namespace Lindexi.Src.EncryptionAlgorithm
                         return false;
                     }
 
-                    // 取输出的部分内容作为哈希的缓冲，减少一次多余的内存分配
-                    var tempHashBuffer = outputBuffer.AsSpan(keyBlockByteLength + hashByteLength);
-                    using var hash = MD5.Create();
-                    var computeHashResult = hash.TryComputeHash(outputBuffer.AsSpan(0, keyBlockByteLength),
-                        tempHashBuffer,
-                        out var hashWrittenByteLength);
-                    Debug.Assert(computeHashResult is true);
-                    Debug.Assert(hashWrittenByteLength == hashByteLength);
-                    // 存放在密文里面的哈希，看是否和解密出的哈希一致
-                    var keyBlockHash = outputBuffer.AsSpan(keyBlockByteLength, hashByteLength);
-                    for (int i = 0; i < hashByteLength; i++)
+                    var hashResult = CheckHash();
+                    if (!hashResult)
                     {
-                        if (tempHashBuffer[i] != keyBlockHash[i])
-                        {
-                            // 哈希不一致，证明密码错误
-                            return false;
-                        }
+                        return false;
                     }
                 }
                 else
@@ -301,7 +294,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 // 开始解密后续的块
                 while (true)
                 {
-                    readLength = inputStream.Read(inputBuffer, 0, bufferLength);
+                    readLength = await inputStream.ReadAsync(inputBuffer, 0, bufferLength);
                     if (readLength == 0)
                     {
                         // 读取完成了，证明解密完成
@@ -330,17 +323,42 @@ namespace Lindexi.Src.EncryptionAlgorithm
                             currentKeyBlock[i] = Math.Abs(keyValue);
                         }
                     }
+
                     // 写入到输出
-                    outputStream.Write(outputBuffer, 0, dataLength);
+                    await outputStream.WriteAsync(outputBuffer, 0, dataLength);
                 }
             }
             finally
             {
                 ArrayPool<byte>.Shared.Return(inputBuffer);
-                ArrayPool<byte>.Shared.Return(outputBuffer, clearArray: true); 
+                ArrayPool<byte>.Shared.Return(outputBuffer, clearArray: true);
             }
 
             return true;
+
+            bool CheckHash()
+            {
+                // 取输出的部分内容作为哈希的缓冲，减少一次多余的内存分配
+                var tempHashBuffer = outputBuffer.AsSpan(keyBlockByteLength + hashByteLength);
+                using var hash = MD5.Create();
+                var computeHashResult = hash.TryComputeHash(outputBuffer.AsSpan(0, keyBlockByteLength),
+                    tempHashBuffer,
+                    out var hashWrittenByteLength);
+                Debug.Assert(computeHashResult is true);
+                Debug.Assert(hashWrittenByteLength == hashByteLength);
+                // 存放在密文里面的哈希，看是否和解密出的哈希一致
+                var keyBlockHash = outputBuffer.AsSpan(keyBlockByteLength, hashByteLength);
+                for (int i = 0; i < hashByteLength; i++)
+                {
+                    if (tempHashBuffer[i] != keyBlockHash[i])
+                    {
+                        // 哈希不一致，证明密码错误
+                        return false;
+                    }
+                }
+
+                return true;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ public class BinaryEncryptionStreamTest
     [ContractTestCase]
     public void TestStream()
     {
-        "测试对超长的 Stream 进行加密解密，可以加密解密成功".Test(() =>
+        "测试对超长的 Stream 进行加密解密，可以加密解密成功".Test(async () =>
         {
             // 一个超长的数据
             var data = new byte[102456];
@@ -36,12 +36,12 @@ public class BinaryEncryptionStreamTest
             input.Write(data.AsSpan());
 
             input.Position = 0;
-            BinaryEncryption.EncryptStream(input, output, key);
+            await BinaryEncryption.EncryptStreamAsync(input, output, key);
 
             input.Position = 0;
             output.Position = 0;
             // 将输出作为输入，测试解密
-            var success = BinaryEncryption.TryDecryptStream(output, input, key);
+            var success = await BinaryEncryption.TryDecryptStreamAsync(output, input, key);
             Assert.IsTrue(success);
 
             input.Position = 0;
@@ -55,7 +55,7 @@ public class BinaryEncryptionStreamTest
             }
         });
 
-        "测试对简单的 Stream 进行加密解密，可以加密解密成功".Test(() =>
+        "测试对简单的 Stream 进行加密解密，可以加密解密成功".Test(async () =>
         {
             var input = new MemoryStream();
             var output = new MemoryStream();
@@ -75,12 +75,12 @@ public class BinaryEncryptionStreamTest
             }
 
             input.Position = 0;
-            BinaryEncryption.EncryptStream(input, output, key);
+            await BinaryEncryption.EncryptStreamAsync(input, output, key);
 
             input.Position = 0;
             output.Position = 0;
             // 将输出作为输入，测试解密
-            var success = BinaryEncryption.TryDecryptStream(output, input, key);
+            var success = await BinaryEncryption.TryDecryptStreamAsync(output, input, key);
             Assert.IsTrue(success);
 
             input.Position = 0;
@@ -96,7 +96,7 @@ public class BinaryEncryptionStreamTest
     [ContractTestCase]
     public void TestAppendHash()
     {
-        "测试不追加哈希，对超长的 Stream 进行加密解密，可以加密解密成功".Test(() =>
+        "测试不追加哈希，对超长的 Stream 进行加密解密，可以加密解密成功".Test(async () =>
         {
             // 一个超长的数据
             var data = new byte[102456];
@@ -121,12 +121,12 @@ public class BinaryEncryptionStreamTest
             };
 
             input.Position = 0;
-            BinaryEncryption.EncryptStream(input, output, key, encryptStreamSettings);
+            await BinaryEncryption.EncryptStreamAsync(input, output, key, encryptStreamSettings);
 
             input.Position = 0;
             output.Position = 0;
             // 将输出作为输入，测试解密
-            var success = BinaryEncryption.TryDecryptStream(output, input, key, encryptStreamSettings);
+            var success = await BinaryEncryption.TryDecryptStreamAsync(output, input, key, encryptStreamSettings);
             Assert.IsTrue(success);
 
             input.Position = 0;
