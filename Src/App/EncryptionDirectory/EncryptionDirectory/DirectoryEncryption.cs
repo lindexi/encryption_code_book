@@ -64,7 +64,7 @@ public class DirectoryEncryption
                             ShouldAppendHashToKeyBlock = false,
                         });
 
-                    if (success)
+                    if (!success)
                     {
                         throw new KeyErrorEncryptionDirectoryException();
                     }
