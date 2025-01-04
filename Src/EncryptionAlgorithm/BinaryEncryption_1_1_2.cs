@@ -256,6 +256,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 // 前 4 个 byte 是长度信息
                 if (index < SizeofDataLengthInt)
                 {
+                    // 以下代码等于于以下注释的代码，只是为了兼容更低版本框架，才采用不安全代码
+                    // Span<byte> byteSpan = MemoryMarshal.AsBytes(new Span<int>(ref length));
+
                     var length = _rawDataSpan.Length;
                     /*
                          byte[] bytes = new byte[sizeof(int)];
