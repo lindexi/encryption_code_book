@@ -1,4 +1,4 @@
-﻿namespace EncryptionDirectory;
+﻿namespace EncryptionDirectory.Exceptions;
 
 /// <summary>
 /// 文件损坏

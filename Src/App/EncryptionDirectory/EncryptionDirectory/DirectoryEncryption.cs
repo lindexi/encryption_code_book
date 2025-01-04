@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using EncryptionDirectory.Exceptions;
 using Lindexi.Src.EncryptionAlgorithm;
 
 namespace EncryptionDirectory;
@@ -50,28 +51,36 @@ public class DirectoryEncryption
 
                 var path = Path.Join(TargetDirectory.FullName, fileStorageInfo.Path);
 
-                var key = Key.Concat(fileStorageInfo.Salt).ToArray();
+                var key = CreateSaltKey(fileStorageInfo.Salt);
 
-                var encryptionFileByteList = await File.ReadAllBytesAsync(path);
-
-                var fileByteList = BinaryEncryption.Decrypt(encryptionFileByteList, key, suffixData: SuffixData);
-
-                if (fileByteList is null)
+                await using var encryptionFileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                await using (var sourceFileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
                 {
-                    throw new KeyErrorEncryptionDirectoryException();
+                    var success = await BinaryEncryption.TryDecryptStreamAsync(encryptionFileStream, sourceFileStream,
+                        key,
+                        new EncryptStreamSettings()
+                        {
+                            // 只有 Index 才需要追加哈希，文件不需要，因为文本本身不做密码校验，而是靠最终的 SHA256 值
+                            ShouldAppendHashToKeyBlock = false,
+                        });
+
+                    if (success)
+                    {
+                        throw new KeyErrorEncryptionDirectoryException();
+                    }
+
+                    sourceFileStream.Position = 0;
+                    // 判断一下 SHA256 是否正确
+                    using var sha256 = SHA256.Create();
+                    var hashData = await sha256.ComputeHashAsync(sourceFileStream);
+                    var hash = ByteListToString(hashData);
+
+                    if (!fileStorageInfo.SHA256.Equals(hash, StringComparison.Ordinal))
+                    {
+                        throw new FileDamageEncryptionDirectoryException();
+                    }
                 }
-
-                // 判断一下 SHA256 是否正确
-                var sha256 = SHA256.HashData(fileByteList);
-                var hash = ByteListToString(sha256);
-
-                if (!fileStorageInfo.SHA256.Equals(hash, StringComparison.Ordinal))
-                {
-                    throw new FileDamageEncryptionDirectoryException();
-                }
-
-                await File.WriteAllBytesAsync(filePath, fileByteList);
-
+                // 需要在 Stream 关闭之后再设置，否则将会被重复改写
                 File.SetLastWriteTimeUtc(filePath, fileStorageInfo.LastWriteTime.UtcDateTime);
             }
         }
@@ -80,7 +89,7 @@ public class DirectoryEncryption
     public async Task UpdateAsync(IProgress<UpdateProgress>? progress = null)
     {
         var indexFile = Path.Join(TargetDirectory.FullName, EncryptionDirectoryIndexFileName);
-        var packageDirectory = Directory.CreateDirectory(Path.Join(TargetDirectory.FullName, "Package"));
+        var packageDirectory = TargetDirectory.CreateSubdirectory("Package");
 
         var currentFileStorageInfoDictionary = new Dictionary<string /*RelativePath*/, FileStorageInfo>();
 
@@ -128,42 +137,50 @@ public class DirectoryEncryption
                 continue;
             }
 
-            var fileByteList = await File.ReadAllBytesAsync(source.FullName);
+            await using var sourceFileStream = source.OpenRead();
 
-            var sha256 = SHA256.HashData(fileByteList);
-            var hash = ByteListToString(sha256);
+            using var sha256 = SHA256.Create();
+            var hashData = await sha256.ComputeHashAsync(sourceFileStream);
+            sourceFileStream.Position = 0;
+
+            var hash = ByteListToString(hashData);
 
             // 如果存在重复的 HASH 文件，那就不需要重复加密
-            var (success, salt, path) = TryFindPath(fileStorageInfoList, hash);
+            var (success, salt, pathInTargetDirectory) = TryFindPath(fileStorageInfoList, hash);
+            // salt: 带在 Key 后面的数据，用于减少主密码加密太多次其他文件
+            // pathInTargetDirectory: 存放在加密文件夹的路径
             if (!success)
             {
                 // 如果没有找到，那就从之前存放的列表找一下，例如文件被移动等
-                (success, salt, path) = TryFindPath(currentFileStorageInfoDictionary.Values, hash);
+                (success, salt, pathInTargetDirectory) = TryFindPath(currentFileStorageInfoDictionary.Values, hash);
             }
 
             if (!success)
             {
                 // 加上盐，这样就不会存在大量文件实现相同的密码加密，统计方式可以更加降低
                 salt = CreateSalt();
-                var key = Key.Concat(salt).ToArray();
+                var key = CreateSaltKey(salt);
 
-                var encryptionFileByteList =
-                    BinaryEncryption.Encrypt(fileByteList, key, suffixData: SuffixData, random: Random.Shared);
+                // 加密文件
+                pathInTargetDirectory = Path.Join(packageDirectory.FullName, hash);
+                await using var encryptionFileStream = new FileStream(pathInTargetDirectory,FileMode.Create,FileAccess.Write);
 
-                path = Path.Join(packageDirectory.FullName, hash);
-                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-
-                await File.WriteAllBytesAsync(path, encryptionFileByteList);
+                await BinaryEncryption.EncryptStreamAsync(sourceFileStream, encryptionFileStream, key,
+                    new EncryptStreamSettings()
+                    {
+                        // 只有 Index 才需要追加哈希，文件不需要，因为文本本身不做密码校验，而是靠最终的 SHA256 值
+                        ShouldAppendHashToKeyBlock = false,
+                    });
             }
 
-            if (Path.IsPathFullyQualified(path))
+            if (Path.IsPathFullyQualified(pathInTargetDirectory))
             {
                 // 如果路径包含绝对路径，就需要转换为相对路径，方便后续解密使用
-                path = Path.GetRelativePath(TargetDirectory.FullName, path);
+                pathInTargetDirectory = Path.GetRelativePath(TargetDirectory.FullName, pathInTargetDirectory);
             }
 
             fileStorageInfoList.Add(new FileStorageInfo(source.Name, relativePath,
-                new DateTimeOffset(source.LastWriteTimeUtc), source.Length, hash, path,
+                new DateTimeOffset(source.LastWriteTimeUtc), source.Length, hash, pathInTargetDirectory,
                 salt));
         }
 
@@ -185,15 +202,19 @@ public class DirectoryEncryption
 
     private async Task<EncryptionDirectoryIndexFileInfo> DecryptIndexFile(string indexFile)
     {
-        var indexFileByteList = await File.ReadAllBytesAsync(indexFile);
-        var indexByteList = BinaryEncryption.Decrypt(indexFileByteList, Key, suffixData: SuffixData);
-        if (indexByteList is null)
+        await using var indexFileStream = new FileStream(indexFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+        using var indexSourceStream = new MemoryStream();
+        var success = await BinaryEncryption.TryDecryptStreamAsync(indexFileStream, indexSourceStream, Key);
+      
+        if (!success)
         {
+            // 解密失败
             throw new KeyErrorEncryptionDirectoryException();
         }
 
+        indexSourceStream.Position = 0;
         var encryptionDirectoryIndexFileInfo =
-            JsonSerializer.Deserialize<EncryptionDirectoryIndexFileInfo>(indexByteList.AsSpan());
+            JsonSerializer.Deserialize<EncryptionDirectoryIndexFileInfo>(indexSourceStream);
 
         if (encryptionDirectoryIndexFileInfo is null || !string.Equals(encryptionDirectoryIndexFileInfo.HeaderText,
                 EncryptionDirectoryIndexFileInfo.DefaultHeaderText, StringComparison.Ordinal))
@@ -202,6 +223,32 @@ public class DirectoryEncryption
         }
 
         return encryptionDirectoryIndexFileInfo;
+    }
+
+    private int[] CreateSaltKey(int[] salt)
+    {
+        var key = Key;
+        var length = Key.Length + salt.Length;
+        var result = new int[length];
+
+        var maxLength = Math.Max(key.Length, salt.Length);
+        var resultIndex = 0;
+        for (int i = 0; i < maxLength; i++)
+        {
+            if (key.Length > i)
+            {
+                result[resultIndex] = key[i];
+                resultIndex++;
+            }
+
+            if (salt.Length > i)
+            {
+                result[resultIndex] = salt[i];
+                resultIndex++;
+            }
+        }
+
+        return result;
     }
 
     private static int[] CreateSalt()
@@ -251,10 +298,13 @@ public class DirectoryEncryption
         var encryptionDirectoryIndexFileInfo =
             new EncryptionDirectoryIndexFileInfo(EncryptionDirectoryIndexFileInfo.DefaultHeaderText,
                 fileStorageInfoList);
-        var fileByteList = JsonSerializer.SerializeToUtf8Bytes(encryptionDirectoryIndexFileInfo);
-        var encryptFileByteList =
-            BinaryEncryption.Encrypt(fileByteList, Key, suffixData: SuffixData, random: Random.Shared);
-        await File.WriteAllBytesAsync(indexFile, encryptFileByteList);
+
+        await using var fileStream = new FileStream(indexFile,FileMode.Create,FileAccess.ReadWrite);
+        using var jsonStream = new MemoryStream();
+        await JsonSerializer.SerializeAsync(jsonStream, encryptionDirectoryIndexFileInfo);
+        jsonStream.Position = 0;
+
+        await BinaryEncryption.EncryptStreamAsync(jsonStream, fileStream, Key);
     }
 
     /// <summary>
@@ -266,6 +316,15 @@ public class DirectoryEncryption
         0x5E, 0xF9, 0xF4, 0xA2, 0x15, 0xA3, 0x5E, 0x74, 0xF6, 0x63, 0x5E, 0x36, 0x31, 0x6B, 0x2A, 0x72, 0x3E, 0x14,
         0x26, 0x69, 0x69, 0x23, 0x66, 0x3D, 0xA4, 0xE5, 0x9B, 0xD9, 0x26, 0xA4, 0x9B, 0xF7
     };
+
+    private static ReadOnlySpan<byte> GetIndexFileHeader()
+    {
+        return """
+               Application=EncryptionDirectory
+               Version=1.0.2
+               Name=EncryptionDirectoryIndexFile
+               """u8;
+    } 
 
     private const string EncryptionDirectoryIndexFileName = "Index.data";
     private const string EncryptionDirectoryIndexVersionName = "Index_{0}.data";
