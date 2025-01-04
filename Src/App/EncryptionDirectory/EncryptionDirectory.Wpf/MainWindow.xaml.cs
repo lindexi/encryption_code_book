@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -66,7 +67,10 @@ public partial class MainWindow : Window
             var encryptionDirectoryConfigurationSaveInfo = new EncryptionDirectoryConfigurationSaveInfo(EncryptionDirectoryUserControl.ViewModel.SourcePath, EncryptionDirectoryUserControl.ViewModel.TargetPath);
 
             await using var fileStream = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.None);
-            await JsonSerializer.SerializeAsync(fileStream, encryptionDirectoryConfigurationSaveInfo);
+            await JsonSerializer.SerializeAsync(fileStream, encryptionDirectoryConfigurationSaveInfo,new JsonSerializerOptions()
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
         }
     }
 
