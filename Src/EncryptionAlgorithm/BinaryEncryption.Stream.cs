@@ -185,7 +185,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(inputBuffer);
+                ArrayPool<byte>.Shared.Return(inputBuffer, clearArray: true);
                 ArrayPool<byte>.Shared.Return(outputBuffer);
             }
         }
@@ -341,7 +341,7 @@ namespace Lindexi.Src.EncryptionAlgorithm
             finally
             {
                 ArrayPool<byte>.Shared.Return(inputBuffer);
-                ArrayPool<byte>.Shared.Return(outputBuffer); 
+                ArrayPool<byte>.Shared.Return(outputBuffer, clearArray: true); 
             }
 
             return true;
