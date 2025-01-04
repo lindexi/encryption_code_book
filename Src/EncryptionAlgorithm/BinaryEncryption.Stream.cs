@@ -11,6 +11,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
 {
     static partial class BinaryEncryption
     {
+        /// <summary>
+        /// 二进制流加密配置
+        /// </summary>
         static class StreamBinaryEncryptionConfiguration
         {
             /// <summary>
@@ -48,7 +51,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
         /// <param name="inputStream">明文</param>
         /// <param name="outputStream">密文</param>
         /// <param name="key">密码</param>
-        public static void EncryptStream(System.IO.Stream inputStream, System.IO.Stream outputStream, int[] key)
+        /// <param name="settings">加密的设置。如传入加密设置时，解密过程应该传入相等的加密设置</param>
+        public static void EncryptStream(System.IO.Stream inputStream, System.IO.Stream outputStream, int[] key,
+            EncryptStreamSettings? settings = null)
         {
             Random random
 #if NET6_0_OR_GREATER
@@ -56,6 +61,9 @@ namespace Lindexi.Src.EncryptionAlgorithm
 #else
                 = new Random();
 #endif
+
+            // 是否应该追加哈希到密码块
+            var shouldAppendHashToKeyBlock = settings?.ShouldAppendHashToKeyBlock ?? true;
 
             const int bufferLength = StreamBinaryEncryptionConfiguration.BufferLength;
 
@@ -84,15 +92,24 @@ namespace Lindexi.Src.EncryptionAlgorithm
                 // 校验密码方式是创建 MD5 哈希，测试其解密是否正确
                 FillKeyBlockData(inputBuffer.AsSpan(0, keyBlockByteLength), keyBlock, random);
 
-                // 计算用于拼接的 MD5 值
-                var computeHashResult = hash.TryComputeHash(inputBuffer.AsSpan().Slice(0, keyBlockByteLength),
-                    tempHashBuffer.AsSpan(), out var hashWrittenByteLength);
-                Debug.Assert(computeHashResult is true);
-                Debug.Assert(hashWrittenByteLength == hashByteLength);
-                // 追加到输入里
-                tempHashBuffer.AsSpan(0, hashByteLength)
-                    .CopyTo(inputBuffer.AsSpan(keyBlockByteLength));
-                var currentInputBufferLength = keyBlockByteLength + hashByteLength;
+                var currentInputBufferLength = keyBlockByteLength;
+
+                if (shouldAppendHashToKeyBlock)
+                {
+                    // 计算用于拼接的 MD5 值
+                    var computeHashResult = hash.TryComputeHash(inputBuffer.AsSpan().Slice(0, keyBlockByteLength),
+                        tempHashBuffer.AsSpan(), out var hashWrittenByteLength);
+                    Debug.Assert(computeHashResult is true);
+                    Debug.Assert(hashWrittenByteLength == hashByteLength);
+                    // 追加到输入里
+                    tempHashBuffer.AsSpan(0, hashByteLength)
+                        .CopyTo(inputBuffer.AsSpan(keyBlockByteLength));
+                    currentInputBufferLength = currentInputBufferLength + hashByteLength;
+                }
+                else
+                {
+                    // 不追加哈希值
+                }
 
                 // 再填充一些干扰数据项。因为 当前已用长度 必然是一个固定值，太好猜长度了，多加点垃圾数据，伤害一下攻击者心智
                 // 现在可填充的为剩余空间减去当前已用长度
@@ -135,7 +152,12 @@ namespace Lindexi.Src.EncryptionAlgorithm
                         random);
                    
                     currentInputBufferLength = currentInputBufferLength + keyBlockByteLength;
-                    // 下一段的密码块不需要再计算其 MD5 值了，直接拼接就好了。第一段之所以计算 MD5 只是为了进行校验
+
+                    if (shouldAppendHashToKeyBlock)
+                    {
+                        // 下一段的密码块不需要再计算其 MD5 值了，直接拼接就好了。第一段之所以计算 MD5 只是为了进行校验
+                        // 因此无论 shouldAppendHashToKeyBlock 是否为 true 的值，都不需要计算 MD5 值
+                    }
 
                     // 明文块里面的加密都不使用传入的密码，而是采用密码块进行加密。如此可以确保明文是顺序重复的情况下，也能让密文不重复。同时减少传入的密码加密了多次明文之后的统计攻击
                     EncryptData_1_1_2(inputBuffer, 0, currentInputBufferLength, currentKeyBlock, outputBuffer,
@@ -195,9 +217,14 @@ namespace Lindexi.Src.EncryptionAlgorithm
         /// <param name="inputStream">密文</param>
         /// <param name="outputStream">明文</param>
         /// <param name="key"></param>
+        /// <param name="settings">加密的设置。解密过程中需要传入和加密相等的配置</param>
         /// <returns>True: 解密成功；False: 解密失败，密码错误、或数据错误</returns>
-        public static bool TryDecryptStream(System.IO.Stream inputStream, System.IO.Stream outputStream, int[] key)
+        public static bool TryDecryptStream(System.IO.Stream inputStream, System.IO.Stream outputStream, int[] key,
+            EncryptStreamSettings? settings = null)
         {
+            // 是否应该追加哈希到密码块
+            var shouldAppendHashToKeyBlock = settings?.ShouldAppendHashToKeyBlock ?? true;
+
             const int bufferLength = StreamBinaryEncryptionConfiguration.BufferLength;
 
             const int keyBlockByteLength = StreamBinaryEncryptionConfiguration.KeyBlockByteLength;
@@ -226,34 +253,54 @@ namespace Lindexi.Src.EncryptionAlgorithm
 
                 // 解密第一个块
                 DecryptData_1_1_2(inputBuffer, 0, bufferLength, key, outputBuffer, bufferLength, out var decryptionResultBufferLength);
-                if (decryptionResultBufferLength < keyBlockByteLength + hashByteLength)
-                {
-                    // 解密出来的长度太小了，证明数据错误或密码错误
-                    return false;
-                }
 
-                // 取输出的部分内容作为哈希的缓冲，减少一次多余的内存分配
-                var tempHashBuffer = outputBuffer.AsSpan(keyBlockByteLength + hashByteLength);
-                var computeHashResult = hash.TryComputeHash(outputBuffer.AsSpan(0, keyBlockByteLength), tempHashBuffer,
-                    out var hashWrittenByteLength);
-                Debug.Assert(computeHashResult is true);
-                Debug.Assert(hashWrittenByteLength == hashByteLength);
-                // 存放在密文里面的哈希，看是否和解密出的哈希一致
-                var keyBlockHash = outputBuffer.AsSpan(keyBlockByteLength, hashByteLength);
-                for (int i = 0; i < hashByteLength; i++)
+                if (shouldAppendHashToKeyBlock)
                 {
-                    if (tempHashBuffer[i] != keyBlockHash[i])
+                    // 在有追加哈希时，应该校验哈希是否正确
+                    if (decryptionResultBufferLength < keyBlockByteLength + hashByteLength)
                     {
-                        // 哈希不一致，证明密码错误
+                        // 解密出来的长度太小了，证明数据错误或密码错误
                         return false;
                     }
+
+                    // 取输出的部分内容作为哈希的缓冲，减少一次多余的内存分配
+                    var tempHashBuffer = outputBuffer.AsSpan(keyBlockByteLength + hashByteLength);
+                    var computeHashResult = hash.TryComputeHash(outputBuffer.AsSpan(0, keyBlockByteLength), tempHashBuffer,
+                        out var hashWrittenByteLength);
+                    Debug.Assert(computeHashResult is true);
+                    Debug.Assert(hashWrittenByteLength == hashByteLength);
+                    // 存放在密文里面的哈希，看是否和解密出的哈希一致
+                    var keyBlockHash = outputBuffer.AsSpan(keyBlockByteLength, hashByteLength);
+                    for (int i = 0; i < hashByteLength; i++)
+                    {
+                        if (tempHashBuffer[i] != keyBlockHash[i])
+                        {
+                            // 哈希不一致，证明密码错误
+                            return false;
+                        }
+                    }
                 }
+                else
+                {
+                    // 不追加哈希值，直接判断长度是否正确
+                    if (decryptionResultBufferLength < keyBlockByteLength)
+                    {
+                        // 解密出来的长度太小了，证明数据错误或密码错误
+                        return false;
+                    }
+                    // 为什么不是等于？因为在前面加密过程中，追加了一些垃圾数据，所以解密出来的长度会比原来的长
+                }
+
                 // 装入到当前的密码块
                 for (int i = 0; i < keyBlockIntLength; i++)
                 {
                     var keyValue = BitConverter.ToInt32(outputBuffer, byteCountOfInt * i);
                     currentKeyBlock[i] = Math.Abs(keyValue);
                 }
+
+//#if DEBUG
+//                Array.Clear(outputBuffer, 0, outputBuffer.Length);
+//#endif
 
                 // 开始解密后续的块
                 while (true)
