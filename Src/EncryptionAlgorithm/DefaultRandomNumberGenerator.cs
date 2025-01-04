@@ -7,29 +7,41 @@ namespace Lindexi.Src.EncryptionAlgorithm;
 
 class DefaultRandomNumberGenerator : IRandomNumberGenerator
 {
+    public DefaultRandomNumberGenerator()
+    {
+#if NET6_0_OR_GREATER
+        _random = Random.Shared;
+#else
+        _random = new Random();
+#endif
+    }
+
+    private readonly Random _random;
+
     public int GetRandomNumber(int maxValue)
     {
-        return RandomNumberGenerator.GetInt32(maxValue);
+        return _random.Next(maxValue);
     }
 
     public int GetRandomNumber(int minValue, int maxValue)
     {
-        return RandomNumberGenerator.GetInt32(minValue, maxValue);
+        return _random.Next(minValue, maxValue);
     }
 
     public byte GenerateFillGapByte()
     {
-        return (byte) RandomNumberGenerator.GetInt32(byte.MinValue, byte.MaxValue);
+        return (byte) _random.Next(byte.MinValue, byte.MaxValue);
     }
 
     public void FillKeyBlock(Span<byte> keyBlock)
     {
+        // 只有生成密码块的时候才使用安全的随机数，其他时候使用普通的随机数即可
         RandomNumberGenerator.Fill(keyBlock);
     }
 
     public void FillGap(Span<byte> gap)
     {
-        RandomNumberGenerator.Fill(gap);
+        _random.NextBytes(gap);
     }
 }
 
